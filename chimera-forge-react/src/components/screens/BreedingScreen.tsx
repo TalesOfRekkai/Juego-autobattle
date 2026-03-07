@@ -1,0 +1,175 @@
+import { useMemo, useState } from 'react';
+import { useGameStore } from '../../store/gameStore';
+import { useToastStore } from '../../store/toastStore';
+import * as BreedingLib from '../../lib/breeding';
+import * as Creatures from '../../lib/creatures';
+import * as Data from '../../lib/data';
+import type { Creature } from '../../types';
+import Modal from '../layout/Modal';
+import TopBar from '../layout/TopBar';
+import NavBar from '../layout/NavBar';
+
+export default function BreedingScreen() {
+    const addToast = useToastStore(s => s.addToast);
+    const allCreatures = useGameStore(s => s.state.creatures);
+    const addCreature = useGameStore(s => s.addCreature);
+
+    const [breedA, setBreedA] = useState<Creature | null>(null);
+    const [breedB, setBreedB] = useState<Creature | null>(null);
+    const [selectingSlot, setSelectingSlot] = useState<'a' | 'b' | null>(null);
+    const [fusionResult, setFusionResult] = useState<Creature | null>(null);
+
+    const available = useMemo(() => allCreatures.filter(c => !c.isOnExpedition), [allCreatures]);
+
+    const openSelect = (slot: 'a' | 'b') => setSelectingSlot(slot);
+
+    const selectCreature = (creature: Creature) => {
+        if (selectingSlot === 'a') setBreedA(creature);
+        else setBreedB(creature);
+        setSelectingSlot(null);
+    };
+
+    const preview = BreedingLib.getPreview(breedA, breedB);
+    const check = breedA && breedB ? BreedingLib.canBreed(breedA, breedB) : null;
+
+    const doBreed = () => {
+        if (!breedA || !breedB) return;
+        const newCreature = BreedingLib.breed(breedA, breedB);
+        if (!newCreature) { addToast('Error en la fusión', 'error'); return; }
+        addCreature(newCreature);
+        addToast(`¡${newCreature.name} ha nacido!`, 'success');
+        setFusionResult(newCreature);
+    };
+
+    const filteredForSlot = available.filter(c => {
+        if (selectingSlot === 'a' && breedB && c.id === breedB.id) return false;
+        if (selectingSlot === 'b' && breedA && c.id === breedA.id) return false;
+        return true;
+    });
+
+    const breedable = filteredForSlot.filter(c => Creatures.canBreed(c));
+    const nonBreedable = filteredForSlot.filter(c => !Creatures.canBreed(c));
+
+    return (
+        <>
+            <TopBar />
+            <div className="screen">
+                <div className="section-header">🧬 Sala de Cría</div>
+                <p style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: 'var(--space-md)' }}>
+                    Selecciona dos Rekaimon para fusionar. Cada criatura solo puede criar <strong>una vez</strong>. Nivel mínimo: {BreedingLib.MIN_BREED_LEVEL}.
+                </p>
+
+                <div className="breeding-slots">
+                    <div className={`breeding-slot ${breedA ? 'filled' : ''}`} onClick={() => openSelect('a')}>
+                        {breedA ? (
+                            <>
+                                <img src={Creatures.getSprite(breedA)} style={{ width: '60px', height: '60px', imageRendering: 'pixelated' }} />
+                                <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '7px', marginTop: '4px' }}>{breedA.name}</div>
+                                <div style={{ fontSize: '9px', color: 'var(--text-secondary)' }}>Lv.{breedA.level}</div>
+                            </>
+                        ) : (
+                            <>
+                                <span style={{ fontSize: '36px', opacity: 0.3 }}>?</span>
+                                <span style={{ fontSize: '8px', color: 'var(--text-muted)', marginTop: 'var(--space-sm)' }}>Padre A</span>
+                            </>
+                        )}
+                    </div>
+                    <div className="breeding-plus">+</div>
+                    <div className={`breeding-slot ${breedB ? 'filled' : ''}`} onClick={() => openSelect('b')}>
+                        {breedB ? (
+                            <>
+                                <img src={Creatures.getSprite(breedB)} style={{ width: '60px', height: '60px', imageRendering: 'pixelated' }} />
+                                <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '7px', marginTop: '4px' }}>{breedB.name}</div>
+                                <div style={{ fontSize: '9px', color: 'var(--text-secondary)' }}>Lv.{breedB.level}</div>
+                            </>
+                        ) : (
+                            <>
+                                <span style={{ fontSize: '36px', opacity: 0.3 }}>?</span>
+                                <span style={{ fontSize: '8px', color: 'var(--text-muted)', marginTop: 'var(--space-sm)' }}>Padre B</span>
+                            </>
+                        )}
+                    </div>
+                </div>
+
+                {breedA && breedB && preview && (
+                    <div style={{ textAlign: 'center', margin: 'var(--space-md) 0' }}>
+                        <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', color: 'var(--accent-secondary)', marginBottom: 'var(--space-sm)' }}>RESULTADO</div>
+                        <img src={preview.sprite} style={{ width: '80px', height: '80px', imageRendering: 'pixelated', filter: 'drop-shadow(0 2px 10px rgba(157,124,216,0.4))' }} />
+                        <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '10px', marginTop: 'var(--space-sm)' }}>{preview.name}</div>
+                        <div style={{ display: 'flex', gap: 'var(--space-sm)', justifyContent: 'center', marginTop: 'var(--space-xs)' }}>
+                            <span className={`detail-tag tag-${preview.element}`}>{Data.getElementIcon(preview.element)} {Data.getElementName(preview.element)}</span>
+                            <span className={`detail-tag tier-${preview.tier}`}>{preview.tier}</span>
+                        </div>
+                    </div>
+                )}
+
+                {breedA && breedB && !preview && (
+                    <div style={{ textAlign: 'center', margin: 'var(--space-md) 0', fontSize: '11px', color: 'var(--accent-danger)' }}>
+                        Estos Rekaimon no son compatibles
+                    </div>
+                )}
+
+                {check?.ok && (
+                    <div style={{ textAlign: 'center' }}>
+                        <button className="btn btn-gold btn-lg btn-block mt-md" onClick={doBreed}>🧬 ¡Fusionar!</button>
+                    </div>
+                )}
+                {check && !check.ok && (
+                    <div style={{ textAlign: 'center', fontSize: '11px', color: 'var(--accent-danger)', marginTop: 'var(--space-md)' }}>{check.reason}</div>
+                )}
+            </div>
+
+            <Modal isOpen={selectingSlot !== null} onClose={() => setSelectingSlot(null)}>
+                <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '10px', marginBottom: 'var(--space-md)' }}>
+                    Seleccionar Padre {selectingSlot?.toUpperCase()}
+                </div>
+                <div className="creature-grid">
+                    {breedable.map(c => (
+                        <div key={c.id} className="creature-card" data-element={c.element} onClick={() => selectCreature(c)} style={{ cursor: 'pointer' }}>
+                            <img className="creature-card__sprite" src={Creatures.getSprite(c)} alt={c.name} />
+                            <div className="creature-card__name">{c.name}</div>
+                            <div className="creature-card__level">Lv.{c.level}</div>
+                        </div>
+                    ))}
+                </div>
+                {nonBreedable.length > 0 && (
+                    <>
+                        <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: 'var(--space-md)' }}>No disponibles:</div>
+                        <div className="creature-grid" style={{ opacity: 0.4, marginTop: 'var(--space-sm)' }}>
+                            {nonBreedable.map(c => (
+                                <div key={c.id} className="creature-card" data-element={c.element}>
+                                    <img className="creature-card__sprite" src={Creatures.getSprite(c)} alt={c.name} />
+                                    <div className="creature-card__name">{c.name}</div>
+                                    <div className="creature-card__level">Lv.{c.level}</div>
+                                    <div style={{ fontSize: '8px', color: 'var(--accent-danger)' }}>
+                                        {c.hasBred ? 'Ya crió' : c.level < 5 ? `Necesita Lv${BreedingLib.MIN_BREED_LEVEL}` : 'No disponible'}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </>
+                )}
+            </Modal>
+
+            <Modal isOpen={fusionResult !== null} onClose={() => { setFusionResult(null); setBreedA(null); setBreedB(null); }}>
+                {fusionResult && (
+                    <div style={{ textAlign: 'center' }}>
+                        <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '12px', color: 'var(--accent-secondary)', marginBottom: 'var(--space-md)' }}>
+                            🧬 ¡Fusión Exitosa!
+                        </div>
+                        <img src={Creatures.getSprite(fusionResult)} className="hatch-reveal"
+                            style={{ width: '100px', height: '100px', imageRendering: 'pixelated', filter: 'drop-shadow(0 4px 15px rgba(157,124,216,0.5))' }} />
+                        <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '14px', marginTop: 'var(--space-md)' }}>{fusionResult.name}</div>
+                        <div style={{ display: 'flex', gap: 'var(--space-sm)', justifyContent: 'center', marginTop: 'var(--space-sm)' }}>
+                            <span className={`detail-tag tag-${fusionResult.element}`}>{Data.getElementIcon(fusionResult.element)} {Data.getElementName(fusionResult.element)}</span>
+                            <span className={`detail-tag tier-${fusionResult.tier}`}>{fusionResult.tier}</span>
+                        </div>
+                        <button className="btn btn-primary mt-lg" onClick={() => { setFusionResult(null); setBreedA(null); setBreedB(null); }}>Continuar</button>
+                    </div>
+                )}
+            </Modal>
+
+            <NavBar />
+        </>
+    );
+}

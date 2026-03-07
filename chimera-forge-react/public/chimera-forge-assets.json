@@ -1,0 +1,2066 @@
+[
+  {
+    "id": "b1_s1_common",
+    "name": "Pyralis",
+    "type": "base",
+    "stage": 1,
+    "tier": "common",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame. small young baby creature, compact proportions. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b1_s2_common",
+    "name": "Pyralis",
+    "type": "base",
+    "stage": 2,
+    "tier": "common",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame. medium-sized adolescent creature, developing features and growing details. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b1_s3_common",
+    "name": "Pyralis",
+    "type": "base",
+    "stage": 3,
+    "tier": "common",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame. fully grown powerful imposing adult creature, maximum size and presence. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b2_s1_common",
+    "name": "Tidecrawl",
+    "type": "base",
+    "stage": 1,
+    "tier": "common",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns. small young baby creature, compact proportions. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b2_s2_common",
+    "name": "Tidecrawl",
+    "type": "base",
+    "stage": 2,
+    "tier": "common",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns. medium-sized adolescent creature, developing features and growing details. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b2_s3_common",
+    "name": "Tidecrawl",
+    "type": "base",
+    "stage": 3,
+    "tier": "common",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns. fully grown powerful imposing adult creature, maximum size and presence. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b3_s1_common",
+    "name": "Thornback",
+    "type": "base",
+    "stage": 1,
+    "tier": "common",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body. small young baby creature, compact proportions. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b3_s2_common",
+    "name": "Thornback",
+    "type": "base",
+    "stage": 2,
+    "tier": "common",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body. medium-sized adolescent creature, developing features and growing details. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b3_s3_common",
+    "name": "Thornback",
+    "type": "base",
+    "stage": 3,
+    "tier": "common",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body. fully grown powerful imposing adult creature, maximum size and presence. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b4_s1_common",
+    "name": "Zephkling",
+    "type": "base",
+    "stage": 1,
+    "tier": "common",
+    "element": "air",
+    "bodyType": "avian",
+    "traits": [
+      "wings",
+      "feathers"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. air elemental creature. color palette: light grays, whites, pale cyans, silver. body type: winged bird-like flying creature. features: large spread wings, elaborate plumage of feathers. small young baby creature, compact proportions. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b4_s2_common",
+    "name": "Zephkling",
+    "type": "base",
+    "stage": 2,
+    "tier": "common",
+    "element": "air",
+    "bodyType": "avian",
+    "traits": [
+      "wings",
+      "feathers"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. air elemental creature. color palette: light grays, whites, pale cyans, silver. body type: winged bird-like flying creature. features: large spread wings, elaborate plumage of feathers. medium-sized adolescent creature, developing features and growing details. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b4_s3_common",
+    "name": "Zephkling",
+    "type": "base",
+    "stage": 3,
+    "tier": "common",
+    "element": "air",
+    "bodyType": "avian",
+    "traits": [
+      "wings",
+      "feathers"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. air elemental creature. color palette: light grays, whites, pale cyans, silver. body type: winged bird-like flying creature. features: large spread wings, elaborate plumage of feathers. fully grown powerful imposing adult creature, maximum size and presence. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b5_s1_common",
+    "name": "Gloomfang",
+    "type": "base",
+    "stage": 1,
+    "tier": "common",
+    "element": "shadow",
+    "bodyType": "biped",
+    "traits": [
+      "claws",
+      "eyes_many"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. shadow elemental creature. color palette: deep purples, blacks, dark magentas, ghostly highlights. body type: two-legged humanoid creature. features: massive razor-sharp claws, multiple glowing eyes across face. small young baby creature, compact proportions. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b5_s2_common",
+    "name": "Gloomfang",
+    "type": "base",
+    "stage": 2,
+    "tier": "common",
+    "element": "shadow",
+    "bodyType": "biped",
+    "traits": [
+      "claws",
+      "eyes_many"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. shadow elemental creature. color palette: deep purples, blacks, dark magentas, ghostly highlights. body type: two-legged humanoid creature. features: massive razor-sharp claws, multiple glowing eyes across face. medium-sized adolescent creature, developing features and growing details. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b5_s3_common",
+    "name": "Gloomfang",
+    "type": "base",
+    "stage": 3,
+    "tier": "common",
+    "element": "shadow",
+    "bodyType": "biped",
+    "traits": [
+      "claws",
+      "eyes_many"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. shadow elemental creature. color palette: deep purples, blacks, dark magentas, ghostly highlights. body type: two-legged humanoid creature. features: massive razor-sharp claws, multiple glowing eyes across face. fully grown powerful imposing adult creature, maximum size and presence. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b6_s1_common",
+    "name": "Solnir",
+    "type": "base",
+    "stage": 1,
+    "tier": "common",
+    "element": "light",
+    "bodyType": "avian",
+    "traits": [
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. light elemental creature. color palette: golds, whites, pale yellows, warm radiance. body type: winged bird-like flying creature. features: mystical energy aura surrounding body, glowing crystals growing from body. small young baby creature, compact proportions. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b6_s2_common",
+    "name": "Solnir",
+    "type": "base",
+    "stage": 2,
+    "tier": "common",
+    "element": "light",
+    "bodyType": "avian",
+    "traits": [
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. light elemental creature. color palette: golds, whites, pale yellows, warm radiance. body type: winged bird-like flying creature. features: mystical energy aura surrounding body, glowing crystals growing from body. medium-sized adolescent creature, developing features and growing details. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b6_s3_common",
+    "name": "Solnir",
+    "type": "base",
+    "stage": 3,
+    "tier": "common",
+    "element": "light",
+    "bodyType": "avian",
+    "traits": [
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. light elemental creature. color palette: golds, whites, pale yellows, warm radiance. body type: winged bird-like flying creature. features: mystical energy aura surrounding body, glowing crystals growing from body. fully grown powerful imposing adult creature, maximum size and presence. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b7_s1_common",
+    "name": "Mycelith",
+    "type": "base",
+    "stage": 1,
+    "tier": "common",
+    "element": "earth",
+    "bodyType": "amorphous",
+    "traits": [
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: amorphous shapeless blob creature. features: writhing organic tentacles, releasing floating spore particles. small young baby creature, compact proportions. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b7_s2_common",
+    "name": "Mycelith",
+    "type": "base",
+    "stage": 2,
+    "tier": "common",
+    "element": "earth",
+    "bodyType": "amorphous",
+    "traits": [
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: amorphous shapeless blob creature. features: writhing organic tentacles, releasing floating spore particles. medium-sized adolescent creature, developing features and growing details. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b7_s3_common",
+    "name": "Mycelith",
+    "type": "base",
+    "stage": 3,
+    "tier": "common",
+    "element": "earth",
+    "bodyType": "amorphous",
+    "traits": [
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: amorphous shapeless blob creature. features: writhing organic tentacles, releasing floating spore particles. fully grown powerful imposing adult creature, maximum size and presence. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b8_s1_common",
+    "name": "Vexmaw",
+    "type": "base",
+    "stage": 1,
+    "tier": "common",
+    "element": "shadow",
+    "bodyType": "insectoid",
+    "traits": [
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. shadow elemental creature. color palette: deep purples, blacks, dark magentas, ghostly highlights. body type: multi-legged insect-like creature. features: large insectoid crushing mandibles, segmented chitinous exoskeleton. small young baby creature, compact proportions. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b8_s2_common",
+    "name": "Vexmaw",
+    "type": "base",
+    "stage": 2,
+    "tier": "common",
+    "element": "shadow",
+    "bodyType": "insectoid",
+    "traits": [
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. shadow elemental creature. color palette: deep purples, blacks, dark magentas, ghostly highlights. body type: multi-legged insect-like creature. features: large insectoid crushing mandibles, segmented chitinous exoskeleton. medium-sized adolescent creature, developing features and growing details. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "b8_s3_common",
+    "name": "Vexmaw",
+    "type": "base",
+    "stage": 3,
+    "tier": "common",
+    "element": "shadow",
+    "bodyType": "insectoid",
+    "traits": [
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. shadow elemental creature. color palette: deep purples, blacks, dark magentas, ghostly highlights. body type: multi-legged insect-like creature. features: large insectoid crushing mandibles, segmented chitinous exoskeleton. fully grown powerful imposing adult creature, maximum size and presence. simple clean design, minimal detail. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true
+  },
+  {
+    "id": "f_b1_b2_s1_rare",
+    "name": "Pyracrawl",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "fins",
+      "bioluminescence"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, aquatic fins along body, glowing bioluminescent spots and patterns. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Tidecrawl"
+  },
+  {
+    "id": "f_b1_b2_s2_rare",
+    "name": "Pyracrawl",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "fins",
+      "bioluminescence"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, aquatic fins along body, glowing bioluminescent spots and patterns. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "error",
+    "hasImage": false,
+    "parentA": "Pyralis",
+    "parentB": "Tidecrawl"
+  },
+  {
+    "id": "f_b1_b2_s3_rare",
+    "name": "Pyracrawl",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "fins",
+      "bioluminescence"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, aquatic fins along body, glowing bioluminescent spots and patterns. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Tidecrawl"
+  },
+  {
+    "id": "f_b1_b3_s1_rare",
+    "name": "Pyranback",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "armor",
+      "spikes"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, thick natural bone armor plating, sharp protruding spikes along spine and body. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Thornback"
+  },
+  {
+    "id": "f_b1_b3_s2_rare",
+    "name": "Pyranback",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "armor",
+      "spikes"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, thick natural bone armor plating, sharp protruding spikes along spine and body. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Thornback"
+  },
+  {
+    "id": "f_b1_b3_s3_rare",
+    "name": "Pyranback",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "armor",
+      "spikes"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, thick natural bone armor plating, sharp protruding spikes along spine and body. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Thornback"
+  },
+  {
+    "id": "f_b1_b4_s1_rare",
+    "name": "Pyrakling",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "wings",
+      "feathers"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, large spread wings, elaborate plumage of feathers. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Zephkling"
+  },
+  {
+    "id": "f_b1_b4_s2_rare",
+    "name": "Pyrakling",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "wings",
+      "feathers"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, large spread wings, elaborate plumage of feathers. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Zephkling"
+  },
+  {
+    "id": "f_b1_b4_s3_rare",
+    "name": "Pyrakling",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "wings",
+      "feathers"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, large spread wings, elaborate plumage of feathers. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Zephkling"
+  },
+  {
+    "id": "f_b1_b5_s1_rare",
+    "name": "Pyramfang",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "claws",
+      "eyes_many"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, massive razor-sharp claws, multiple glowing eyes across face. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Gloomfang"
+  },
+  {
+    "id": "f_b1_b5_s2_rare",
+    "name": "Pyramfang",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "claws",
+      "eyes_many"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, massive razor-sharp claws, multiple glowing eyes across face. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Gloomfang"
+  },
+  {
+    "id": "f_b1_b5_s3_rare",
+    "name": "Pyramfang",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "claws",
+      "eyes_many"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, massive razor-sharp claws, multiple glowing eyes across face. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Gloomfang"
+  },
+  {
+    "id": "f_b1_b6_s1_rare",
+    "name": "Pyranir",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, mystical energy aura surrounding body, glowing crystals growing from body. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Solnir"
+  },
+  {
+    "id": "f_b1_b6_s2_rare",
+    "name": "Pyranir",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, mystical energy aura surrounding body, glowing crystals growing from body. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Solnir"
+  },
+  {
+    "id": "f_b1_b6_s3_rare",
+    "name": "Pyranir",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, mystical energy aura surrounding body, glowing crystals growing from body. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Solnir"
+  },
+  {
+    "id": "f_b1_b7_s1_rare",
+    "name": "Pyralith",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, writhing organic tentacles, releasing floating spore particles. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b1_b7_s2_rare",
+    "name": "Pyralith",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, writhing organic tentacles, releasing floating spore particles. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b1_b7_s3_rare",
+    "name": "Pyralith",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, writhing organic tentacles, releasing floating spore particles. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b1_b8_s1_rare",
+    "name": "Pyramaw",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, large insectoid crushing mandibles, segmented chitinous exoskeleton. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b1_b8_s2_rare",
+    "name": "Pyramaw",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, large insectoid crushing mandibles, segmented chitinous exoskeleton. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b1_b8_s3_rare",
+    "name": "Pyramaw",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "fire",
+    "bodyType": "quadruped",
+    "traits": [
+      "scales",
+      "tail_flame",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. fire elemental creature. color palette: reds, oranges, ember glow, charcoal black accents. body type: four-legged beast creature. features: covered in detailed shiny scales, tail ending in magical elemental flame, large insectoid crushing mandibles, segmented chitinous exoskeleton. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Pyralis",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b2_b3_s1_rare",
+    "name": "Tidecnback",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "armor",
+      "spikes"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, thick natural bone armor plating, sharp protruding spikes along spine and body. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Thornback"
+  },
+  {
+    "id": "f_b2_b3_s2_rare",
+    "name": "Tidecnback",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "armor",
+      "spikes"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, thick natural bone armor plating, sharp protruding spikes along spine and body. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Thornback"
+  },
+  {
+    "id": "f_b2_b3_s3_rare",
+    "name": "Tidecnback",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "armor",
+      "spikes"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, thick natural bone armor plating, sharp protruding spikes along spine and body. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Thornback"
+  },
+  {
+    "id": "f_b2_b4_s1_rare",
+    "name": "Tideckling",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "wings",
+      "feathers"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, large spread wings, elaborate plumage of feathers. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Zephkling"
+  },
+  {
+    "id": "f_b2_b4_s2_rare",
+    "name": "Tideckling",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "wings",
+      "feathers"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, large spread wings, elaborate plumage of feathers. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Zephkling"
+  },
+  {
+    "id": "f_b2_b4_s3_rare",
+    "name": "Tideckling",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "wings",
+      "feathers"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, large spread wings, elaborate plumage of feathers. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Zephkling"
+  },
+  {
+    "id": "f_b2_b5_s1_rare",
+    "name": "Tidecmfang",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "claws",
+      "eyes_many"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, massive razor-sharp claws, multiple glowing eyes across face. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Gloomfang"
+  },
+  {
+    "id": "f_b2_b5_s2_rare",
+    "name": "Tidecmfang",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "claws",
+      "eyes_many"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, massive razor-sharp claws, multiple glowing eyes across face. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Gloomfang"
+  },
+  {
+    "id": "f_b2_b5_s3_rare",
+    "name": "Tidecmfang",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "claws",
+      "eyes_many"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, massive razor-sharp claws, multiple glowing eyes across face. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Gloomfang"
+  },
+  {
+    "id": "f_b2_b6_s1_rare",
+    "name": "Tidecnir",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, mystical energy aura surrounding body, glowing crystals growing from body. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Solnir"
+  },
+  {
+    "id": "f_b2_b6_s2_rare",
+    "name": "Tidecnir",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, mystical energy aura surrounding body, glowing crystals growing from body. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Solnir"
+  },
+  {
+    "id": "f_b2_b6_s3_rare",
+    "name": "Tidecnir",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, mystical energy aura surrounding body, glowing crystals growing from body. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Solnir"
+  },
+  {
+    "id": "f_b2_b7_s1_rare",
+    "name": "Tideclith",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, writhing organic tentacles, releasing floating spore particles. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b2_b7_s2_rare",
+    "name": "Tideclith",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, writhing organic tentacles, releasing floating spore particles. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b2_b7_s3_rare",
+    "name": "Tideclith",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, writhing organic tentacles, releasing floating spore particles. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b2_b8_s1_rare",
+    "name": "Tidecmaw",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, large insectoid crushing mandibles, segmented chitinous exoskeleton. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b2_b8_s2_rare",
+    "name": "Tidecmaw",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, large insectoid crushing mandibles, segmented chitinous exoskeleton. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b2_b8_s3_rare",
+    "name": "Tidecmaw",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "water",
+    "bodyType": "serpentine",
+    "traits": [
+      "fins",
+      "bioluminescence",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. water elemental creature. color palette: deep blues, aqua, seafoam, white foam highlights. body type: long serpentine snake-like body. features: aquatic fins along body, glowing bioluminescent spots and patterns, large insectoid crushing mandibles, segmented chitinous exoskeleton. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Tidecrawl",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b3_b4_s1_rare",
+    "name": "Thornkling",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes",
+      "wings",
+      "feathers"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body, large spread wings, elaborate plumage of feathers. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Thornback",
+    "parentB": "Zephkling"
+  },
+  {
+    "id": "f_b3_b4_s2_rare",
+    "name": "Thornkling",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes",
+      "wings",
+      "feathers"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body, large spread wings, elaborate plumage of feathers. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Thornback",
+    "parentB": "Zephkling"
+  },
+  {
+    "id": "f_b3_b4_s3_rare",
+    "name": "Thornkling",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes",
+      "wings",
+      "feathers"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body, large spread wings, elaborate plumage of feathers. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Thornback",
+    "parentB": "Zephkling"
+  },
+  {
+    "id": "f_b3_b5_s1_rare",
+    "name": "Thornmfang",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes",
+      "claws",
+      "eyes_many"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body, massive razor-sharp claws, multiple glowing eyes across face. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Thornback",
+    "parentB": "Gloomfang"
+  },
+  {
+    "id": "f_b3_b5_s2_rare",
+    "name": "Thornmfang",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes",
+      "claws",
+      "eyes_many"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body, massive razor-sharp claws, multiple glowing eyes across face. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Thornback",
+    "parentB": "Gloomfang"
+  },
+  {
+    "id": "f_b3_b5_s3_rare",
+    "name": "Thornmfang",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes",
+      "claws",
+      "eyes_many"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body, massive razor-sharp claws, multiple glowing eyes across face. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Thornback",
+    "parentB": "Gloomfang"
+  },
+  {
+    "id": "f_b3_b6_s1_rare",
+    "name": "Thornnir",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes",
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body, mystical energy aura surrounding body, glowing crystals growing from body. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Thornback",
+    "parentB": "Solnir"
+  },
+  {
+    "id": "f_b3_b6_s2_rare",
+    "name": "Thornnir",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes",
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body, mystical energy aura surrounding body, glowing crystals growing from body. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Thornback",
+    "parentB": "Solnir"
+  },
+  {
+    "id": "f_b3_b6_s3_rare",
+    "name": "Thornnir",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes",
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body, mystical energy aura surrounding body, glowing crystals growing from body. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Thornback",
+    "parentB": "Solnir"
+  },
+  {
+    "id": "f_b3_b7_s1_rare",
+    "name": "Thornlith",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body, writhing organic tentacles, releasing floating spore particles. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Thornback",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b3_b7_s2_rare",
+    "name": "Thornlith",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body, writhing organic tentacles, releasing floating spore particles. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Thornback",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b3_b7_s3_rare",
+    "name": "Thornlith",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body, writhing organic tentacles, releasing floating spore particles. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Thornback",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b3_b8_s1_rare",
+    "name": "Thornmaw",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body, large insectoid crushing mandibles, segmented chitinous exoskeleton. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Thornback",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b3_b8_s2_rare",
+    "name": "Thornmaw",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body, large insectoid crushing mandibles, segmented chitinous exoskeleton. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Thornback",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b3_b8_s3_rare",
+    "name": "Thornmaw",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "quadruped",
+    "traits": [
+      "armor",
+      "spikes",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: four-legged beast creature. features: thick natural bone armor plating, sharp protruding spikes along spine and body, large insectoid crushing mandibles, segmented chitinous exoskeleton. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Thornback",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b4_b5_s1_rare",
+    "name": "Zephkmfang",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "air",
+    "bodyType": "avian",
+    "traits": [
+      "wings",
+      "feathers",
+      "claws",
+      "eyes_many"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. air elemental creature. color palette: light grays, whites, pale cyans, silver. body type: winged bird-like flying creature. features: large spread wings, elaborate plumage of feathers, massive razor-sharp claws, multiple glowing eyes across face. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Zephkling",
+    "parentB": "Gloomfang"
+  },
+  {
+    "id": "f_b4_b5_s2_rare",
+    "name": "Zephkmfang",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "air",
+    "bodyType": "avian",
+    "traits": [
+      "wings",
+      "feathers",
+      "claws",
+      "eyes_many"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. air elemental creature. color palette: light grays, whites, pale cyans, silver. body type: winged bird-like flying creature. features: large spread wings, elaborate plumage of feathers, massive razor-sharp claws, multiple glowing eyes across face. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Zephkling",
+    "parentB": "Gloomfang"
+  },
+  {
+    "id": "f_b4_b5_s3_rare",
+    "name": "Zephkmfang",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "air",
+    "bodyType": "avian",
+    "traits": [
+      "wings",
+      "feathers",
+      "claws",
+      "eyes_many"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. air elemental creature. color palette: light grays, whites, pale cyans, silver. body type: winged bird-like flying creature. features: large spread wings, elaborate plumage of feathers, massive razor-sharp claws, multiple glowing eyes across face. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Zephkling",
+    "parentB": "Gloomfang"
+  },
+  {
+    "id": "f_b4_b6_s1_rare",
+    "name": "Zephknir",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "air",
+    "bodyType": "avian",
+    "traits": [
+      "wings",
+      "feathers",
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. air elemental creature. color palette: light grays, whites, pale cyans, silver. body type: winged bird-like flying creature. features: large spread wings, elaborate plumage of feathers, mystical energy aura surrounding body, glowing crystals growing from body. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Zephkling",
+    "parentB": "Solnir"
+  },
+  {
+    "id": "f_b4_b6_s2_rare",
+    "name": "Zephknir",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "air",
+    "bodyType": "avian",
+    "traits": [
+      "wings",
+      "feathers",
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. air elemental creature. color palette: light grays, whites, pale cyans, silver. body type: winged bird-like flying creature. features: large spread wings, elaborate plumage of feathers, mystical energy aura surrounding body, glowing crystals growing from body. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Zephkling",
+    "parentB": "Solnir"
+  },
+  {
+    "id": "f_b4_b6_s3_rare",
+    "name": "Zephknir",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "air",
+    "bodyType": "avian",
+    "traits": [
+      "wings",
+      "feathers",
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. air elemental creature. color palette: light grays, whites, pale cyans, silver. body type: winged bird-like flying creature. features: large spread wings, elaborate plumage of feathers, mystical energy aura surrounding body, glowing crystals growing from body. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Zephkling",
+    "parentB": "Solnir"
+  },
+  {
+    "id": "f_b4_b7_s1_rare",
+    "name": "Zephklith",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "air",
+    "bodyType": "avian",
+    "traits": [
+      "wings",
+      "feathers",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. air elemental creature. color palette: light grays, whites, pale cyans, silver. body type: winged bird-like flying creature. features: large spread wings, elaborate plumage of feathers, writhing organic tentacles, releasing floating spore particles. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Zephkling",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b4_b7_s2_rare",
+    "name": "Zephklith",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "air",
+    "bodyType": "avian",
+    "traits": [
+      "wings",
+      "feathers",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. air elemental creature. color palette: light grays, whites, pale cyans, silver. body type: winged bird-like flying creature. features: large spread wings, elaborate plumage of feathers, writhing organic tentacles, releasing floating spore particles. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Zephkling",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b4_b7_s3_rare",
+    "name": "Zephklith",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "air",
+    "bodyType": "avian",
+    "traits": [
+      "wings",
+      "feathers",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. air elemental creature. color palette: light grays, whites, pale cyans, silver. body type: winged bird-like flying creature. features: large spread wings, elaborate plumage of feathers, writhing organic tentacles, releasing floating spore particles. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Zephkling",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b4_b8_s1_rare",
+    "name": "Zephkmaw",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "air",
+    "bodyType": "avian",
+    "traits": [
+      "wings",
+      "feathers",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. air elemental creature. color palette: light grays, whites, pale cyans, silver. body type: winged bird-like flying creature. features: large spread wings, elaborate plumage of feathers, large insectoid crushing mandibles, segmented chitinous exoskeleton. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Zephkling",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b4_b8_s2_rare",
+    "name": "Zephkmaw",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "air",
+    "bodyType": "avian",
+    "traits": [
+      "wings",
+      "feathers",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. air elemental creature. color palette: light grays, whites, pale cyans, silver. body type: winged bird-like flying creature. features: large spread wings, elaborate plumage of feathers, large insectoid crushing mandibles, segmented chitinous exoskeleton. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Zephkling",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b4_b8_s3_rare",
+    "name": "Zephkmaw",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "air",
+    "bodyType": "avian",
+    "traits": [
+      "wings",
+      "feathers",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. air elemental creature. color palette: light grays, whites, pale cyans, silver. body type: winged bird-like flying creature. features: large spread wings, elaborate plumage of feathers, large insectoid crushing mandibles, segmented chitinous exoskeleton. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Zephkling",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b5_b6_s1_rare",
+    "name": "Gloomnir",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "shadow",
+    "bodyType": "biped",
+    "traits": [
+      "claws",
+      "eyes_many",
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. shadow elemental creature. color palette: deep purples, blacks, dark magentas, ghostly highlights. body type: two-legged humanoid creature. features: massive razor-sharp claws, multiple glowing eyes across face, mystical energy aura surrounding body, glowing crystals growing from body. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Gloomfang",
+    "parentB": "Solnir"
+  },
+  {
+    "id": "f_b5_b6_s2_rare",
+    "name": "Gloomnir",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "shadow",
+    "bodyType": "biped",
+    "traits": [
+      "claws",
+      "eyes_many",
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. shadow elemental creature. color palette: deep purples, blacks, dark magentas, ghostly highlights. body type: two-legged humanoid creature. features: massive razor-sharp claws, multiple glowing eyes across face, mystical energy aura surrounding body, glowing crystals growing from body. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Gloomfang",
+    "parentB": "Solnir"
+  },
+  {
+    "id": "f_b5_b6_s3_rare",
+    "name": "Gloomnir",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "shadow",
+    "bodyType": "biped",
+    "traits": [
+      "claws",
+      "eyes_many",
+      "aura",
+      "crystals"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. shadow elemental creature. color palette: deep purples, blacks, dark magentas, ghostly highlights. body type: two-legged humanoid creature. features: massive razor-sharp claws, multiple glowing eyes across face, mystical energy aura surrounding body, glowing crystals growing from body. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Gloomfang",
+    "parentB": "Solnir"
+  },
+  {
+    "id": "f_b5_b7_s1_rare",
+    "name": "Gloomlith",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "shadow",
+    "bodyType": "biped",
+    "traits": [
+      "claws",
+      "eyes_many",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. shadow elemental creature. color palette: deep purples, blacks, dark magentas, ghostly highlights. body type: two-legged humanoid creature. features: massive razor-sharp claws, multiple glowing eyes across face, writhing organic tentacles, releasing floating spore particles. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Gloomfang",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b5_b7_s2_rare",
+    "name": "Gloomlith",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "shadow",
+    "bodyType": "biped",
+    "traits": [
+      "claws",
+      "eyes_many",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. shadow elemental creature. color palette: deep purples, blacks, dark magentas, ghostly highlights. body type: two-legged humanoid creature. features: massive razor-sharp claws, multiple glowing eyes across face, writhing organic tentacles, releasing floating spore particles. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Gloomfang",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b5_b7_s3_rare",
+    "name": "Gloomlith",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "shadow",
+    "bodyType": "biped",
+    "traits": [
+      "claws",
+      "eyes_many",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. shadow elemental creature. color palette: deep purples, blacks, dark magentas, ghostly highlights. body type: two-legged humanoid creature. features: massive razor-sharp claws, multiple glowing eyes across face, writhing organic tentacles, releasing floating spore particles. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Gloomfang",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b5_b8_s1_rare",
+    "name": "Gloommaw",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "shadow",
+    "bodyType": "biped",
+    "traits": [
+      "claws",
+      "eyes_many",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. shadow elemental creature. color palette: deep purples, blacks, dark magentas, ghostly highlights. body type: two-legged humanoid creature. features: massive razor-sharp claws, multiple glowing eyes across face, large insectoid crushing mandibles, segmented chitinous exoskeleton. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Gloomfang",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b5_b8_s2_rare",
+    "name": "Gloommaw",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "shadow",
+    "bodyType": "biped",
+    "traits": [
+      "claws",
+      "eyes_many",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. shadow elemental creature. color palette: deep purples, blacks, dark magentas, ghostly highlights. body type: two-legged humanoid creature. features: massive razor-sharp claws, multiple glowing eyes across face, large insectoid crushing mandibles, segmented chitinous exoskeleton. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Gloomfang",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b5_b8_s3_rare",
+    "name": "Gloommaw",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "shadow",
+    "bodyType": "biped",
+    "traits": [
+      "claws",
+      "eyes_many",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. shadow elemental creature. color palette: deep purples, blacks, dark magentas, ghostly highlights. body type: two-legged humanoid creature. features: massive razor-sharp claws, multiple glowing eyes across face, large insectoid crushing mandibles, segmented chitinous exoskeleton. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Gloomfang",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b6_b7_s1_rare",
+    "name": "Sollith",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "light",
+    "bodyType": "avian",
+    "traits": [
+      "aura",
+      "crystals",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. light elemental creature. color palette: golds, whites, pale yellows, warm radiance. body type: winged bird-like flying creature. features: mystical energy aura surrounding body, glowing crystals growing from body, writhing organic tentacles, releasing floating spore particles. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Solnir",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b6_b7_s2_rare",
+    "name": "Sollith",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "light",
+    "bodyType": "avian",
+    "traits": [
+      "aura",
+      "crystals",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. light elemental creature. color palette: golds, whites, pale yellows, warm radiance. body type: winged bird-like flying creature. features: mystical energy aura surrounding body, glowing crystals growing from body, writhing organic tentacles, releasing floating spore particles. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Solnir",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b6_b7_s3_rare",
+    "name": "Sollith",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "light",
+    "bodyType": "avian",
+    "traits": [
+      "aura",
+      "crystals",
+      "tentacles",
+      "spores"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. light elemental creature. color palette: golds, whites, pale yellows, warm radiance. body type: winged bird-like flying creature. features: mystical energy aura surrounding body, glowing crystals growing from body, writhing organic tentacles, releasing floating spore particles. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Solnir",
+    "parentB": "Mycelith"
+  },
+  {
+    "id": "f_b6_b8_s1_rare",
+    "name": "Solmaw",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "light",
+    "bodyType": "avian",
+    "traits": [
+      "aura",
+      "crystals",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. light elemental creature. color palette: golds, whites, pale yellows, warm radiance. body type: winged bird-like flying creature. features: mystical energy aura surrounding body, glowing crystals growing from body, large insectoid crushing mandibles, segmented chitinous exoskeleton. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Solnir",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b6_b8_s2_rare",
+    "name": "Solmaw",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "light",
+    "bodyType": "avian",
+    "traits": [
+      "aura",
+      "crystals",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. light elemental creature. color palette: golds, whites, pale yellows, warm radiance. body type: winged bird-like flying creature. features: mystical energy aura surrounding body, glowing crystals growing from body, large insectoid crushing mandibles, segmented chitinous exoskeleton. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Solnir",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b6_b8_s3_rare",
+    "name": "Solmaw",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "light",
+    "bodyType": "avian",
+    "traits": [
+      "aura",
+      "crystals",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. light elemental creature. color palette: golds, whites, pale yellows, warm radiance. body type: winged bird-like flying creature. features: mystical energy aura surrounding body, glowing crystals growing from body, large insectoid crushing mandibles, segmented chitinous exoskeleton. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Solnir",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b7_b8_s1_rare",
+    "name": "Mycemaw",
+    "type": "fusion",
+    "stage": 1,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "amorphous",
+    "traits": [
+      "tentacles",
+      "spores",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: amorphous shapeless blob creature. features: writhing organic tentacles, releasing floating spore particles, large insectoid crushing mandibles, segmented chitinous exoskeleton. small young baby creature, compact proportions. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Mycelith",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b7_b8_s2_rare",
+    "name": "Mycemaw",
+    "type": "fusion",
+    "stage": 2,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "amorphous",
+    "traits": [
+      "tentacles",
+      "spores",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: amorphous shapeless blob creature. features: writhing organic tentacles, releasing floating spore particles, large insectoid crushing mandibles, segmented chitinous exoskeleton. medium-sized adolescent creature, developing features and growing details. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Mycelith",
+    "parentB": "Vexmaw"
+  },
+  {
+    "id": "f_b7_b8_s3_rare",
+    "name": "Mycemaw",
+    "type": "fusion",
+    "stage": 3,
+    "tier": "rare",
+    "element": "earth",
+    "bodyType": "amorphous",
+    "traits": [
+      "tentacles",
+      "spores",
+      "mandibles",
+      "chitin"
+    ],
+    "prompt": "pixel art creature sprite, 64x64 resolution. earth elemental creature. color palette: forest greens, browns, mossy tones, stone grays. body type: amorphous shapeless blob creature. features: writhing organic tentacles, releasing floating spore particles, large insectoid crushing mandibles, segmented chitinous exoskeleton. fully grown powerful imposing adult creature, maximum size and presence. detailed design with slight magical glow effects. centered in frame, solid black #000000 background. IMPORTANT: do NOT use black or very dark colors for outlines or shading on the creature. Use dark tones from the creature's own color palette for outlines instead. game sprite asset, clean pixel edges, no text, no UI elements",
+    "status": "done",
+    "hasImage": true,
+    "parentA": "Mycelith",
+    "parentB": "Vexmaw"
+  }
+]
