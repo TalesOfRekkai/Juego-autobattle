@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '../../store/gameStore';
 import * as RoutesLib from '../../lib/routes';
+import { MAP_DEFS } from '../../lib/routes';
 import * as Data from '../../lib/data';
 import TopBar from '../layout/TopBar';
 import NavBar from '../layout/NavBar';
@@ -18,97 +19,141 @@ export default function RoutesScreen() {
     const state = useGameStore(s => s.state);
     const getExpeditionTimeLeft = useGameStore(s => s.getExpeditionTimeLeft);
     const resolveExpedition = useGameStore(s => s.resolveExpedition);
-    const tickExpeditions = useGameStore(s => s.tickExpeditions);
     const routes = RoutesLib.getAllRoutes();
 
-    const expeditions = state.expeditions;
-    const active = expeditions.filter(e => !e.resolved);
-    const completed = expeditions.filter(e => e.resolved);
-    const timerRef = useRef<number | null>(null);
+    const [selectedMapId, setSelectedMapId] = useState<string | null>(null);
 
-    useEffect(() => {
-        if (active.length > 0) {
-            timerRef.current = window.setInterval(() => {
-                tickExpeditions();
-                // Update timer DOM directly for performance
-                const store = useGameStore.getState();
-                store.state.expeditions.filter(e => !e.resolved).forEach(exp => {
-                    const el = document.getElementById(`map-timer-${exp.id}`);
-                    if (el) {
-                        el.textContent = `⏳ ${formatTime(store.getExpeditionTimeLeft(exp))}`;
-                    }
-                });
-            }, 1000);
-        }
-        return () => { if (timerRef.current) clearInterval(timerRef.current); };
-    }, [active.length]);
+    const expeditions = state.expeditions;
+    const completed = expeditions.filter(e => e.resolved);
+
+    const selectedMap = MAP_DEFS.find(m => m.id === selectedMapId);
+    const mapRoutes = selectedMapId ? routes.filter(r => r.mapId === selectedMapId) : [];
 
     const handleResolve = (expId: number) => {
         const results = resolveExpedition(expId);
         if (results) navigate('/expedition-result', { state: { results } });
     };
 
+    // Map gallery view — horizontal row of small thumbnail cards
+    if (!selectedMap) {
+        return (
+            <>
+                <TopBar />
+                <div className="screen">
+                    <div className="section-header">🗺️ Mapas del Mundo</div>
+
+                    {/* Expedition notifications */}
+                    {completed.length > 0 && (
+                        <div className="card" style={{ background: 'linear-gradient(135deg, rgba(115,218,202,0.1), rgba(115,218,202,0.02))', borderColor: 'var(--accent-success)', marginBottom: 'var(--space-md)', cursor: 'pointer' }}
+                            onClick={() => navigate('/expeditions')}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
+                                <span className="pulse-dot"></span>
+                                <span style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', color: 'var(--accent-success)' }}>
+                                    {completed.length} expedición{completed.length > 1 ? 'es' : ''} completada{completed.length > 1 ? 's' : ''} — ¡Recoge!
+                                </span>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Map thumbnails as horizontal cards */}
+                    <div className="map-gallery">
+                        {MAP_DEFS.map(map => {
+                            const mapRouteCount = routes.filter(r => r.mapId === map.id).length;
+                            const activeOnMap = expeditions.filter(e => !e.resolved && routes.find(r => r.id === e.routeId)?.mapId === map.id).length;
+                            return (
+                                <button key={map.id} className="map-thumb-card"
+                                    onClick={() => setSelectedMapId(map.id)}>
+                                    <img src={map.image} alt={map.name} className="map-thumb-img" />
+                                    <div className="map-thumb-overlay">
+                                        <div className="map-thumb-name">{map.name}</div>
+                                        <div className="map-thumb-stars">{map.difficulty}</div>
+                                        <div className="map-thumb-meta">
+                                            📍 {mapRouteCount} rutas
+                                            {activeOnMap > 0 && <span style={{ color: 'var(--accent-success)' }}> · ⏳ {activeOnMap}</span>}
+                                        </div>
+                                    </div>
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+                <NavBar />
+            </>
+        );
+    }
+
+    // Map detail view — large centered map with pins
     return (
         <>
             <TopBar />
-            <div className="map-screen">
-                <div className="map-container">
-                    <img className="world-map" src="/Assets def/MAPANEW2.jpg" alt="Mapa del Mundo" />
-                    {routes.map(route => {
-                        const canAccess = RoutesLib.canAccessRoute(route, state.creatures);
-                        const pos = route.mapPos;
-                        const req = route.requirement;
-                        const elemName = route.element !== 'mixed' ? (Data.ELEMENTS[route.element]?.name || route.element) : 'Mixto';
-                        const tooltipClass = pos.x > 60 ? 'map-tooltip--left' : '';
-                        return (
-                            <button key={route.id}
-                                className={`map-pin ${canAccess ? '' : 'locked'}`}
-                                data-element={route.element}
-                                style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
-                                onClick={() => canAccess && navigate('/select-team', { state: { routeId: route.id } })}
-                            >
-                                <div className="map-pin__icon">{route.icon}</div>
-                                <div className={`map-tooltip ${tooltipClass}`}>
-                                    <div className="map-tooltip__name">{route.name}</div>
-                                    <div className="map-tooltip__stars">{route.stars}</div>
-                                    <div className="map-tooltip__meta">
-                                        <span>{Data.getElementIcon(route.element)} {elemName}</span>
-                                        <span>⏱ {formatTime(route.duration * 1000)}</span>
-                                    </div>
-                                    <div className="map-tooltip__desc">{route.description}</div>
-                                    {req && (
-                                        <div className={`map-tooltip__req ${canAccess ? 'ok' : 'locked'}`}>
-                                            {canAccess ? '✓' : '🔒'} Req: {req.minCreatures}× Lv{req.minLevel}+
-                                        </div>
-                                    )}
-                                </div>
-                            </button>
-                        );
-                    })}
+            <div className="screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 'var(--space-md)', marginBottom: 'var(--space-md)' }}>
+                    <button className="back-btn" onClick={() => setSelectedMapId(null)}>← Volver</button>
+                    <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '11px', color: 'var(--accent-glow)' }}>
+                        {selectedMap.name}
+                    </div>
                 </div>
 
-                {(completed.length > 0 || active.length > 0) && (
-                    <div className="map-expeditions">
-                        {completed.map(exp => {
-                            const route = RoutesLib.getRoute(exp.routeId)!;
+                {/* Large map with route pins */}
+                <div className="map-detail-container">
+                    <div className="map-detail-wrapper">
+                        <img className="map-detail-image" src={selectedMap.image} alt={selectedMap.name} />
+                        {mapRoutes.map(route => {
+                            const canAccess = RoutesLib.canAccessRoute(route, state.creatures);
+                            const pos = route.mapPos;
+                            const req = route.requirement;
+                            const elemName = route.element !== 'mixed' ? (Data.ELEMENTS[route.element]?.name || route.element) : 'Mixto';
+                            const tooltipClass = pos.x > 60 ? 'map-tooltip--left' : '';
                             return (
-                                <div key={exp.id} className="map-exp-item map-exp-item--completed" onClick={() => handleResolve(exp.id)}>
-                                    <span className="map-exp-item__icon">{route.icon}</span>
-                                    <div className="map-exp-item__info">
-                                        <div className="map-exp-item__name">{route.name}</div>
-                                        <div className="map-exp-item__status">✓ ¡Completada! Toca para recoger</div>
+                                <button key={route.id}
+                                    className={`map-pin ${canAccess ? '' : 'locked'}`}
+                                    data-element={route.element}
+                                    style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
+                                    onClick={() => canAccess && navigate('/select-team', { state: { routeId: route.id } })}
+                                >
+                                    <div className="map-pin__icon">{route.icon}</div>
+                                    <div className={`map-tooltip ${tooltipClass}`}>
+                                        <div className="map-tooltip__name">{route.name}</div>
+                                        <div className="map-tooltip__stars">{route.stars}</div>
+                                        <div className="map-tooltip__meta">
+                                            <span>{Data.getElementIcon(route.element)} {elemName}</span>
+                                            <span>⏱ {formatTime(route.duration * 1000)}</span>
+                                        </div>
+                                        <div className="map-tooltip__desc">{route.description}</div>
+                                        {req && (
+                                            <div className={`map-tooltip__req ${canAccess ? 'ok' : 'locked'}`}>
+                                                {canAccess ? '✓' : '🔒'} Req: {req.minCreatures}× Lv{req.minLevel}+
+                                            </div>
+                                        )}
                                     </div>
-                                </div>
+                                </button>
                             );
                         })}
-                        {active.map(exp => {
+                    </div>
+                </div>
+
+                {/* Active expeditions on this map */}
+                {expeditions.filter(e => routes.find(r => r.id === e.routeId)?.mapId === selectedMapId).length > 0 && (
+                    <div style={{ width: '100%', maxWidth: '800px', marginTop: 'var(--space-md)' }}>
+                        {expeditions.filter(e => routes.find(r => r.id === e.routeId)?.mapId === selectedMapId).map(exp => {
                             const route = RoutesLib.getRoute(exp.routeId)!;
+                            if (exp.resolved) {
+                                return (
+                                    <div key={exp.id} className="map-exp-item map-exp-item--completed" onClick={() => handleResolve(exp.id)}>
+                                        <span className="map-exp-item__icon">{route.icon}</span>
+                                        <div className="map-exp-item__info">
+                                            <div className="map-exp-item__name">{route.name}</div>
+                                            <div className="map-exp-item__status">✓ ¡Completada! Toca para recoger</div>
+                                        </div>
+                                    </div>
+                                );
+                            }
                             return (
                                 <div key={exp.id} className="map-exp-item" onClick={() => navigate('/expeditions')}>
                                     <span className="map-exp-item__icon">{route.icon}</span>
                                     <div className="map-exp-item__info">
                                         <div className="map-exp-item__name">{route.name}</div>
-                                        <div className="map-exp-item__status" id={`map-timer-${exp.id}`}>
+                                        <div className="map-exp-item__status">
                                             ⏳ {formatTime(getExpeditionTimeLeft(exp))}
                                         </div>
                                     </div>

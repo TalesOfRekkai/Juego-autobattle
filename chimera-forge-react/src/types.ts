@@ -77,6 +77,7 @@ export interface RouteDef {
     stars: string;
     duration: number;
     requirement: RouteRequirement | null;
+    mapId: string;
     mapPos: { x: number; y: number };
     rewards: RouteRewards;
     eggChance: number;
