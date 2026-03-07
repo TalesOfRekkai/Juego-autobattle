@@ -8,7 +8,7 @@ import * as Creatures from '../lib/creatures';
 import * as Resources from '../lib/resources';
 import * as RoutesLib from '../lib/routes';
 import * as Data from '../lib/data';
-import { createDefaultBuildings, getBuildingDef, type BuildingsState } from '../lib/buildings';
+import { createDefaultBuildings, getBuildingDef, getBuildingBuffs, type BuildingsState } from '../lib/buildings';
 
 const SAVE_PREFIX = 'chimera_forge_slot_';
 const MAX_SLOTS = 3;
@@ -153,7 +153,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
             routeId,
             creatureIds,
             startTime: Date.now(),
-            duration: route.duration * 1000,
+            // Apply expedition speed buff from Torre del Explorador
+            duration: Math.floor(route.duration * 1000 * getBuildingBuffs(s.buildings).expeditionSpeedMultiplier),
             resolved: false,
         };
 
@@ -207,14 +208,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
         if (!route) return null;
         const team = exp.creatureIds.map(id => s.creatures.find(c => c.id === id)).filter(Boolean) as Creature[];
 
-        const results = RoutesLib.resolveExpedition(route, team);
+        const results = RoutesLib.resolveExpedition(route, team, getBuildingBuffs(s.buildings));
 
         Resources.addResources(s.resources, results.resources);
 
         const evolutions: { name: string; newStage: number }[] = [];
+        // Apply training XP multiplier from Campo de Entrenamiento
+        const buffs = getBuildingBuffs(s.buildings);
+        const xpGain = Math.floor(results.xpPerCreature * buffs.trainingXPMultiplier);
         results.survived.forEach(c => {
             const oldStage = c.stage;
-            Creatures.addXP(c, results.xpPerCreature);
+            Creatures.addXP(c, xpGain);
             if (c.stage > oldStage) {
                 evolutions.push({ name: c.name, newStage: c.stage });
                 if (!s.discoveredKeys) s.discoveredKeys = [];
@@ -226,9 +230,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
         });
         results.evolutions = evolutions;
 
-        results.survived.forEach(c => {
-            Creatures.heal(c, Math.floor(Creatures.getMaxHP(c) * 0.5));
-        });
+        // Healing after expedition: auto-heal (Herbolario Lv3) or 50% HP
+        if (buffs.autoHealAfterExpedition) {
+            results.survived.forEach(c => { Creatures.healFull(c); });
+            results.fainted.forEach(c => { Creatures.healFull(c); });
+        } else {
+            results.survived.forEach(c => {
+                Creatures.heal(c, Math.floor(Creatures.getMaxHP(c) * 0.5));
+            });
+        }
 
         if (results.foundEgg) {
             get().addEgg(results.foundEgg);
@@ -260,9 +270,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
         const s = get().state;
         const creature = s.creatures.find(c => c.id === creatureId);
         if (!creature) return false;
-        const cost = { herbs: 2 };
+        // Herbolario buff: reduced herb cost
+        const buffs = getBuildingBuffs(s.buildings);
+        const cost = { herbs: buffs.healHerbCost };
         if (!Resources.canAfford(s.resources, cost)) return false;
         Resources.spend(s.resources, cost);
+        // Herbolario Lv2+: heal full HP instead of just full
         Creatures.healFull(creature);
         set(prev => ({ state: { ...prev.state, creatures: [...prev.state.creatures] } }));
         get().save();
@@ -273,10 +286,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
         const s = get().state;
         const creature = s.creatures.find(c => c.id === creatureId);
         if (!creature) return false;
-        const cost = { essence: 5 };
+        // Campo de Entrenamiento buff: reduced essence cost & more XP
+        const buffs = getBuildingBuffs(s.buildings);
+        const essenceCost = Math.max(1, 5 - buffs.trainingEssenceDiscount);
+        const cost = { essence: essenceCost };
         if (!Resources.canAfford(s.resources, cost)) return false;
         Resources.spend(s.resources, cost);
-        Creatures.addXP(creature, 15);
+        const xp = Math.floor(15 * buffs.trainingXPMultiplier);
+        Creatures.addXP(creature, xp);
         set(prev => ({ state: { ...prev.state, creatures: [...prev.state.creatures] } }));
         get().save();
         return true;

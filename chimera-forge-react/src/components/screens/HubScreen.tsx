@@ -107,15 +107,18 @@ export default function HubScreen() {
                 <div className="building-grid">
                     {BUILDING_DEFS.map(def => {
                         const level = buildings[def.id as keyof BuildingsState] ?? 0;
+                        const isLocked = level === 0;
                         const isMaxLevel = level >= 3;
                         return (
-                            <button key={def.id} className={`building-card ${isMaxLevel ? 'building-card--max' : ''}`}
+                            <button key={def.id} className={`building-card ${isLocked ? 'building-card--locked' : ''} ${isMaxLevel ? 'building-card--max' : ''}`}
                                 onClick={() => setSelectedBuilding(def.id)}>
-                                <div className="building-card__icon">{def.icon}</div>
+                                <div className="building-card__icon">{isLocked ? '🔒' : def.icon}</div>
                                 <div className="building-card__name">{def.name}</div>
                                 <div className="building-card__level">
                                     {isMaxLevel ? (
                                         <span style={{ color: 'var(--accent-secondary)' }}>MAX</span>
+                                    ) : isLocked ? (
+                                        <span style={{ color: 'var(--text-muted)', fontSize: '7px' }}>Sin construir</span>
                                     ) : (
                                         <>
                                             {[1, 2, 3].map(i => (
@@ -179,7 +182,7 @@ export default function HubScreen() {
                         {/* Upgrade button */}
                         {selectedLevel < 3 ? (
                             <button className="btn btn-primary btn-block btn-lg" onClick={() => handleUpgrade(selectedDef.id)}>
-                                🔨 Mejorar a Nivel {selectedLevel + 1}
+                                {selectedLevel === 0 ? '🔨 Construir' : `🔨 Mejorar a Nivel ${selectedLevel + 1}`}
                             </button>
                         ) : (
                             <div style={{ textAlign: 'center', fontFamily: 'var(--font-pixel)', fontSize: '10px', color: 'var(--accent-secondary)' }}>

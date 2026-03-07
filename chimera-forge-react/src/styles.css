@@ -1106,6 +1106,16 @@ body {
     box-shadow: 0 6px 20px rgba(224, 175, 104, 0.25);
 }
 
+.building-card--locked {
+    opacity: 0.5;
+    filter: grayscale(0.3);
+}
+
+.building-card--locked:hover {
+    opacity: 0.8;
+    filter: grayscale(0);
+}
+
 .building-card__icon {
     font-size: 32px;
     line-height: 1;

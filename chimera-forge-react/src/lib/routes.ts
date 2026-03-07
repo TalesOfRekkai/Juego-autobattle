@@ -163,7 +163,11 @@ function randRange(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function resolveExpedition(route: RouteDef, team: Creature[]): ExpeditionResult {
+export function resolveExpedition(
+    route: RouteDef,
+    team: Creature[],
+    buffs?: { expeditionResourceMultiplier?: number; bonusCrystalsPerExpedition?: number; bonusEggChance?: number }
+): ExpeditionResult {
     const elementBonus = team.some(c =>
         route.element !== 'mixed' && Data.hasElementAdvantage(c.element, route.element)
     ) ? 1.3 : (team.some(c => c.element === route.element) ? 1.15 : 1.0);
@@ -191,15 +195,18 @@ export function resolveExpedition(route: RouteDef, team: Creature[]): Expedition
     });
 
     const survivalRatio = results.survived.length / team.length;
+    const resMult = buffs?.expeditionResourceMultiplier ?? 1.0;
     const r = route.rewards;
-    results.resources.essence = Math.floor(randRange(r.essence[0], r.essence[1]) * survivalRatio);
-    results.resources.herbs = Math.floor(randRange(r.herbs[0], r.herbs[1]) * survivalRatio);
-    results.resources.eggFragments = Math.floor(randRange(r.eggFragments[0], r.eggFragments[1]) * survivalRatio);
-    results.resources.crystals = Math.floor(randRange(r.crystals[0], r.crystals[1]) * survivalRatio);
+    results.resources.essence = Math.floor(randRange(r.essence[0], r.essence[1]) * survivalRatio * resMult);
+    results.resources.herbs = Math.floor(randRange(r.herbs[0], r.herbs[1]) * survivalRatio * resMult);
+    results.resources.eggFragments = Math.floor(randRange(r.eggFragments[0], r.eggFragments[1]) * survivalRatio * resMult);
+    results.resources.crystals = Math.floor(randRange(r.crystals[0], r.crystals[1]) * survivalRatio * resMult)
+        + (buffs?.bonusCrystalsPerExpedition ?? 0);
 
     results.xpPerCreature = randRange(route.xpReward[0], route.xpReward[1]);
 
-    if (Math.random() < route.eggChance * survivalRatio) {
+    const totalEggChance = route.eggChance + (buffs?.bonusEggChance ?? 0);
+    if (Math.random() < totalEggChance * survivalRatio) {
         const randomBase = Data.BASE_CREATURES[Math.floor(Math.random() * Data.BASE_CREATURES.length)];
         results.foundEgg = randomBase;
     }
