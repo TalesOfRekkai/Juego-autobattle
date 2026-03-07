@@ -172,15 +172,15 @@ export function xpForLevel(level: number): number {
 export function getSpritePath(name: string, stage: number): string {
     const key = `${name}_s${stage}`;
     const filename = SPRITE_MAP[key];
-    if (!filename) return `Assets def/${name}_s${stage}.png`;
-    return `Assets def/${filename}`;
+    if (!filename) return `/Assets def/${name}_s${stage}.png`;
+    return `/Assets def/${filename}`;
 }
 
 export function getEggSpritePath(name: string): string {
     const key = `${name}_egg`;
     const filename = SPRITE_MAP[key];
-    if (!filename) return `Assets def/${name}_egg.png`;
-    return `Assets def/${filename}`;
+    if (!filename) return `/Assets def/${name}_egg.png`;
+    return `/Assets def/${filename}`;
 }
 
 export function getCreatureTemplate(name: string): CreatureTemplate | undefined {

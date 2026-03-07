@@ -53,7 +53,7 @@ export default function RoutesScreen() {
             <TopBar />
             <div className="map-screen">
                 <div className="map-container">
-                    <img className="world-map" src="Assets def/MAPANEW2.jpg" alt="Mapa del Mundo" />
+                    <img className="world-map" src="/Assets def/MAPANEW2.jpg" alt="Mapa del Mundo" />
                     {routes.map(route => {
                         const canAccess = RoutesLib.canAccessRoute(route, state.creatures);
                         const pos = route.mapPos;
