@@ -8,6 +8,7 @@ import * as Creatures from '../lib/creatures';
 import * as Resources from '../lib/resources';
 import * as RoutesLib from '../lib/routes';
 import * as Data from '../lib/data';
+import { createDefaultBuildings, getBuildingDef, type BuildingsState } from '../lib/buildings';
 
 const SAVE_PREFIX = 'chimera_forge_slot_';
 const MAX_SLOTS = 3;
@@ -41,6 +42,9 @@ interface GameStore {
     healCreature: (creatureId: number) => boolean;
     boostCreature: (creatureId: number) => boolean;
 
+    // Buildings
+    upgradeBuilding: (buildingId: string) => boolean;
+
     // Slots
     startNewGame: (slotIndex: number) => string;
     save: () => void;
@@ -61,6 +65,7 @@ function createDefaultState(): GameState {
         discoveredKeys: [],
         totalExpeditions: 0,
         tutorialDone: false,
+        buildings: createDefaultBuildings(),
     };
 }
 
@@ -277,6 +282,34 @@ export const useGameStore = create<GameStore>((set, get) => ({
         return true;
     },
 
+    upgradeBuilding: (buildingId) => {
+        const def = getBuildingDef(buildingId);
+        if (!def) return false;
+        const s = get().state;
+        const currentLevel = s.buildings[buildingId as keyof BuildingsState] ?? 0;
+        if (currentLevel >= 3) return false; // max level
+
+        const levelDef = def.levels[currentLevel]; // cost for next level
+        const cost: Record<string, number> = {};
+        if (levelDef.cost.essence) cost.essence = levelDef.cost.essence;
+        if (levelDef.cost.crystals) cost.crystals = levelDef.cost.crystals;
+        if (levelDef.cost.herbs) cost.herbs = levelDef.cost.herbs;
+
+        if (!Resources.canAfford(s.resources, cost)) return false;
+        Resources.spend(s.resources, cost);
+
+        const newBuildings = { ...s.buildings, [buildingId]: currentLevel + 1 };
+        set(prev => ({
+            state: {
+                ...prev.state,
+                resources: { ...prev.state.resources },
+                buildings: newBuildings,
+            }
+        }));
+        get().save();
+        return true;
+    },
+
     startNewGame: (slotIndex) => {
         const resources = Resources.createInventory();
         const randomBase = Data.BASE_CREATURES[Math.floor(Math.random() * Data.BASE_CREATURES.length)];
@@ -291,6 +324,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             discoveredKeys: [],
             totalExpeditions: 0,
             tutorialDone: false,
+            buildings: createDefaultBuildings(),
             slotName: `Partida ${slotIndex + 1}`,
             createdAt: Date.now(),
         };
@@ -316,6 +350,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
             const raw = localStorage.getItem(SAVE_PREFIX + slotIndex);
             if (!raw) return false;
             const loaded = JSON.parse(raw) as GameState;
+            // Backward compat: add buildings if missing from old saves
+            if (!loaded.buildings) {
+                loaded.buildings = createDefaultBuildings();
+            }
             let maxId = 0;
             loaded.creatures.forEach(c => { if (c.id > maxId) maxId = c.id; });
             Creatures.setNextId(maxId + 1);

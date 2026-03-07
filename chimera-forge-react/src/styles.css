@@ -1068,6 +1068,101 @@ body {
     padding: var(--space-lg);
 }
 
+/* --- Building Cards (Hub) --- */
+.building-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: var(--space-md);
+}
+
+.building-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-md);
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    color: inherit;
+    font-family: inherit;
+}
+
+.building-card:hover {
+    border-color: var(--accent-primary);
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(123, 94, 167, 0.2);
+}
+
+.building-card--max {
+    border-color: rgba(224, 175, 104, 0.3);
+}
+
+.building-card--max:hover {
+    border-color: var(--accent-secondary);
+    box-shadow: 0 6px 20px rgba(224, 175, 104, 0.25);
+}
+
+.building-card__icon {
+    font-size: 32px;
+    line-height: 1;
+    margin-bottom: var(--space-xs);
+}
+
+.building-card__name {
+    font-family: var(--font-pixel);
+    font-size: 7px;
+    color: var(--text-primary);
+    text-align: center;
+    line-height: 1.4;
+}
+
+.building-card__level {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-top: 2px;
+    font-family: var(--font-pixel);
+    font-size: 8px;
+}
+
+.building-card__pip {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--bg-elevated);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background var(--transition-fast);
+}
+
+.building-card__pip.active {
+    background: var(--accent-glow);
+    border-color: var(--accent-glow);
+    box-shadow: 0 0 6px rgba(157, 124, 216, 0.4);
+}
+
+@media (min-width: 768px) {
+    .building-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: var(--space-lg);
+    }
+
+    .building-card__icon {
+        font-size: 40px;
+    }
+
+    .building-card__name {
+        font-size: 8px;
+    }
+
+    .building-card {
+        padding: var(--space-lg);
+    }
+}
+
 /* --- Utilities --- */
 .hidden {
     display: none !important;

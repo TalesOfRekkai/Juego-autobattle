@@ -130,6 +130,15 @@ export interface GameState {
     discoveredKeys: string[];
     totalExpeditions: number;
     tutorialDone: boolean;
+    /** Hub building upgrade levels (0 = not built, 1–3 = upgrade level) */
+    buildings: {
+        incubator: number;
+        training: number;
+        expeditions: number;
+        fusion: number;
+        herbalist: number;
+        mine: number;
+    };
     slotName?: string;
     createdAt?: number;
     lastSaved?: number;

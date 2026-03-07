@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '../../store/gameStore';
 import { useToastStore } from '../../store/toastStore';
 import * as Data from '../../lib/data';
 import * as Resources from '../../lib/resources';
+import { BUILDING_DEFS, getBuildingBuffs, type BuildingsState } from '../../lib/buildings';
 import TopBar from '../layout/TopBar';
 import NavBar from '../layout/NavBar';
 import CreatureCard from '../shared/CreatureCard';
@@ -11,9 +13,13 @@ export default function HubScreen() {
     const navigate = useNavigate();
     const addToast = useToastStore(s => s.addToast);
     const state = useGameStore(s => s.state);
+    const upgradeBuilding = useGameStore(s => s.upgradeBuilding);
     const expeditions = state.expeditions;
     const creatures = state.creatures;
     const eggs = state.eggs;
+    const buildings = state.buildings;
+
+    const [selectedBuilding, setSelectedBuilding] = useState<string | null>(null);
 
     const active = expeditions.filter(e => !e.resolved);
     const completed = expeditions.filter(e => e.resolved);
@@ -21,13 +27,26 @@ export default function HubScreen() {
     const tryHatchEgg = (index: number) => {
         const egg = eggs[index];
         if (!egg) return;
-        const canAfford = Resources.canAfford(state.resources, { eggFragments: Resources.FRAGMENTS_PER_HATCH });
-        if (!canAfford) {
-            addToast(`Necesitas ${Resources.FRAGMENTS_PER_HATCH} 🥚 fragmentos para eclosionar`, 'warning');
+        const buffs = getBuildingBuffs(buildings);
+        const fragmentCost = Math.max(0, Resources.FRAGMENTS_PER_HATCH - buffs.hatchFragmentDiscount);
+        if (fragmentCost > 0 && !Resources.canAfford(state.resources, { eggFragments: fragmentCost })) {
+            addToast(`Necesitas ${fragmentCost} 🥚 fragmentos para eclosionar`, 'warning');
             return;
         }
         navigate('/hatch', { state: { eggName: egg.name, first: false, eggIndex: index } });
     };
+
+    const handleUpgrade = (buildingId: string) => {
+        const success = upgradeBuilding(buildingId);
+        if (success) {
+            addToast('¡Edificio mejorado!', 'success');
+        } else {
+            addToast('No tienes suficientes recursos', 'warning');
+        }
+    };
+
+    const selectedDef = BUILDING_DEFS.find(b => b.id === selectedBuilding);
+    const selectedLevel = selectedBuilding ? (buildings[selectedBuilding as keyof BuildingsState] ?? 0) : 0;
 
     return (
         <>
@@ -82,7 +101,100 @@ export default function HubScreen() {
                         </div>
                     </>
                 )}
+
+                {/* === BUILDINGS SECTION === */}
+                <div className="section-header">🏗️ Edificios</div>
+                <div className="building-grid">
+                    {BUILDING_DEFS.map(def => {
+                        const level = buildings[def.id as keyof BuildingsState] ?? 0;
+                        const isMaxLevel = level >= 3;
+                        return (
+                            <button key={def.id} className={`building-card ${isMaxLevel ? 'building-card--max' : ''}`}
+                                onClick={() => setSelectedBuilding(def.id)}>
+                                <div className="building-card__icon">{def.icon}</div>
+                                <div className="building-card__name">{def.name}</div>
+                                <div className="building-card__level">
+                                    {isMaxLevel ? (
+                                        <span style={{ color: 'var(--accent-secondary)' }}>MAX</span>
+                                    ) : (
+                                        <>
+                                            {[1, 2, 3].map(i => (
+                                                <span key={i} className={`building-card__pip ${i <= level ? 'active' : ''}`} />
+                                            ))}
+                                        </>
+                                    )}
+                                </div>
+                            </button>
+                        );
+                    })}
+                </div>
             </div>
+
+            {/* Building detail modal */}
+            {selectedDef && (
+                <div className="modal-overlay" onClick={() => setSelectedBuilding(null)}>
+                    <div className="modal-content" onClick={e => e.stopPropagation()}>
+                        <div style={{ textAlign: 'center', marginBottom: 'var(--space-lg)' }}>
+                            <div style={{ fontSize: '48px', marginBottom: 'var(--space-sm)' }}>{selectedDef.icon}</div>
+                            <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '14px', color: 'var(--text-bright)', marginBottom: 'var(--space-xs)' }}>
+                                {selectedDef.name}
+                            </div>
+                            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                                {selectedDef.description}
+                            </div>
+                        </div>
+
+                        {/* Level progression */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)', marginBottom: 'var(--space-lg)' }}>
+                            {selectedDef.levels.map((lvl, i) => {
+                                const lvlNum = i + 1;
+                                const isUnlocked = selectedLevel >= lvlNum;
+                                const isCurrent = selectedLevel === i; // can upgrade to this level
+                                const cost = lvl.cost;
+                                return (
+                                    <div key={i} className="card" style={{
+                                        opacity: isUnlocked ? 1 : (isCurrent ? 0.9 : 0.4),
+                                        borderColor: isUnlocked ? 'var(--accent-success)' : (isCurrent ? 'var(--accent-primary)' : 'transparent'),
+                                    }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)', marginBottom: 'var(--space-xs)' }}>
+                                            <span style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', color: isUnlocked ? 'var(--accent-success)' : 'var(--text-primary)' }}>
+                                                {isUnlocked ? '✓' : ''} Nivel {lvlNum}
+                                            </span>
+                                        </div>
+                                        <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: 'var(--space-xs)' }}>
+                                            {lvl.description}
+                                        </div>
+                                        {!isUnlocked && (
+                                            <div style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'flex', gap: 'var(--space-md)' }}>
+                                                {cost.essence && <span>✨ {cost.essence}</span>}
+                                                {cost.crystals && <span>💎 {cost.crystals}</span>}
+                                                {cost.herbs && <span>🌿 {cost.herbs}</span>}
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        {/* Upgrade button */}
+                        {selectedLevel < 3 ? (
+                            <button className="btn btn-primary btn-block btn-lg" onClick={() => handleUpgrade(selectedDef.id)}>
+                                🔨 Mejorar a Nivel {selectedLevel + 1}
+                            </button>
+                        ) : (
+                            <div style={{ textAlign: 'center', fontFamily: 'var(--font-pixel)', fontSize: '10px', color: 'var(--accent-secondary)' }}>
+                                ⭐ Nivel máximo alcanzado
+                            </div>
+                        )}
+
+                        <button className="btn btn-secondary btn-block" style={{ marginTop: 'var(--space-sm)' }}
+                            onClick={() => setSelectedBuilding(null)}>
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            )}
+
             <NavBar />
         </>
     );
