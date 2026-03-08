@@ -138,6 +138,9 @@ export interface GameState {
     discoveredNames: string[];
     discoveredKeys: string[];
     totalExpeditions: number;
+    completedExpeditions: number;
+    completedMissionIds: string[];
+    earnedMedals: string[];
     tutorialDone: boolean;
     /** Hub building upgrade levels (0 = not built, 1–3 = upgrade level) */
     buildings: {

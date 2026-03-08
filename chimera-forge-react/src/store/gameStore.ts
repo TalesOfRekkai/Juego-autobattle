@@ -7,8 +7,10 @@ import type { Creature, Expedition, GameState, SlotInfo } from '../types';
 import * as Creatures from '../lib/creatures';
 import * as Resources from '../lib/resources';
 import * as RoutesLib from '../lib/routes';
+import * as Missions from '../lib/missions';
 import * as Data from '../lib/data';
 import { createDefaultBuildings, getBuildingDef, getBuildingBuffs, getEffectiveHatchFragmentCost, type BuildingsState } from '../lib/buildings';
+import { useToastStore } from './toastStore';
 
 const SAVE_PREFIX = 'chimera_forge_slot_';
 const MAX_SLOTS = 3;
@@ -47,6 +49,7 @@ interface GameStore {
 
     // Slots
     startNewGame: (slotIndex: number) => string;
+    checkMissionProgress: () => void;
     save: () => void;
     loadSlot: (slotIndex: number) => boolean;
     deleteSlot: (slotIndex: number) => void;
@@ -64,6 +67,9 @@ function createDefaultState(): GameState {
         discoveredNames: [],
         discoveredKeys: [],
         totalExpeditions: 0,
+        completedExpeditions: 0,
+        completedMissionIds: [],
+        earnedMedals: [],
         tutorialDone: false,
         buildings: createDefaultBuildings(),
     };
@@ -93,6 +99,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             }
             return { state: s };
         });
+        get().checkMissionProgress();
         get().save();
     },
 
@@ -257,8 +264,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
                 ...prev.state,
                 creatures: [...prev.state.creatures],
                 expeditions: newExpeditions,
+                completedExpeditions: prev.state.completedExpeditions + 1,
             }
         }));
+        get().checkMissionProgress();
         get().save();
         return results;
     },
@@ -298,6 +307,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         const xp = Math.floor(15 * buffs.trainingXPMultiplier);
         Creatures.addXP(creature, xp);
         set(prev => ({ state: { ...prev.state, creatures: [...prev.state.creatures] } }));
+        get().checkMissionProgress();
         get().save();
         return true;
     },
@@ -343,6 +353,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
             discoveredNames: [],
             discoveredKeys: [],
             totalExpeditions: 0,
+            completedExpeditions: 0,
+            completedMissionIds: [],
+            earnedMedals: [],
             tutorialDone: false,
             buildings: createDefaultBuildings(),
             slotName: `Partida ${slotIndex + 1}`,
@@ -352,6 +365,28 @@ export const useGameStore = create<GameStore>((set, get) => ({
         set({ activeSlot: slotIndex, state: newState });
         get().save();
         return randomBase;
+    },
+
+    checkMissionProgress: () => {
+        const s = get().state;
+        const newlyCompleted = Missions.getNewlyCompletedMissions(s, s.completedMissionIds);
+        if (newlyCompleted.length === 0) return;
+
+        const newMissionIds = newlyCompleted.map(m => m.id);
+        const newMedals = newlyCompleted.map(m => m.medalId);
+
+        set(prev => ({
+            state: {
+                ...prev.state,
+                completedMissionIds: [...prev.state.completedMissionIds, ...newMissionIds],
+                earnedMedals: [...prev.state.earnedMedals, ...newMedals.filter(medalId => !prev.state.earnedMedals.includes(medalId))],
+            }
+        }));
+
+        const addToast = useToastStore.getState().addToast;
+        newlyCompleted.forEach(mission => {
+            addToast(`🏅 Misión completada: ${mission.title}`, 'success');
+        });
     },
 
     save: () => {
@@ -373,6 +408,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
             // Backward compat: add buildings if missing from old saves
             if (!loaded.buildings) {
                 loaded.buildings = createDefaultBuildings();
+            }
+            if (typeof loaded.completedExpeditions !== 'number') {
+                loaded.completedExpeditions = 0;
+            }
+            if (!Array.isArray(loaded.completedMissionIds)) {
+                loaded.completedMissionIds = [];
+            }
+            if (!Array.isArray(loaded.earnedMedals)) {
+                loaded.earnedMedals = [];
             }
             let maxId = 0;
             loaded.creatures.forEach(c => { if (c.id > maxId) maxId = c.id; });

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '../../store/gameStore';
 import { useToastStore } from '../../store/toastStore';
 import * as Data from '../../lib/data';
+import * as Missions from '../../lib/missions';
 import * as Resources from '../../lib/resources';
 import { BUILDING_DEFS, getEffectiveHatchFragmentCost, type BuildingsState } from '../../lib/buildings';
 import TopBar from '../layout/TopBar';
@@ -23,6 +24,11 @@ export default function HubScreen() {
 
     const active = expeditions.filter(e => !e.resolved);
     const completed = expeditions.filter(e => e.resolved);
+    const missionProgress = Missions.getMissionsWithProgress(state);
+    const completedMissions = missionProgress.filter(m => m.completed).length;
+    const visibleMissions = [...missionProgress]
+        .sort((a, b) => Number(a.completed) - Number(b.completed))
+        .slice(0, 4);
 
     const tryHatchEgg = (index: number) => {
         const egg = eggs[index];
@@ -73,6 +79,38 @@ export default function HubScreen() {
                         </div>
                     </div>
                 )}
+
+                <div className="card" style={{ marginBottom: 'var(--space-md)' }}>
+                    <div className="section-header" style={{ marginBottom: 'var(--space-sm)' }}>🎯 Objetivos</div>
+                    <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: 'var(--space-sm)' }}>
+                        Completadas: {completedMissions} / {missionProgress.length}
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)' }}>
+                        {visibleMissions.map(mission => (
+                            <div key={mission.id} style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                gap: 'var(--space-sm)',
+                                fontSize: '10px',
+                                padding: '6px 8px',
+                                borderRadius: 'var(--radius-sm)',
+                                background: mission.completed ? 'rgba(115,218,202,0.08)' : 'var(--bg-elevated)',
+                                border: mission.completed ? '1px solid rgba(115,218,202,0.25)' : '1px solid rgba(255,255,255,0.06)',
+                            }}>
+                                <div style={{ minWidth: 0 }}>
+                                    <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '8px', color: mission.completed ? 'var(--accent-success)' : 'var(--text-primary)' }}>
+                                        {mission.completed ? '✓ ' : ''}{mission.title}
+                                    </div>
+                                    <div style={{ color: 'var(--text-secondary)' }}>{mission.description}</div>
+                                </div>
+                                <div style={{ flexShrink: 0, color: mission.completed ? 'var(--accent-success)' : 'var(--text-secondary)' }}>
+                                    {mission.progress} / {mission.target}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
 
                 <div className="section-header">Tus Rekaimon ({creatures.length})</div>
 
