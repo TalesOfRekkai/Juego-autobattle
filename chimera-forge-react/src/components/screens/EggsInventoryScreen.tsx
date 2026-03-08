@@ -3,6 +3,7 @@ import { useGameStore } from '../../store/gameStore';
 import { useToastStore } from '../../store/toastStore';
 import * as Data from '../../lib/data';
 import * as Resources from '../../lib/resources';
+import { getEffectiveHatchFragmentCost } from '../../lib/buildings';
 import TopBar from '../layout/TopBar';
 import NavBar from '../layout/NavBar';
 
@@ -10,13 +11,14 @@ export default function EggsInventoryScreen() {
     const navigate = useNavigate();
     const addToast = useToastStore(s => s.addToast);
     const state = useGameStore(s => s.state);
-    const canHatch = Resources.canAfford(state.resources, { eggFragments: Resources.FRAGMENTS_PER_HATCH });
+    const fragmentCost = getEffectiveHatchFragmentCost(state.buildings);
+    const canHatch = fragmentCost === 0 || Resources.canAfford(state.resources, { eggFragments: fragmentCost });
 
     const tryHatchEgg = (index: number) => {
         const egg = state.eggs[index];
         if (!egg) return;
         if (!canHatch) {
-            addToast(`Necesitas ${Resources.FRAGMENTS_PER_HATCH} 🥚 fragmentos para eclosionar`, 'warning');
+            addToast(`Necesitas ${fragmentCost} 🥚 fragmentos para eclosionar`, 'warning');
             return;
         }
         navigate('/hatch', { state: { eggName: egg.name, first: false, eggIndex: index } });
@@ -28,7 +30,7 @@ export default function EggsInventoryScreen() {
             <div className="screen">
                 <div className="section-header">🥚 Huevos</div>
                 <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: 'var(--space-md)' }}>
-                    Necesitas <strong>{Resources.FRAGMENTS_PER_HATCH} fragmentos</strong> para eclosionar un huevo.
+                    Necesitas <strong>{fragmentCost === 0 ? 'Gratis' : `${fragmentCost} fragmentos`}</strong> para eclosionar un huevo.
                     Tienes: {state.resources.eggFragments} fragmentos.
                 </div>
 

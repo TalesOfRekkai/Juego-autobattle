@@ -4,7 +4,7 @@ import { useGameStore } from '../../store/gameStore';
 import { useToastStore } from '../../store/toastStore';
 import * as Data from '../../lib/data';
 import * as Resources from '../../lib/resources';
-import { BUILDING_DEFS, getBuildingBuffs, type BuildingsState } from '../../lib/buildings';
+import { BUILDING_DEFS, getEffectiveHatchFragmentCost, type BuildingsState } from '../../lib/buildings';
 import TopBar from '../layout/TopBar';
 import NavBar from '../layout/NavBar';
 import CreatureCard from '../shared/CreatureCard';
@@ -27,8 +27,7 @@ export default function HubScreen() {
     const tryHatchEgg = (index: number) => {
         const egg = eggs[index];
         if (!egg) return;
-        const buffs = getBuildingBuffs(buildings);
-        const fragmentCost = Math.max(0, Resources.FRAGMENTS_PER_HATCH - buffs.hatchFragmentDiscount);
+        const fragmentCost = getEffectiveHatchFragmentCost(buildings);
         if (fragmentCost > 0 && !Resources.canAfford(state.resources, { eggFragments: fragmentCost })) {
             addToast(`Necesitas ${fragmentCost} 🥚 fragmentos para eclosionar`, 'warning');
             return;

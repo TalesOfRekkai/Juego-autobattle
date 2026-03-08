@@ -8,7 +8,7 @@ import * as Creatures from '../lib/creatures';
 import * as Resources from '../lib/resources';
 import * as RoutesLib from '../lib/routes';
 import * as Data from '../lib/data';
-import { createDefaultBuildings, getBuildingDef, getBuildingBuffs, type BuildingsState } from '../lib/buildings';
+import { createDefaultBuildings, getBuildingDef, getBuildingBuffs, getEffectiveHatchFragmentCost, type BuildingsState } from '../lib/buildings';
 
 const SAVE_PREFIX = 'chimera_forge_slot_';
 const MAX_SLOTS = 3;
@@ -118,9 +118,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
         if (eggIndex < 0 || eggIndex >= s.eggs.length) return null;
 
         if (!free) {
-            const cost = { eggFragments: Resources.FRAGMENTS_PER_HATCH };
-            if (!Resources.canAfford(s.resources, cost)) return null;
-            Resources.spend(s.resources, cost);
+            const fragmentCost = getEffectiveHatchFragmentCost(s.buildings);
+            if (fragmentCost > 0) {
+                const cost = { eggFragments: fragmentCost };
+                if (!Resources.canAfford(s.resources, cost)) return null;
+                Resources.spend(s.resources, cost);
+            }
         }
 
         const egg = s.eggs[eggIndex];

@@ -6,6 +6,8 @@
    Each building has 3 upgrade levels (0 = not built, 1–3).
    ============================================ */
 
+import { FRAGMENTS_PER_HATCH } from './resources';
+
 export interface BuildingDef {
     id: string;
     name: string;
@@ -113,6 +115,11 @@ export function createDefaultBuildings(): BuildingsState {
 /** Get a building definition by its id */
 export function getBuildingDef(id: string): BuildingDef | undefined {
     return BUILDING_DEFS.find(b => b.id === id);
+}
+
+export function getEffectiveHatchFragmentCost(buildings: BuildingsState): number {
+    if (buildings.incubator >= 3) return 0;
+    return Math.max(0, FRAGMENTS_PER_HATCH - buildings.incubator);
 }
 
 /** Get the current buff values for a given building level */
