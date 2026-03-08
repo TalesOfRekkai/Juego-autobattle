@@ -45,9 +45,7 @@ export default function EggHatchScreen() {
                 if (!creature) {
                     addToast('No se pudo completar la eclosión. Inténtalo de nuevo.', 'warning');
                     setPhase('idle');
-                    if (!first) {
-                        navigate('/hub');
-                    }
+                    navigate('/hub');
                     return;
                 }
                 setHatchedCreature(creature);
