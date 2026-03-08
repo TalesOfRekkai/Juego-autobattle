@@ -31,7 +31,8 @@ export default function EggHatchScreen() {
             if (first) {
                 creature = hatchEgg(0, true);
             } else {
-                creature = hatchEgg(eggIndex >= 0 ? eggIndex : 0, false);
+                const safeEggIndex = typeof eggIndex === 'number' && eggIndex >= 0 ? eggIndex : 0;
+                creature = hatchEgg(safeEggIndex, false);
             }
 
             setTimeout(() => {

@@ -22,7 +22,7 @@ function AppContent() {
 
   useEffect(() => {
     initData();
-  }, []);
+  }, [initData]);
 
   // Global expedition tick interval
   useEffect(() => {
@@ -30,7 +30,7 @@ function AppContent() {
       tickExpeditions();
     }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [tickExpeditions]);
 
   if (!dataLoaded) {
     return (

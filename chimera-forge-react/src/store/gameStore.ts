@@ -448,7 +448,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
                         index: i,
                         name: data.slotName || `Partida ${i + 1}`,
                         creatures: data.creatures?.length || 0,
-                        maxLevel: data.creatures?.reduce((m: number, c: any) => Math.max(m, c.level || 1), 0) || 0,
+                        maxLevel: data.creatures?.reduce((m: number, c: { level?: number }) => Math.max(m, c.level || 1), 0) || 0,
                         totalExpeditions: data.totalExpeditions || 0,
                         lastSaved: data.lastSaved || data.createdAt || 0,
                         empty: false,

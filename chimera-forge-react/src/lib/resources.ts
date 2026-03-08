@@ -13,6 +13,12 @@ export const RESOURCE_DEFS: Record<string, { icon: string; name: string; descrip
 
 export const FRAGMENTS_PER_HATCH = 10;
 
+const RESOURCE_KEYS: Array<keyof ResourceInventory> = ['essence', 'herbs', 'eggFragments', 'crystals'];
+
+function isResourceKey(key: string): key is keyof ResourceInventory {
+    return RESOURCE_KEYS.includes(key as keyof ResourceInventory);
+}
+
 export function getInfo(resourceKey: string) {
     return RESOURCE_DEFS[resourceKey] || { icon: '❓', name: resourceKey };
 }
@@ -27,15 +33,15 @@ export function createInventory(): ResourceInventory {
 
 export function addResources(inventory: ResourceInventory, additions: Partial<ResourceInventory>): void {
     for (const [key, amount] of Object.entries(additions)) {
-        if (key in inventory) {
-            (inventory as any)[key] += amount;
+        if (isResourceKey(key)) {
+            inventory[key] += amount ?? 0;
         }
     }
 }
 
 export function canAfford(inventory: ResourceInventory, costs: Partial<ResourceInventory>): boolean {
     for (const [key, amount] of Object.entries(costs)) {
-        if (((inventory as any)[key] || 0) < (amount as number)) return false;
+        if (isResourceKey(key) && inventory[key] < (amount ?? 0)) return false;
     }
     return true;
 }
@@ -43,7 +49,9 @@ export function canAfford(inventory: ResourceInventory, costs: Partial<ResourceI
 export function spend(inventory: ResourceInventory, costs: Partial<ResourceInventory>): boolean {
     if (!canAfford(inventory, costs)) return false;
     for (const [key, amount] of Object.entries(costs)) {
-        (inventory as any)[key] -= amount;
+        if (isResourceKey(key)) {
+            inventory[key] -= amount ?? 0;
+        }
     }
     return true;
 }

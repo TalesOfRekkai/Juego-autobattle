@@ -2,7 +2,7 @@
    BREEDING.TS — Fusion logic, requirements check
    ============================================ */
 
-import type { Creature } from '../types';
+import type { Creature, CreatureTemplate } from '../types';
 import * as Data from './data';
 import * as Creatures from './creatures';
 import { getEffectiveBreedMinLevel, type BuildingsState } from './buildings';
@@ -13,7 +13,7 @@ export function canBreed(
     creatureA: Creature | null,
     creatureB: Creature | null,
     buildings?: BuildingsState
-): { ok: boolean; reason?: string; result?: any } {
+): { ok: boolean; reason?: string; result?: CreatureTemplate } {
     const minBreedLevel = buildings ? getEffectiveBreedMinLevel(buildings) : MIN_BREED_LEVEL;
     if (!creatureA || !creatureB) return { ok: false, reason: 'Selecciona dos Rekaimon' };
     if (creatureA.id === creatureB.id) return { ok: false, reason: 'No pueden ser el mismo Rekaimon' };
@@ -38,6 +38,7 @@ export function breed(creatureA: Creature, creatureB: Creature, buildings?: Buil
     creatureB.hasBred = true;
 
     const fusionTemplate = check.result;
+    if (!fusionTemplate) return null;
     const newCreature = Creatures.createCreature(fusionTemplate.name, fusionTemplate);
     return newCreature;
 }

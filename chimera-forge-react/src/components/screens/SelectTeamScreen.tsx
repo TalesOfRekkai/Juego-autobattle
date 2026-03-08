@@ -18,7 +18,7 @@ function formatTime(ms: number) {
 export default function SelectTeamScreen() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { routeId } = (location.state as any) || {};
+    const { routeId } = (location.state as { routeId?: string }) || {};
     const addToast = useToastStore(s => s.addToast);
     const creatures = useGameStore(s => s.state.creatures);
     const startExpedition = useGameStore(s => s.startExpedition);
@@ -26,7 +26,7 @@ export default function SelectTeamScreen() {
 
     const available = useMemo(() => creatures.filter(c => !c.isOnExpedition), [creatures]);
 
-    const route = RoutesLib.getRoute(routeId);
+    const route = routeId ? RoutesLib.getRoute(routeId) : undefined;
     if (!route) { navigate('/routes'); return null; }
 
     const toggleMember = (creatureId: number) => {
@@ -39,7 +39,7 @@ export default function SelectTeamScreen() {
 
     const launch = () => {
         if (selected.length === 0) return;
-        const success = startExpedition(routeId, [...selected]);
+        const success = startExpedition(route.id, [...selected]);
         if (success) {
             addToast('¡Expedición iniciada!', 'success');
             navigate('/routes');
