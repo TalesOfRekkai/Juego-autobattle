@@ -130,9 +130,6 @@ export function getEffectiveBreedMinLevel(buildings: BuildingsState): number {
 /** Get the current buff values for a given building level */
 export function getBuildingBuffs(buildings: BuildingsState) {
     return {
-        /** How many fewer fragments egg hatching costs (0, 1, 2, or Infinity for free) */
-        hatchFragmentDiscount: buildings.incubator >= 3 ? Infinity : buildings.incubator,
-
         /** XP multiplier bonus from training building (1.0 = no bonus) */
         trainingXPMultiplier: buildings.training === 0 ? 1.0
             : buildings.training === 1 ? 1.25
@@ -151,14 +148,8 @@ export function getBuildingBuffs(buildings: BuildingsState) {
         /** Expedition resource bonus multiplier */
         expeditionResourceMultiplier: buildings.expeditions >= 3 ? 1.2 : 1.0,
 
-        /** Fusion level requirement reduction */
-        fusionLevelReduction: buildings.fusion >= 3 ? Infinity : buildings.fusion,
-
         /** Herb cost for healing */
         healHerbCost: buildings.herbalist >= 1 ? 1 : 2,
-
-        /** Whether healing restores 100% HP */
-        healFullHP: buildings.herbalist >= 2,
 
         /** Whether auto-heal after expedition is active */
         autoHealAfterExpedition: buildings.herbalist >= 3,

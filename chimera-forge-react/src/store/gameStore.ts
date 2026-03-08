@@ -287,7 +287,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         const cost = { herbs: buffs.healHerbCost };
         if (!Resources.canAfford(s.resources, cost)) return false;
         Resources.spend(s.resources, cost);
-        // Herbolario Lv2+: heal full HP instead of just full
+        // Curación manual: actualmente siempre restaura HP completo
         Creatures.healFull(creature);
         set(prev => ({ state: { ...prev.state, creatures: [...prev.state.creatures] } }));
         get().save();
