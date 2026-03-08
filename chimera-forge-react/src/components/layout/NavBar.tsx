@@ -17,7 +17,7 @@ export default function NavBar() {
         { path: '/routes', icon: '🗺️', label: 'RUTAS', badge: completed > 0 },
         { path: '/eggs', icon: '🥚', label: 'HUEVOS', count: eggCount > 0 ? eggCount : undefined },
         { path: '/breeding', icon: '🧬', label: 'CRIAR' },
-        { path: '/collection', icon: '📖', label: 'BESTIA' },
+        { path: '/collection', icon: '📖', label: 'PROGRESO' },
         { path: '/settings', icon: '⚙️', label: 'AJUSTES' },
     ];
 
