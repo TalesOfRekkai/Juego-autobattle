@@ -68,11 +68,11 @@ export default function CollectionScreen() {
                         onClick={() => setShowBestiary(v => !v)}>
                         📘 Bestiario <span style={{ color: 'var(--text-muted)' }}>{showBestiary ? '▾' : '▸'}</span>
                     </div>
+                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: 'var(--space-sm)', marginBottom: showBestiary ? 'var(--space-md)' : 0 }}>
+                        Especies descubiertas: {discoveredSpecies} / {speciesNames.length} · Entradas descubiertas: {discoveredKeys.length} / {allEntries.length}
+                    </div>
                     {showBestiary && (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
-                            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
-                                Especies descubiertas: {discoveredSpecies} / {speciesNames.length} · Entradas descubiertas: {discoveredKeys.length} / {allEntries.length}
-                            </div>
                             {speciesNames.map(name => {
                                 const stages = grouped[name];
                                 const anyFound = stages.some(s => discoveredKeys.includes(s.key));
