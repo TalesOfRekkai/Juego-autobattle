@@ -27,13 +27,6 @@ export default function CollectionScreen() {
         <>
             <TopBar />
             <div className="screen">
-                <div className="card" style={{ marginBottom: 'var(--space-md)' }}>
-                    <div className="section-header" style={{ marginBottom: 'var(--space-sm)' }}>📈 Resumen de descubrimiento</div>
-                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
-                        Descubiertos: {discoveredKeys.length} / {allEntries.length} · Especies: {discoveredSpecies} / {speciesNames.length}
-                    </div>
-                </div>
-
                 <div className="card" style={{ marginBottom: 'var(--space-md)', cursor: 'pointer' }} onClick={() => setShowAllMissions(v => !v)}>
                     <div className="section-header" style={{ marginBottom: 'var(--space-sm)' }}>
                         🎯 Desafíos <span style={{ color: 'var(--text-muted)' }}>{showAllMissions ? '▾' : '▸'}</span>
@@ -77,6 +70,9 @@ export default function CollectionScreen() {
                     </div>
                     {showBestiary && (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
+                            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                                Especies descubiertas: {discoveredSpecies} / {speciesNames.length} · Entradas descubiertas: {discoveredKeys.length} / {allEntries.length}
+                            </div>
                             {speciesNames.map(name => {
                                 const stages = grouped[name];
                                 const anyFound = stages.some(s => discoveredKeys.includes(s.key));
