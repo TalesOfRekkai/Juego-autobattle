@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useGameStore } from '../../store/gameStore';
 import { useToastStore } from '../../store/toastStore';
@@ -16,7 +16,13 @@ export default function EggHatchScreen() {
     const [phase, setPhase] = useState<'idle' | 'hatching' | 'cracking' | 'revealed'>('idle');
     const [hatchedCreature, setHatchedCreature] = useState<Creature | null>(null);
 
-    if (!eggName) { navigate('/'); return null; }
+    useEffect(() => {
+        if (!eggName) {
+            navigate('/');
+        }
+    }, [eggName, navigate]);
+
+    if (!eggName) return null;
 
     const eggSprite = Data.getEggSpritePath(eggName);
 

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGameStore } from '../../store/gameStore';
 import { useToastStore } from '../../store/toastStore';
@@ -16,7 +17,13 @@ export default function CreatureDetailScreen() {
     const boostCreature = useGameStore(s => s.boostCreature);
 
     const creature = getCreatureById(Number(id));
-    if (!creature) { navigate('/hub'); return null; }
+    useEffect(() => {
+        if (!creature) {
+            navigate('/hub');
+        }
+    }, [creature, navigate]);
+
+    if (!creature) return null;
 
     const stats = Creatures.getStats(creature);
     const xpProgress = Creatures.getXPProgress(creature);

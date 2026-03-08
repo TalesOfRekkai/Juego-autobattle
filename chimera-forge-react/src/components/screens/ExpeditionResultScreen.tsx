@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import * as Creatures from '../../lib/creatures';
 import * as Data from '../../lib/data';
@@ -9,7 +10,13 @@ export default function ExpeditionResultScreen() {
     const location = useLocation();
     const { results } = (location.state as { results?: ExpeditionResult }) || {};
 
-    if (!results) { navigate('/hub'); return null; }
+    useEffect(() => {
+        if (!results) {
+            navigate('/hub');
+        }
+    }, [results, navigate]);
+
+    if (!results) return null;
     const r = results.resources;
 
     return (

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useGameStore } from '../../store/gameStore';
 import { useToastStore } from '../../store/toastStore';
@@ -27,7 +27,13 @@ export default function SelectTeamScreen() {
     const available = useMemo(() => creatures.filter(c => !c.isOnExpedition), [creatures]);
 
     const route = routeId ? RoutesLib.getRoute(routeId) : undefined;
-    if (!route) { navigate('/routes'); return null; }
+    useEffect(() => {
+        if (!route) {
+            navigate('/routes');
+        }
+    }, [route, navigate]);
+
+    if (!route) return null;
 
     const toggleMember = (creatureId: number) => {
         setSelected(prev => {
