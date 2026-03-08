@@ -40,9 +40,9 @@ export const BUILDING_DEFS: BuildingDef[] = [
         icon: '⚔️',
         description: 'Aumenta la XP ganada al entrenar y en expediciones.',
         levels: [
-            { description: '+25% XP al entrenar', cost: { essence: 15, crystals: 1 } },
-            { description: '+50% XP al entrenar', cost: { essence: 40, crystals: 4 } },
-            { description: '+100% XP al entrenar, -2 esencia coste', cost: { essence: 80, crystals: 8 } },
+            { description: '+25% XP de entrenamiento y expediciones', cost: { essence: 15, crystals: 1 } },
+            { description: '+50% XP de entrenamiento y expediciones', cost: { essence: 40, crystals: 4 } },
+            { description: '+100% XP de entrenamiento y expediciones, -2 esencia coste', cost: { essence: 80, crystals: 8 } },
         ],
     },
     {
