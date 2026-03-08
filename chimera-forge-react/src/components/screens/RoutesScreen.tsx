@@ -104,6 +104,7 @@ export default function RoutesScreen() {
                             const req = route.requirement;
                             const elemName = route.element !== 'mixed' ? (Data.ELEMENTS[route.element]?.name || route.element) : 'Mixto';
                             const tooltipClass = pos.x > 60 ? 'map-tooltip--left' : '';
+                            const routeModifierLabel = RoutesLib.getRouteModifierLabel(route.id);
                             return (
                                 <button key={route.id}
                                     className={`map-pin ${canAccess ? '' : 'locked'}`}
@@ -119,6 +120,9 @@ export default function RoutesScreen() {
                                             <span>{Data.getElementIcon(route.element)} {elemName}</span>
                                             <span>⏱ {formatTime(route.duration * 1000)}</span>
                                         </div>
+                                        {routeModifierLabel && (
+                                            <div className="map-tooltip__modifier">{routeModifierLabel}</div>
+                                        )}
                                         <div className="map-tooltip__desc">{route.description}</div>
                                         {req && (
                                             <div className={`map-tooltip__req ${canAccess ? 'ok' : 'locked'}`}>

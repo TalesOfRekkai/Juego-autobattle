@@ -1657,6 +1657,13 @@ body {
     margin-bottom: 4px;
 }
 
+.map-tooltip__modifier {
+    font-size: 9px;
+    color: var(--accent-glow);
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
 .map-tooltip__desc {
     font-size: 10px;
     color: var(--text-muted);

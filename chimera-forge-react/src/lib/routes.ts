@@ -29,6 +29,7 @@ export const ROUTE_DEFS: RouteDef[] = [
         rewards: { essence: [2, 5], herbs: [1, 3], eggFragments: [0, 2], crystals: [0, 0] },
         eggChance: 0.08, xpReward: [8, 15], enemyPower: 20,
         description: 'Un bosque tranquilo, ideal para empezar.',
+        routeModifiers: { resourceMultiplier: 1.25 },
     },
     {
         id: 'costa', name: 'Costa Bioluminiscente', icon: '🌊', element: 'water',
@@ -37,6 +38,7 @@ export const ROUTE_DEFS: RouteDef[] = [
         rewards: { essence: [2, 5], herbs: [1, 3], eggFragments: [0, 2], crystals: [0, 0] },
         eggChance: 0.08, xpReward: [8, 15], enemyPower: 22,
         description: 'Aguas brillantes con criaturas acuáticas.',
+        routeModifiers: { eggChanceMultiplier: 1.35 },
     },
     {
         id: 'volcan', name: 'Volcán Dormido', icon: '🌋', element: 'fire',
@@ -46,6 +48,7 @@ export const ROUTE_DEFS: RouteDef[] = [
         rewards: { essence: [4, 10], herbs: [1, 4], eggFragments: [1, 4], crystals: [0, 1] },
         eggChance: 0.12, xpReward: [15, 30], enemyPower: 45,
         description: 'Lava latente y mucho calor. Peligroso.',
+        routeModifiers: { crystalMultiplier: 1.5, survivalBonus: -0.05 },
     },
     {
         id: 'cumbres', name: 'Cumbres Ventosas', icon: '⛰️', element: 'air',
@@ -55,6 +58,7 @@ export const ROUTE_DEFS: RouteDef[] = [
         rewards: { essence: [4, 10], herbs: [1, 4], eggFragments: [1, 4], crystals: [0, 1] },
         eggChance: 0.12, xpReward: [15, 30], enemyPower: 48,
         description: 'Vientos cortantes en la cima del mundo.',
+        routeModifiers: { xpMultiplier: 1.25 },
     },
     {
         id: 'cripta', name: 'Cripta Olvidada', icon: '💀', element: 'shadow',
@@ -64,6 +68,7 @@ export const ROUTE_DEFS: RouteDef[] = [
         rewards: { essence: [8, 18], herbs: [2, 6], eggFragments: [2, 6], crystals: [1, 3] },
         eggChance: 0.18, xpReward: [30, 55], enemyPower: 80,
         description: 'Antigua cripta llena de sombras hostiles.',
+        routeModifiers: { crystalMultiplier: 1.6 },
     },
     {
         id: 'templo', name: 'Templo Solar', icon: '☀️', element: 'light',
@@ -73,6 +78,7 @@ export const ROUTE_DEFS: RouteDef[] = [
         rewards: { essence: [8, 18], herbs: [2, 6], eggFragments: [2, 6], crystals: [1, 3] },
         eggChance: 0.18, xpReward: [30, 55], enemyPower: 85,
         description: 'Un templo sagrado bañado en luz eterna.',
+        routeModifiers: { survivalBonus: 0.08 },
     },
     {
         id: 'nexo', name: 'Nexo Elemental', icon: '🌀', element: 'mixed',
@@ -82,6 +88,7 @@ export const ROUTE_DEFS: RouteDef[] = [
         rewards: { essence: [15, 30], herbs: [4, 10], eggFragments: [4, 10], crystals: [3, 6] },
         eggChance: 0.25, xpReward: [55, 100], enemyPower: 150,
         description: 'Donde todos los elementos convergen. Solo los más fuertes sobreviven.',
+        routeModifiers: { resourceMultiplier: 1.3, xpMultiplier: 1.2, survivalBonus: -0.08 },
     },
 
     // === MAP 2: Tierras Volcánicas ===
@@ -93,6 +100,7 @@ export const ROUTE_DEFS: RouteDef[] = [
         rewards: { essence: [5, 12], herbs: [2, 5], eggFragments: [1, 3], crystals: [0, 1] },
         eggChance: 0.12, xpReward: [18, 35], enemyPower: 50,
         description: 'Aguas corrosivas y criaturas venenosas.',
+        routeModifiers: { resourceMultiplier: 1.15, survivalBonus: -0.03 },
     },
     {
         id: 'forja', name: 'Forja Ancestral', icon: '⚒️', element: 'fire',
@@ -102,6 +110,7 @@ export const ROUTE_DEFS: RouteDef[] = [
         rewards: { essence: [8, 20], herbs: [2, 5], eggFragments: [2, 5], crystals: [1, 4] },
         eggChance: 0.15, xpReward: [25, 50], enemyPower: 75,
         description: 'Una forja ardiente de tiempos olvidados.',
+        routeModifiers: { crystalMultiplier: 1.4 },
     },
     {
         id: 'glaciar', name: 'Cumbres Glaciares', icon: '❄️', element: 'air',
@@ -111,6 +120,7 @@ export const ROUTE_DEFS: RouteDef[] = [
         rewards: { essence: [10, 22], herbs: [3, 7], eggFragments: [3, 6], crystals: [2, 4] },
         eggChance: 0.18, xpReward: [35, 60], enemyPower: 90,
         description: 'Picos helados donde el viento corta.',
+        routeModifiers: { xpMultiplier: 1.2, survivalBonus: 0.05 },
     },
 
     // === MAP 3: Dominios Oscuros ===
@@ -122,6 +132,7 @@ export const ROUTE_DEFS: RouteDef[] = [
         rewards: { essence: [12, 28], herbs: [3, 8], eggFragments: [3, 8], crystals: [2, 5] },
         eggChance: 0.20, xpReward: [45, 85], enemyPower: 120,
         description: 'Un vacío sin fondo lleno de criaturas ancestrales.',
+        routeModifiers: { crystalMultiplier: 1.5, survivalBonus: -0.05 },
     },
     {
         id: 'santuario', name: 'Santuario Caído', icon: '🏛️', element: 'light',
@@ -131,6 +142,7 @@ export const ROUTE_DEFS: RouteDef[] = [
         rewards: { essence: [14, 30], herbs: [4, 9], eggFragments: [4, 9], crystals: [3, 6] },
         eggChance: 0.22, xpReward: [50, 90], enemyPower: 135,
         description: 'Un santuario corrompido por la oscuridad.',
+        routeModifiers: { eggChanceMultiplier: 1.35, survivalBonus: 0.08 },
     },
     {
         id: 'nexo_final', name: 'Nexo Primordial', icon: '💫', element: 'mixed',
@@ -140,8 +152,25 @@ export const ROUTE_DEFS: RouteDef[] = [
         rewards: { essence: [20, 40], herbs: [5, 12], eggFragments: [5, 12], crystals: [4, 8] },
         eggChance: 0.30, xpReward: [70, 120], enemyPower: 200,
         description: 'El origen de todo. La prueba definitiva.',
+        routeModifiers: { xpMultiplier: 1.25, eggChanceMultiplier: 1.2 },
     },
 ];
+
+const ROUTE_MODIFIER_LABELS: Record<string, string> = {
+    bosque: 'Abundancia natural (+25% recursos)',
+    costa: 'Fauna mágica (+35% huevos)',
+    volcan: 'Minerales raros (+50% cristales, -5% supervivencia)',
+    cumbres: 'Vientos de aprendizaje (+25% XP)',
+    templo: 'Energía sagrada (+8% supervivencia)',
+    cripta: 'Tesoros antiguos (+60% cristales)',
+    nexo: 'Caos elemental (+30% recursos, +20% XP, -8% supervivencia)',
+    pantano: 'Terreno hostil (+15% recursos, -3% supervivencia)',
+    forja: 'Menas ancestrales (+40% cristales)',
+    glaciar: 'Corrientes veloces (+20% XP, +5% supervivencia)',
+    abismo: 'Ecos sombríos (+50% cristales, -5% supervivencia)',
+    santuario: 'Bendición lunar (+35% huevos, +8% supervivencia)',
+    nexo_final: 'Convergencia arcana (+25% XP, +20% huevos)',
+};
 
 export function getRoute(id: string): RouteDef | undefined {
     return ROUTE_DEFS.find(r => r.id === id);
@@ -149,6 +178,10 @@ export function getRoute(id: string): RouteDef | undefined {
 
 export function getAllRoutes(): RouteDef[] {
     return ROUTE_DEFS;
+}
+
+export function getRouteModifierLabel(routeId: string): string | null {
+    return ROUTE_MODIFIER_LABELS[routeId] ?? null;
 }
 
 export function canAccessRoute(route: RouteDef, playerCreatures: Creature[]): boolean {
@@ -168,6 +201,7 @@ export function resolveExpedition(
     team: Creature[],
     buffs?: { expeditionResourceMultiplier?: number; bonusCrystalsPerExpedition?: number; bonusEggChance?: number }
 ): ExpeditionResult {
+    const routeMods = route.routeModifiers;
     const elementBonus = team.some(c =>
         route.element !== 'mixed' && Data.hasElementAdvantage(c.element, route.element)
     ) ? 1.3 : (team.some(c => c.element === route.element) ? 1.15 : 1.0);
@@ -183,9 +217,8 @@ export function resolveExpedition(
 
     // Each creature has individual survival chance
     team.forEach(c => {
-        const individualSurvival = Math.min(0.95,
-            Creatures.getPower(c) * elementBonus / route.enemyPower
-        );
+        const baseSurvival = Creatures.getPower(c) * elementBonus / route.enemyPower;
+        const individualSurvival = Math.max(0.05, Math.min(0.95, baseSurvival + (routeMods?.survivalBonus ?? 0)));
         if (Math.random() < individualSurvival) {
             results.survived.push(c);
         } else {
@@ -205,7 +238,28 @@ export function resolveExpedition(
 
     results.xpPerCreature = randRange(route.xpReward[0], route.xpReward[1]);
 
-    const totalEggChance = route.eggChance + (buffs?.bonusEggChance ?? 0);
+    if (routeMods?.resourceMultiplier) {
+        results.resources.essence = Math.floor(results.resources.essence * routeMods.resourceMultiplier);
+        results.resources.herbs = Math.floor(results.resources.herbs * routeMods.resourceMultiplier);
+        results.resources.eggFragments = Math.floor(results.resources.eggFragments * routeMods.resourceMultiplier);
+    }
+
+    if (routeMods?.crystalMultiplier) {
+        results.resources.crystals = Math.floor(results.resources.crystals * routeMods.crystalMultiplier);
+    }
+
+    if (routeMods?.xpMultiplier) {
+        results.xpPerCreature = Math.floor(results.xpPerCreature * routeMods.xpMultiplier);
+    }
+
+    results.resources.essence = Math.max(0, results.resources.essence);
+    results.resources.herbs = Math.max(0, results.resources.herbs);
+    results.resources.eggFragments = Math.max(0, results.resources.eggFragments);
+    results.resources.crystals = Math.max(0, results.resources.crystals);
+    results.xpPerCreature = Math.max(0, results.xpPerCreature);
+
+    const eggChanceMult = routeMods?.eggChanceMultiplier ?? 1;
+    const totalEggChance = Math.min(0.99, Math.max(0, (route.eggChance + (buffs?.bonusEggChance ?? 0)) * eggChanceMult));
     if (Math.random() < totalEggChance * survivalRatio) {
         const randomBase = Data.BASE_CREATURES[Math.floor(Math.random() * Data.BASE_CREATURES.length)];
         results.foundEgg = randomBase;

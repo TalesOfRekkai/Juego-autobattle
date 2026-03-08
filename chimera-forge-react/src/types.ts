@@ -68,6 +68,14 @@ export interface RouteRewards {
     crystals: [number, number];
 }
 
+export interface RouteModifiers {
+    resourceMultiplier?: number;
+    xpMultiplier?: number;
+    eggChanceMultiplier?: number;
+    survivalBonus?: number;
+    crystalMultiplier?: number;
+}
+
 export interface RouteDef {
     id: string;
     name: string;
@@ -84,6 +92,7 @@ export interface RouteDef {
     xpReward: [number, number];
     enemyPower: number;
     description: string;
+    routeModifiers?: RouteModifiers;
 }
 
 export interface Expedition {
