@@ -74,7 +74,7 @@ export const BUILDING_DEFS: BuildingDef[] = [
         description: 'Curación más barata y potente para tus criaturas.',
         levels: [
             { description: 'Curar cuesta 1 hierba (en vez de 2)', cost: { essence: 15, herbs: 10 } },
-            { description: 'Curar restaura 100% HP', cost: { essence: 35, herbs: 20, crystals: 3 } },
+            { description: 'Mejora de tratamiento (sin efecto adicional en esta versión)', cost: { essence: 35, herbs: 20, crystals: 3 } },
             { description: 'Auto-curación: criaturas se curan tras expedición', cost: { essence: 75, herbs: 30, crystals: 6 } },
         ],
     },
