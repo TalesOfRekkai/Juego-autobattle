@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useGameStore } from '../../store/gameStore';
+import { useToastStore } from '../../store/toastStore';
 import * as Data from '../../lib/data';
 import * as Creatures from '../../lib/creatures';
 
@@ -9,6 +10,7 @@ export default function EggHatchScreen() {
     const location = useLocation();
     const { eggName, first, eggIndex } = (location.state as any) || {};
     const hatchEgg = useGameStore(s => s.hatchEgg);
+    const addToast = useToastStore(s => s.addToast);
 
     const [phase, setPhase] = useState<'idle' | 'hatching' | 'cracking' | 'revealed'>('idle');
     const [hatchedCreature, setHatchedCreature] = useState<any>(null);
@@ -32,7 +34,14 @@ export default function EggHatchScreen() {
             }
 
             setTimeout(() => {
-                if (!creature) return;
+                if (!creature) {
+                    addToast('No se pudo completar la eclosión. Inténtalo de nuevo.', 'warning');
+                    setPhase('idle');
+                    if (!first) {
+                        navigate('/hub');
+                    }
+                    return;
+                }
                 setHatchedCreature(creature);
                 setPhase('revealed');
             }, 800);
