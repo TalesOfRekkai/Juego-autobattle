@@ -1,12 +1,17 @@
+import { useState } from 'react';
 import { useGameStore } from '../../store/gameStore';
 import * as Data from '../../lib/data';
+import * as Missions from '../../lib/missions';
 import TopBar from '../layout/TopBar';
 import NavBar from '../layout/NavBar';
 
 export default function CollectionScreen() {
     const state = useGameStore(s => s.state);
+    const [showAllMissions, setShowAllMissions] = useState(false);
     const allEntries = Data.getAllCreatureEntries();
     const discoveredKeys = state.discoveredKeys || [];
+    const missionProgress = Missions.getMissionsWithProgress(state);
+    const completedMissions = missionProgress.filter(m => m.completed).length;
 
     const grouped: Record<string, typeof allEntries> = {};
     allEntries.forEach(entry => {
@@ -24,6 +29,41 @@ export default function CollectionScreen() {
                 <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: 'var(--space-md)' }}>
                     Descubiertos: {discoveredKeys.length} / {allEntries.length} · Especies: {speciesNames.filter(n => discoveredKeys.some(k => k.startsWith(n + '_'))).length} / {speciesNames.length}
                 </div>
+
+                <div className="card" style={{ marginBottom: 'var(--space-md)', cursor: 'pointer' }} onClick={() => setShowAllMissions(v => !v)}>
+                    <div className="section-header" style={{ marginBottom: 'var(--space-sm)' }}>🎯 Desafíos</div>
+                    <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: showAllMissions ? 'var(--space-sm)' : 0 }}>
+                        Completadas: {completedMissions} / {missionProgress.length} · Medallas desbloqueadas: {state.earnedMedals.length}
+                    </div>
+                    {showAllMissions && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)' }}>
+                            {missionProgress.map(mission => (
+                                <div key={mission.id} style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    gap: 'var(--space-sm)',
+                                    fontSize: '10px',
+                                    padding: '6px 8px',
+                                    borderRadius: 'var(--radius-sm)',
+                                    background: mission.completed ? 'rgba(115,218,202,0.08)' : 'var(--bg-elevated)',
+                                    border: mission.completed ? '1px solid rgba(115,218,202,0.25)' : '1px solid rgba(255,255,255,0.06)',
+                                }}>
+                                    <div style={{ minWidth: 0 }}>
+                                        <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '8px', color: mission.completed ? 'var(--accent-success)' : 'var(--text-primary)' }}>
+                                            {mission.completed ? '✓ ' : ''}{mission.title}
+                                        </div>
+                                        <div style={{ color: 'var(--text-secondary)' }}>{mission.description}</div>
+                                    </div>
+                                    <div style={{ flexShrink: 0, color: mission.completed ? 'var(--accent-success)' : 'var(--text-secondary)' }}>
+                                        {mission.progress} / {mission.target}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
                     {speciesNames.map(name => {
                         const stages = grouped[name];
