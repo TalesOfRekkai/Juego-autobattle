@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useGameStore } from './store/gameStore';
+import { useGameStore } from './store/dojoGameStore';
+import { DojoProvider, useDojo } from './dojo/dojoProvider';
+import { useOnchainState } from './dojo/useOnchainState';
+import { dojoConfig } from './dojo/dojoConfig';
 import ToastContainer from './components/layout/ToastContainer';
 import TitleScreen from './components/screens/TitleScreen';
 import EggHatchScreen from './components/screens/EggHatchScreen';
@@ -15,22 +18,41 @@ import CreatureDetailScreen from './components/screens/CreatureDetailScreen';
 import EggsInventoryScreen from './components/screens/EggsInventoryScreen';
 import SettingsScreen from './components/screens/SettingsScreen';
 
+/** Syncs DojoProvider connection state → Zustand store */
+function DojoSync() {
+  const { account, address, execute } = useDojo();
+  const setAccount = useGameStore(s => s.setAccount);
+  const setExecute = useGameStore(s => s.setExecute);
+  const setState = useGameStore(s => s.setState);
+
+  // Sync account/address
+  useEffect(() => {
+    setAccount(account, address);
+  }, [account, address, setAccount]);
+
+  // Sync execute function
+  useEffect(() => {
+    setExecute(execute);
+  }, [execute, setExecute]);
+
+  // Sync onchain state → Zustand store
+  const { state: onchainState, loading } = useOnchainState(address, dojoConfig.toriiUrl);
+  useEffect(() => {
+    if (!loading) {
+      setState(onchainState);
+    }
+  }, [onchainState, loading, setState]);
+
+  return null;
+}
+
 function AppContent() {
   const initData = useGameStore(s => s.initData);
   const dataLoaded = useGameStore(s => s.dataLoaded);
-  const tickExpeditions = useGameStore(s => s.tickExpeditions);
 
   useEffect(() => {
     initData();
   }, [initData]);
-
-  // Global expedition tick interval
-  useEffect(() => {
-    const interval = setInterval(() => {
-      tickExpeditions();
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [tickExpeditions]);
 
   if (!dataLoaded) {
     return (
@@ -71,8 +93,11 @@ function AppContent() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
+    <DojoProvider>
+      <BrowserRouter>
+        <DojoSync />
+        <AppContent />
+      </BrowserRouter>
+    </DojoProvider>
   );
 }

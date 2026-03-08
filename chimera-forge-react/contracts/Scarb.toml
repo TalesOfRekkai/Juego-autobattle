@@ -1,5 +1,4 @@
 [package]
-cairo-version = "2.16.0"
 name = "chimera_forge"
 version = "0.1.0"
 edition = "2024_07"
@@ -8,15 +7,15 @@ edition = "2024_07"
 sierra-replace-ids = true
 
 [dependencies]
-starknet = "2.16.0"
-dojo = "1.8.6"
-
-[tool.scarb]
-allow-prebuilt-plugins = ["dojo_cairo_macros"]
+dojo = "1.8.0"
+starknet = "2.13.1"
 
 [[target.starknet-contract]]
 build-external-contracts = ["dojo::world::world_contract::world"]
 
+[tool.scarb]
+allow-prebuilt-plugins = ["dojo_cairo_macros"]
+
 [dev-dependencies]
-cairo_test = "2.16.0"
-dojo_cairo_test = "1.8.6"
+cairo_test = "2.13.1"
+dojo_cairo_test = "1.8.0"

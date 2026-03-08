@@ -1,30 +1,33 @@
-import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGameStore } from '../../store/gameStore';
+import { useGameStore } from '../../store/dojoGameStore';
+import { useDojo } from '../../dojo/dojoProvider';
 
 export default function TitleScreen() {
     const navigate = useNavigate();
-    const startNewGame = useGameStore(s => s.startNewGame);
-    const loadSlot = useGameStore(s => s.loadSlot);
-    const deleteSlot = useGameStore(s => s.deleteSlot);
-    const getAllSlots = useGameStore(s => s.getAllSlots);
+    const { isConnected, isConnecting, connect, address } = useDojo();
+    const state = useGameStore(s => s.state);
+    const isPending = useGameStore(s => s.isPending);
+    const startNewGameOnchain = useGameStore(s => s.startNewGameOnchain);
 
-    const slots = useMemo(() => getAllSlots(), [getAllSlots]);
+    const hasGameStarted = state.phase !== 'title' && (state.creatures.length > 0 || state.eggs.length > 0);
 
-    const handleNewGame = (slotIndex: number) => {
-        const eggName = startNewGame(slotIndex);
-        navigate('/hatch', { state: { eggName, first: true } });
+    const handleConnect = async () => {
+        await connect();
     };
 
-    const handleLoad = (slotIndex: number) => {
-        const success = loadSlot(slotIndex);
-        if (success) navigate('/hub');
+    const handleNewGame = async () => {
+        const success = await startNewGameOnchain();
+        if (success) {
+            // Wait a moment for Torii to index, then navigate
+            setTimeout(() => navigate('/hatch', { state: { first: true } }), 1500);
+        }
     };
 
-    const handleDelete = (slotIndex: number) => {
-        if (confirm(`¿Borrar Partida ${slotIndex + 1}?`)) {
-            deleteSlot(slotIndex);
-            navigate('/');
+    const handleContinue = () => {
+        if (state.eggs.length > 0 && state.creatures.length === 0) {
+            navigate('/hatch');
+        } else {
+            navigate('/hub');
         }
     };
 
@@ -38,46 +41,69 @@ export default function TitleScreen() {
                 Colecciona, cría y evoluciona criaturas elementales. Envíalas a expediciones para ganar recursos y descubrir nuevos huevos.
             </div>
 
-            <div className="section-header" style={{ width: '100%', maxWidth: '400px' }}>Partidas Guardadas</div>
-
-            <div style={{ width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
-                {slots.map(slot => {
-                    if (slot.empty) {
-                        return (
-                            <div key={slot.index} className="card" style={{ cursor: 'pointer', textAlign: 'center', padding: 'var(--space-lg)' }}
-                                onClick={() => handleNewGame(slot.index)}>
-                                <div style={{ fontSize: '24px', opacity: 0.3, marginBottom: 'var(--space-sm)' }}>+</div>
-                                <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', color: 'var(--text-muted)' }}>
-                                    Nueva Partida
-                                </div>
-                            </div>
-                        );
-                    }
-                    const date = new Date(slot.lastSaved || 0);
-                    const dateStr = date.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-                    return (
-                        <div key={slot.index} className="card" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 'var(--space-md)' }}
-                            onClick={() => handleLoad(slot.index)}>
-                            <div style={{ flex: 1 }}>
-                                <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '10px', color: 'var(--text-primary)', marginBottom: '4px' }}>
-                                    {slot.name}
-                                </div>
-                                <div style={{ fontSize: '10px', color: 'var(--text-secondary)', display: 'flex', gap: 'var(--space-md)', flexWrap: 'wrap' }}>
-                                    <span>🐾 {slot.creatures} criaturas</span>
-                                    <span>⭐ Lv.{slot.maxLevel}</span>
-                                    <span>🗺️ {slot.totalExpeditions} expediciones</span>
-                                </div>
-                                <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>
-                                    Guardado: {dateStr}
-                                </div>
-                            </div>
-                            <button className="btn btn-danger" style={{ fontSize: '7px', padding: '4px 8px' }}
-                                onClick={e => { e.stopPropagation(); handleDelete(slot.index); }}>
-                                🗑️
-                            </button>
+            <div style={{ width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: 'var(--space-md)', marginTop: 'var(--space-xl)' }}>
+                {!isConnected ? (
+                    /* --- Not connected: show Connect Wallet button --- */
+                    <div className="card" style={{ textAlign: 'center', padding: 'var(--space-xl)' }}>
+                        <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: 'var(--space-md)' }}>
+                            Conecta tu wallet para jugar onchain
                         </div>
-                    );
-                })}
+                        <button
+                            className="btn btn-primary"
+                            onClick={handleConnect}
+                            disabled={isConnecting}
+                            style={{ width: '100%', padding: 'var(--space-md)' }}
+                        >
+                            {isConnecting ? '⏳ Conectando...' : '🔗 Conectar Wallet'}
+                        </button>
+                        <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: 'var(--space-sm)' }}>
+                            Powered by Cartridge Controller
+                        </div>
+                    </div>
+                ) : (
+                    /* --- Connected: show game options --- */
+                    <>
+                        <div className="card" style={{ textAlign: 'center', padding: 'var(--space-sm)' }}>
+                            <div style={{ fontSize: '9px', color: 'var(--accent-secondary)', fontFamily: 'var(--font-pixel)' }}>
+                                ✅ Wallet Conectada
+                            </div>
+                            <div style={{ fontSize: '8px', color: 'var(--text-muted)', marginTop: '2px', wordBreak: 'break-all' }}>
+                                {address?.slice(0, 10)}...{address?.slice(-8)}
+                            </div>
+                        </div>
+
+                        {hasGameStarted ? (
+                            <button
+                                className="btn btn-primary"
+                                onClick={handleContinue}
+                                style={{ width: '100%', padding: 'var(--space-md)' }}
+                            >
+                                ▶️ Continuar Partida
+                            </button>
+                        ) : (
+                            <button
+                                className="btn btn-primary"
+                                onClick={handleNewGame}
+                                disabled={isPending}
+                                style={{ width: '100%', padding: 'var(--space-md)' }}
+                            >
+                                {isPending ? '⏳ Creando partida...' : '🎮 Nueva Partida'}
+                            </button>
+                        )}
+
+                        {hasGameStarted && (
+                            <div style={{ fontSize: '9px', color: 'var(--text-muted)', textAlign: 'center' }}>
+                                🐾 {state.creatures.length} criaturas · 🗺️ {state.totalExpeditions} expediciones
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
+
+            <div style={{ marginTop: 'auto', paddingBottom: 'var(--space-lg)', textAlign: 'center' }}>
+                <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>
+                    ⛓️ Onchain · Starknet · Dojo Engine
+                </div>
             </div>
         </div>
     );

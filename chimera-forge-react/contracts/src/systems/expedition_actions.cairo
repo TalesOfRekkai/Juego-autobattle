@@ -120,7 +120,10 @@ pub mod expedition_actions {
                 expedition_id.into(),
                 now.into(),
             ];
-            let seed: u256 = poseidon_hash_span(seed_input.span()).into();
+            let seed_felt: felt252 = poseidon_hash_span(seed_input.span());
+            // Extract a u128 seed for game math (take lower bits)
+            let seed_u256: u256 = seed_felt.into();
+            let seed_u128: u128 = (seed_u256 % 0x100000000000000000000000000000000_u256).try_into().unwrap();
 
             // Resolve each creature: survival, XP, evolution
             let mut total_survived: u32 = 0;
@@ -134,15 +137,15 @@ pub mod expedition_actions {
                 let cid = *creature_ids.at(i);
                 let mut creature: CreatureModel = world.read_model((player, cid));
 
-                // Survival check (70-95% base chance, modified by power)
-                let creature_seed = seed + i.into();
-                let survive_roll = creature_seed % 100;
-                let survived = survive_roll < 80; // ~80% survival rate for simplicity
+                // Survival check (~80% chance)
+                let creature_seed_val: u128 = seed_u128 + i.into();
+                let survive_roll: u32 = (creature_seed_val % 100).try_into().unwrap();
+                let survived = survive_roll < 80;
 
                 if survived {
                     total_survived += 1;
                     // Apply XP (base 20, modified by training buff)
-                    let xp_gain = 20 * xp_mult / 100;
+                    let xp_gain: u32 = 20 * xp_mult / 100;
                     creature.xp += xp_gain;
 
                     // Check level up & evolution
@@ -179,29 +182,30 @@ pub mod expedition_actions {
             };
 
             // Calculate resource rewards (simplified: base amounts scaled by survival)
-            let reward_seed = seed / 256;
-            let base_essence = 5 + (reward_seed % 10).try_into().unwrap();
-            let base_herbs = 1 + ((reward_seed / 16) % 5).try_into().unwrap();
-            let base_fragments = (reward_seed / 256) % 5;
-            let base_crystals = (reward_seed / 4096) % 3;
+            let reward_bits: u32 = (seed_u128 / 256 % 0x100000000).try_into().unwrap();
+            let base_essence: u32 = 5 + (reward_bits % 10);
+            let base_herbs: u32 = 1 + ((reward_bits / 16) % 5);
+            let base_fragments: u32 = (reward_bits / 256) % 5;
+            let base_crystals: u32 = (reward_bits / 4096) % 3;
 
-            let survival_ratio_100 = if creature_ids.len() > 0 {
-                total_survived * 100 / creature_ids.len()
+            let creature_count_u32: u32 = creature_ids.len();
+            let survival_ratio_100: u32 = if creature_count_u32 > 0 {
+                total_survived * 100 / creature_count_u32
             } else { 0 };
 
             let bonus_crystals: u32 = constants::get_bonus_crystals(buildings.mine);
 
             let mut resources: ResourceInventory = world.read_model(player);
-            resources.essence += (base_essence * survival_ratio_100 / 100).try_into().unwrap();
-            resources.herbs += (base_herbs * survival_ratio_100 / 100).try_into().unwrap();
-            resources.egg_fragments += (base_fragments * survival_ratio_100 / 100).try_into().unwrap();
-            resources.crystals += (base_crystals * survival_ratio_100 / 100).try_into().unwrap() + bonus_crystals;
+            resources.essence += base_essence * survival_ratio_100 / 100;
+            resources.herbs += base_herbs * survival_ratio_100 / 100;
+            resources.egg_fragments += base_fragments * survival_ratio_100 / 100;
+            resources.crystals += base_crystals * survival_ratio_100 / 100 + bonus_crystals;
             world.write_model(@resources);
 
             // Egg drop chance (~15%)
-            let egg_roll = (seed / 65536) % 100;
+            let egg_roll: u32 = (seed_u128 / 65536 % 100).try_into().unwrap();
             if egg_roll < 15 {
-                let egg_creature_idx: u32 = ((seed / 1048576) % constants::NUM_BASE_CREATURES.into()).try_into().unwrap();
+                let egg_creature_idx: u32 = (seed_u128 / 1048576 % constants::NUM_BASE_CREATURES.into()).try_into().unwrap();
                 let egg_name = constants::get_base_creature_name(egg_creature_idx);
 
                 let egg_counter: EggCounter = world.read_model(player);
