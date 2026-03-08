@@ -4,16 +4,17 @@ import { useGameStore } from '../../store/gameStore';
 import { useToastStore } from '../../store/toastStore';
 import * as Data from '../../lib/data';
 import * as Creatures from '../../lib/creatures';
+import type { Creature } from '../../types';
 
 export default function EggHatchScreen() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { eggName, first, eggIndex } = (location.state as any) || {};
+    const { eggName, first, eggIndex } = (location.state as { eggName?: string; first?: boolean; eggIndex?: number }) || {};
     const hatchEgg = useGameStore(s => s.hatchEgg);
     const addToast = useToastStore(s => s.addToast);
 
     const [phase, setPhase] = useState<'idle' | 'hatching' | 'cracking' | 'revealed'>('idle');
-    const [hatchedCreature, setHatchedCreature] = useState<any>(null);
+    const [hatchedCreature, setHatchedCreature] = useState<Creature | null>(null);
 
     if (!eggName) { navigate('/'); return null; }
 

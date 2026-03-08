@@ -1,12 +1,13 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import * as Creatures from '../../lib/creatures';
 import * as Data from '../../lib/data';
+import type { ExpeditionResult } from '../../types';
 import TopBar from '../layout/TopBar';
 
 export default function ExpeditionResultScreen() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { results } = (location.state as any) || {};
+    const { results } = (location.state as { results?: ExpeditionResult }) || {};
 
     if (!results) { navigate('/hub'); return null; }
     const r = results.resources;
@@ -22,7 +23,7 @@ export default function ExpeditionResultScreen() {
                         SUPERVIVIENTES ({results.survived.length})
                     </div>
                     <div style={{ display: 'flex', gap: 'var(--space-md)', flexWrap: 'wrap' }}>
-                        {results.survived.map((c: any) => (
+                        {results.survived.map(c => (
                             <div key={c.id} style={{ textAlign: 'center' }}>
                                 <img src={Creatures.getSprite(c)} style={{ width: '50px', height: '50px', imageRendering: 'pixelated' }} />
                                 <div style={{ fontSize: '8px', color: 'var(--text-primary)' }}>{c.name}</div>
@@ -38,7 +39,7 @@ export default function ExpeditionResultScreen() {
                             DEBILITADOS ({results.fainted.length})
                         </div>
                         <div style={{ display: 'flex', gap: 'var(--space-md)', flexWrap: 'wrap' }}>
-                            {results.fainted.map((c: any) => (
+                            {results.fainted.map(c => (
                                 <div key={c.id} style={{ textAlign: 'center', opacity: 0.5 }}>
                                     <img src={Creatures.getSprite(c)} style={{ width: '50px', height: '50px', imageRendering: 'pixelated', filter: 'grayscale(1)' }} />
                                     <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>{c.name}</div>
@@ -53,7 +54,7 @@ export default function ExpeditionResultScreen() {
                         <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '10px', marginBottom: 'var(--space-sm)', color: 'var(--accent-secondary)' }}>
                             ⭐ ¡EVOLUCIÓN!
                         </div>
-                        {results.evolutions.map((e: any, i: number) => (
+                        {results.evolutions.map((e, i) => (
                             <div key={i} style={{ fontSize: '12px', color: 'var(--text-primary)' }}>
                                 {e.name} ha evolucionado a Stage {e.newStage}!
                             </div>
