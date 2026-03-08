@@ -22,3 +22,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables (contains world addresses, RPCs)
+.env
+.env.local
+.env.*.local
+
+# Dojo build artifacts
+contracts/target/
+contracts/manifests/
+*.katana.db
+
