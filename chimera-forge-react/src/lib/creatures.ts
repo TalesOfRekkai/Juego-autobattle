@@ -93,8 +93,8 @@ export function isAlive(creature: Creature): boolean {
     return creature.currentHP > 0;
 }
 
-export function canBreed(creature: Creature): boolean {
-    return !creature.hasBred && creature.level >= 5 && !creature.isOnExpedition;
+export function canBreed(creature: Creature, minBreedLevel = 5): boolean {
+    return !creature.hasBred && creature.level >= minBreedLevel && !creature.isOnExpedition;
 }
 
 export function getSprite(creature: Creature): string {

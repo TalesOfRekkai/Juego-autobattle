@@ -4,6 +4,7 @@ import { useToastStore } from '../../store/toastStore';
 import * as BreedingLib from '../../lib/breeding';
 import * as Creatures from '../../lib/creatures';
 import * as Data from '../../lib/data';
+import { getEffectiveBreedMinLevel } from '../../lib/buildings';
 import type { Creature } from '../../types';
 import Modal from '../layout/Modal';
 import TopBar from '../layout/TopBar';
@@ -12,7 +13,9 @@ import NavBar from '../layout/NavBar';
 export default function BreedingScreen() {
     const addToast = useToastStore(s => s.addToast);
     const allCreatures = useGameStore(s => s.state.creatures);
+    const buildings = useGameStore(s => s.state.buildings);
     const addCreature = useGameStore(s => s.addCreature);
+    const minBreedLevel = getEffectiveBreedMinLevel(buildings);
 
     const [breedA, setBreedA] = useState<Creature | null>(null);
     const [breedB, setBreedB] = useState<Creature | null>(null);
@@ -30,11 +33,11 @@ export default function BreedingScreen() {
     };
 
     const preview = BreedingLib.getPreview(breedA, breedB);
-    const check = breedA && breedB ? BreedingLib.canBreed(breedA, breedB) : null;
+    const check = breedA && breedB ? BreedingLib.canBreed(breedA, breedB, buildings) : null;
 
     const doBreed = () => {
         if (!breedA || !breedB) return;
-        const newCreature = BreedingLib.breed(breedA, breedB);
+        const newCreature = BreedingLib.breed(breedA, breedB, buildings);
         if (!newCreature) { addToast('Error en la fusión', 'error'); return; }
         addCreature(newCreature);
         addToast(`¡${newCreature.name} ha nacido!`, 'success');
@@ -47,8 +50,8 @@ export default function BreedingScreen() {
         return true;
     });
 
-    const breedable = filteredForSlot.filter(c => Creatures.canBreed(c));
-    const nonBreedable = filteredForSlot.filter(c => !Creatures.canBreed(c));
+    const breedable = filteredForSlot.filter(c => Creatures.canBreed(c, minBreedLevel));
+    const nonBreedable = filteredForSlot.filter(c => !Creatures.canBreed(c, minBreedLevel));
 
     return (
         <>
@@ -56,7 +59,7 @@ export default function BreedingScreen() {
             <div className="screen">
                 <div className="section-header">🧬 Sala de Cría</div>
                 <p style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: 'var(--space-md)' }}>
-                    Selecciona dos Rekaimon para fusionar. Cada criatura solo puede criar <strong>una vez</strong>. Nivel mínimo: {BreedingLib.MIN_BREED_LEVEL}.
+                    Selecciona dos Rekaimon para fusionar. Cada criatura solo puede criar <strong>una vez</strong>. Nivel mínimo: {minBreedLevel}.
                 </p>
 
                 <div className="breeding-slots">
@@ -142,7 +145,7 @@ export default function BreedingScreen() {
                                     <div className="creature-card__name">{c.name}</div>
                                     <div className="creature-card__level">Lv.{c.level}</div>
                                     <div style={{ fontSize: '8px', color: 'var(--accent-danger)' }}>
-                                        {c.hasBred ? 'Ya crió' : c.level < 5 ? `Necesita Lv${BreedingLib.MIN_BREED_LEVEL}` : 'No disponible'}
+                                        {c.hasBred ? 'Ya crió' : c.level < minBreedLevel ? `Necesita Lv${minBreedLevel}` : 'No disponible'}
                                     </div>
                                 </div>
                             ))}

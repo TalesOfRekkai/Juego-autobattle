@@ -64,7 +64,7 @@ export const BUILDING_DEFS: BuildingDef[] = [
         levels: [
             { description: 'Fusión requiere 1 nivel menos', cost: { essence: 30, crystals: 3 } },
             { description: 'Fusión requiere 2 niveles menos', cost: { essence: 70, crystals: 7 } },
-            { description: 'Fusión sin requisito de nivel + bonus stats', cost: { essence: 140, crystals: 15 } },
+            { description: 'Fusión sin requisito de nivel', cost: { essence: 140, crystals: 15 } },
         ],
     },
     {
@@ -120,6 +120,11 @@ export function getBuildingDef(id: string): BuildingDef | undefined {
 export function getEffectiveHatchFragmentCost(buildings: BuildingsState): number {
     if (buildings.incubator >= 3) return 0;
     return Math.max(0, FRAGMENTS_PER_HATCH - buildings.incubator);
+}
+
+export function getEffectiveBreedMinLevel(buildings: BuildingsState): number {
+    if (buildings.fusion >= 3) return 0;
+    return Math.max(0, 5 - buildings.fusion);
 }
 
 /** Get the current buff values for a given building level */
