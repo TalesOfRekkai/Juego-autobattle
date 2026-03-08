@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '../../store/gameStore';
 import * as RoutesLib from '../../lib/routes';
@@ -19,17 +19,14 @@ export default function ExpeditionActiveScreen() {
     const expeditions = useGameStore(s => s.state.expeditions);
     const creatures = useGameStore(s => s.state.creatures);
     const resolveExpedition = useGameStore(s => s.resolveExpedition);
-    const tickExpeditions = useGameStore(s => s.tickExpeditions);
     const getExpeditionTimeLeft = useGameStore(s => s.getExpeditionTimeLeft);
     const [, setTick] = useState(0);
-    const timerRef = useRef<number | null>(null);
 
     useEffect(() => {
-        timerRef.current = window.setInterval(() => {
-            tickExpeditions();
+        const interval = window.setInterval(() => {
             setTick(t => t + 1);
         }, 1000);
-        return () => { if (timerRef.current) clearInterval(timerRef.current); };
+        return () => clearInterval(interval);
     }, []);
 
     const active = expeditions.filter(e => !e.resolved);
