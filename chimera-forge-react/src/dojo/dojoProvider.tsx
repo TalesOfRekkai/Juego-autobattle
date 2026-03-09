@@ -87,14 +87,19 @@ export function DojoProvider({ children }: { children: React.ReactNode }) {
         }
     }, [provider]);
 
+    // Track manual disconnect to prevent auto-reconnect
+    const manuallyDisconnected = React.useRef(false);
+
     // Auto-connect burner account on mount (dev only)
     useEffect(() => {
-        if (!USE_CONTROLLER && !account) {
+        if (!USE_CONTROLLER && !account && !manuallyDisconnected.current) {
             connect();
         }
-    }, [connect, account]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); // Only run on mount
 
     const disconnect = useCallback(() => {
+        manuallyDisconnected.current = true;
         setAccount(null);
         setAddress(null);
     }, []);

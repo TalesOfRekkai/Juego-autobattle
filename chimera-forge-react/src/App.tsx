@@ -99,6 +99,11 @@ function DojoSync() {
       lastHashRef.current = hash;
 
       const parsed = parseToriiData(data);
+      // Preserve current phase if user has already navigated past title
+      const currentState = useGameStore.getState().state;
+      if (currentState.phase !== 'title') {
+        parsed.phase = currentState.phase;
+      }
       useGameStore.getState().setState(parsed);
     } catch {
       // Torii unavailable — non-fatal, timeout fallback will handle it

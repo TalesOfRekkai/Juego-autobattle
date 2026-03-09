@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { useGameStore } from '../../store/dojoGameStore';
-import { useToastStore } from '../../store/toastStore';
 import * as BreedingLib from '../../lib/breeding';
 import * as Creatures from '../../lib/creatures';
 import * as Data from '../../lib/data';
@@ -11,10 +10,10 @@ import TopBar from '../layout/TopBar';
 import NavBar from '../layout/NavBar';
 
 export default function BreedingScreen() {
-    const addToast = useToastStore(s => s.addToast);
     const allCreatures = useGameStore(s => s.state.creatures);
     const buildings = useGameStore(s => s.state.buildings);
-    const addCreature = useGameStore(s => s.addCreature);
+    const breedOnchain = useGameStore(s => s.breedOnchain);
+    const isPending = useGameStore(s => s.isPending);
     const minBreedLevel = getEffectiveBreedMinLevel(buildings);
 
     const [breedA, setBreedA] = useState<Creature | null>(null);
@@ -35,13 +34,19 @@ export default function BreedingScreen() {
     const preview = BreedingLib.getPreview(breedA, breedB);
     const check = breedA && breedB ? BreedingLib.canBreed(breedA, breedB, buildings) : null;
 
-    const doBreed = () => {
-        if (!breedA || !breedB) return;
-        const newCreature = BreedingLib.breed(breedA, breedB, buildings);
-        if (!newCreature) { addToast('Error en la fusión', 'error'); return; }
-        addCreature(newCreature);
-        addToast(`¡${newCreature.name} ha nacido!`, 'success');
-        setFusionResult(newCreature);
+    const doBreed = async () => {
+        if (!breedA || !breedB || !preview) return;
+        const success = await breedOnchain(breedA.id, breedB.id);
+        if (success) {
+            // Show fusion result using the preview data
+            setFusionResult({
+                id: 0, name: preview.name, element: preview.element,
+                bodyType: 'quadruped', traits: [], type: 'fusion',
+                tier: preview.tier, stage: 1, level: 1, xp: 0,
+                hasBred: false, isOnExpedition: false, currentHP: 100,
+                parentA: breedA.name, parentB: breedB.name,
+            });
+        }
     };
 
     const filteredForSlot = available.filter(c => {
@@ -114,7 +119,9 @@ export default function BreedingScreen() {
 
                 {check?.ok && (
                     <div style={{ textAlign: 'center' }}>
-                        <button className="btn btn-gold btn-lg btn-block mt-md" onClick={doBreed}>🧬 ¡Fusionar!</button>
+                        <button className="btn btn-gold btn-lg btn-block mt-md" onClick={doBreed} disabled={isPending}>
+                            {isPending ? '⏳ Fusionando...' : '🧬 ¡Fusionar!'}
+                        </button>
                     </div>
                 )}
                 {check && !check.ok && (
