@@ -97,8 +97,31 @@ export function DojoProvider({ children }: { children: React.ReactNode }) {
         setIsPending(true);
         try {
             const callArray = Array.isArray(calls) ? calls : [calls];
-            const result = await account.execute(callArray);
-            await provider.waitForTransaction(result.transaction_hash);
+            // On Katana --dev.no-fee, provide explicit resource bounds to skip
+            // fee estimation. estimateFee simulates against the LAST block's
+            // timestamp, but time-dependent asserts (like expedition.duration)
+            // need the NEW block's timestamp.
+            const details = USE_CONTROLLER
+                ? undefined
+                : {
+                    resourceBounds: {
+                        l2_gas: { max_amount: 10000n, max_price_per_unit: 1n },
+                        l1_gas: { max_amount: 10000n, max_price_per_unit: 100000000000n },
+                        l1_data_gas: { max_amount: 0n, max_price_per_unit: 0n },
+                    },
+                } as any;
+            const result = await account.execute(callArray, details);
+            const receipt = await provider.waitForTransaction(result.transaction_hash);
+
+            // Check if transaction was reverted (Katana accepts but reverts on assert failure)
+            const receiptAny = receipt as any;
+            if (receiptAny.execution_status === 'REVERTED' || receiptAny.revert_reason) {
+                const reason = receiptAny.revert_reason || 'Transaction reverted';
+                // Extract human-readable error from felt string like 'Not enough essence'
+                const match = reason.match(/'([^']+)'/);
+                throw new Error(match ? match[1] : reason);
+            }
+
             return result.transaction_hash;
         } finally {
             setIsPending(false);
