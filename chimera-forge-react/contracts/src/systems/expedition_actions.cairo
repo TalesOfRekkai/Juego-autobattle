@@ -2,8 +2,8 @@ use starknet::ContractAddress;
 
 #[starknet::interface]
 pub trait IExpeditionActions<T> {
-    fn start_expedition(ref self: T, route_id: felt252, creature_ids: Span<u32>, duration: u64);
-    fn resolve_expedition(ref self: T, expedition_id: u32);
+    fn start_expedition(ref self: T, player: ContractAddress, route_id: felt252, creature_ids: Span<u32>, duration: u64);
+    fn resolve_expedition(ref self: T, player: ContractAddress, expedition_id: u32);
 }
 
 #[dojo::contract]
@@ -17,7 +17,7 @@ pub mod expedition_actions {
     use crate::constants;
 
     use dojo::model::ModelStorage;
-    use starknet::get_caller_address;
+    use starknet::ContractAddress;
     use starknet::get_block_timestamp;
     use core::poseidon::poseidon_hash_span;
 
@@ -27,12 +27,12 @@ pub mod expedition_actions {
         /// Duration is passed from frontend (route.duration * speed_buff) in seconds
         fn start_expedition(
             ref self: ContractState,
+            player: ContractAddress,
             route_id: felt252,
             creature_ids: Span<u32>,
             duration: u64,
         ) {
             let mut world = self.world_default();
-            let player = get_caller_address();
 
             let count = creature_ids.len();
             assert(count >= 1 && count <= 3, 'Need 1-3 creatures');
@@ -94,9 +94,8 @@ pub mod expedition_actions {
         }
 
         /// Resolve a completed expedition
-        fn resolve_expedition(ref self: ContractState, expedition_id: u32) {
+        fn resolve_expedition(ref self: ContractState, player: ContractAddress, expedition_id: u32) {
             let mut world = self.world_default();
-            let player = get_caller_address();
 
             let mut expedition: ExpeditionModel = world.read_model((player, expedition_id));
             assert(expedition.exists, 'Expedition not found');

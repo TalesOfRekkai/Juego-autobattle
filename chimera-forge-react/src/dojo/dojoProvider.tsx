@@ -10,10 +10,12 @@ import { RpcProvider, Account, type Call, shortString } from 'starknet';
 import { dojoConfig } from './dojoConfig';
 import { setContractAddresses } from './contractCalls';
 
-// ---- Katana dev account (prefunded account #1 — NOT sensitive, only for Slot/dev) ----
+// ---- Katana dev account (prefunded account — NOT sensitive, only for Slot/dev) ----
+// Using same account as deployer — this only signs transactions.
+// Player identity comes from the Controller wallet address (passed as contract param).
 const KATANA_DEV_ACCOUNT = {
-    address: '0x13d9ee239f33fea4f8785b9e3870ade909e20a9599ae7cd62c1c292b73af1b7',
-    privateKey: '0x1c9053c053edf324aec366a34c6901b1095b07af69495bef18d4f8b374c8907',
+    address: '0x6677fe62ee39c7b07401f754138502bab7fac99d2d3c5d37df7d1c6fab10819',
+    privateKey: '0x3e3979c1ed728490308054fe357a9f49cf67f80f9721f44cc57235129e090f4',
 };
 
 const USE_CONTROLLER = import.meta.env.VITE_USE_CONTROLLER === 'true';
@@ -118,19 +120,21 @@ export function DojoProvider({ children }: { children: React.ReactNode }) {
                 console.log('🔌 Controller: connect() returned', walletAccount?.address);
 
                 if (walletAccount) {
-                    // HYBRID: Controller account isn't deployed on Slot Katana,
-                    // so we use a Katana burner for execution while keeping
-                    // the Controller for authentication UI.
-                    // The burner address is the game identity (get_caller_address).
+                    // HYBRID: Burner executes transactions, but the player identity
+                    // is the Controller wallet address. Each Cartridge user gets their
+                    // own game state because contractCalls pass this address as the
+                    // `player` parameter to the contracts.
                     const burner = new Account({
                         provider,
                         address: KATANA_DEV_ACCOUNT.address,
                         signer: KATANA_DEV_ACCOUNT.privateKey,
                     });
                     setAccount(burner);
-                    setAddress(KATANA_DEV_ACCOUNT.address);
+                    // Use CONTROLLER address as player identity (for Torii + contract calls)
+                    setAddress(walletAccount.address);
                     console.log('🔌 Controller: Authenticated as', walletAccount.address);
                     console.log('🔌 Controller: Executing via burner', KATANA_DEV_ACCOUNT.address);
+                    console.log('🔌 Controller: Player identity =', walletAccount.address);
                 }
             } else {
                 const burner = new Account({
@@ -162,6 +166,7 @@ export function DojoProvider({ children }: { children: React.ReactNode }) {
 
     const disconnect = useCallback(() => {
         manuallyDisconnected.current = true;
+        controllerRef.current = null;
         setAccount(null);
         setAddress(null);
     }, []);

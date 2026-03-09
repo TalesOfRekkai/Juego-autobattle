@@ -1,5 +1,9 @@
 /* ============================================
    CONTRACT CALLS — TypeScript wrappers for onchain actions
+   
+   All functions accept a playerAddress (Controller wallet)
+   which is passed as the first contract parameter.
+   This allows each authenticated user to have their own game state.
    ============================================ */
 
 import { type Account, type Call, CallData } from 'starknet';
@@ -36,23 +40,24 @@ function buildCall(contractAddress: string, entrypoint: string, calldata: (strin
 
 // ==================== GAME ACTIONS ====================
 
-export function callNewGame(): Call {
-    return buildCall(gameActionsAddress, 'new_game', []);
+export function callNewGame(playerAddress: string): Call {
+    return buildCall(gameActionsAddress, 'new_game', [playerAddress]);
 }
 
-export function callHatchEgg(eggId: number): Call {
-    return buildCall(gameActionsAddress, 'hatch_egg', [eggId]);
+export function callHatchEgg(playerAddress: string, eggId: number): Call {
+    return buildCall(gameActionsAddress, 'hatch_egg', [playerAddress, eggId]);
 }
 
-export function callHealCreature(creatureId: number): Call {
-    return buildCall(gameActionsAddress, 'heal_creature', [creatureId]);
+export function callHealCreature(playerAddress: string, creatureId: number): Call {
+    return buildCall(gameActionsAddress, 'heal_creature', [playerAddress, creatureId]);
 }
 
-export function callBoostCreature(creatureId: number): Call {
-    return buildCall(gameActionsAddress, 'boost_creature', [creatureId]);
+export function callBoostCreature(playerAddress: string, creatureId: number): Call {
+    return buildCall(gameActionsAddress, 'boost_creature', [playerAddress, creatureId]);
 }
 
 export function callBreed(
+    playerAddress: string,
     creatureAId: number,
     creatureBId: number,
     fusionName: string,
@@ -60,6 +65,7 @@ export function callBreed(
     fusionBodyType: number,
 ): Call {
     return buildCall(gameActionsAddress, 'breed', [
+        playerAddress,
         creatureAId,
         creatureBId,
         toFelt252(fusionName),
@@ -68,19 +74,21 @@ export function callBreed(
     ]);
 }
 
-export function callUpgradeBuilding(buildingId: number): Call {
-    return buildCall(gameActionsAddress, 'upgrade_building', [buildingId]);
+export function callUpgradeBuilding(playerAddress: string, buildingId: number): Call {
+    return buildCall(gameActionsAddress, 'upgrade_building', [playerAddress, buildingId]);
 }
 
 // ==================== EXPEDITION ACTIONS ====================
 
 export function callStartExpedition(
+    playerAddress: string,
     routeId: string,
     creatureIds: number[],
     durationSeconds: number,
 ): Call {
     // Span<u32> is passed as: [length, ...items]
     return buildCall(expeditionActionsAddress, 'start_expedition', [
+        playerAddress,
         toFelt252(routeId),
         creatureIds.length,
         ...creatureIds,
@@ -88,8 +96,8 @@ export function callStartExpedition(
     ]);
 }
 
-export function callResolveExpedition(expeditionId: number): Call {
-    return buildCall(expeditionActionsAddress, 'resolve_expedition', [expeditionId]);
+export function callResolveExpedition(playerAddress: string, expeditionId: number): Call {
+    return buildCall(expeditionActionsAddress, 'resolve_expedition', [playerAddress, expeditionId]);
 }
 
 // ==================== EXECUTOR ====================

@@ -2,12 +2,12 @@ use starknet::ContractAddress;
 
 #[starknet::interface]
 pub trait IGameActions<T> {
-    fn new_game(ref self: T);
-    fn hatch_egg(ref self: T, egg_id: u32);
-    fn heal_creature(ref self: T, creature_id: u32);
-    fn boost_creature(ref self: T, creature_id: u32);
-    fn breed(ref self: T, creature_a_id: u32, creature_b_id: u32, fusion_name: felt252, fusion_element: u8, fusion_body_type: u8);
-    fn upgrade_building(ref self: T, building_id: u8);
+    fn new_game(ref self: T, player: ContractAddress);
+    fn hatch_egg(ref self: T, player: ContractAddress, egg_id: u32);
+    fn heal_creature(ref self: T, player: ContractAddress, creature_id: u32);
+    fn boost_creature(ref self: T, player: ContractAddress, creature_id: u32);
+    fn breed(ref self: T, player: ContractAddress, creature_a_id: u32, creature_b_id: u32, fusion_name: felt252, fusion_element: u8, fusion_body_type: u8);
+    fn upgrade_building(ref self: T, player: ContractAddress, building_id: u8);
 }
 
 #[dojo::contract]
@@ -20,16 +20,15 @@ pub mod game_actions {
     use crate::constants;
 
     use dojo::model::ModelStorage;
-    use starknet::get_caller_address;
+    use starknet::ContractAddress;
     use starknet::get_block_timestamp;
     use core::poseidon::poseidon_hash_span;
 
     #[abi(embed_v0)]
     impl GameActionsImpl of IGameActions<ContractState> {
-        /// Initialize a new game for the caller
-        fn new_game(ref self: ContractState) {
+        /// Initialize a new game for the given player
+        fn new_game(ref self: ContractState, player: ContractAddress) {
             let mut world = self.world_default();
-            let player = get_caller_address();
 
             // Check not already started
             let existing: PlayerState = world.read_model(player);
@@ -90,9 +89,8 @@ pub mod game_actions {
         }
 
         /// Hatch an egg: spend fragments, create creature
-        fn hatch_egg(ref self: ContractState, egg_id: u32) {
+        fn hatch_egg(ref self: ContractState, player: ContractAddress, egg_id: u32) {
             let mut world = self.world_default();
-            let player = get_caller_address();
 
             // Read egg
             let egg: EggModel = world.read_model((player, egg_id));
@@ -145,9 +143,8 @@ pub mod game_actions {
         }
 
         /// Heal a creature to full HP
-        fn heal_creature(ref self: ContractState, creature_id: u32) {
+        fn heal_creature(ref self: ContractState, player: ContractAddress, creature_id: u32) {
             let mut world = self.world_default();
-            let player = get_caller_address();
 
             let mut creature: CreatureModel = world.read_model((player, creature_id));
             assert(creature.name_hash != 0, 'Creature not found');
@@ -167,9 +164,8 @@ pub mod game_actions {
         }
 
         /// Boost a creature with XP
-        fn boost_creature(ref self: ContractState, creature_id: u32) {
+        fn boost_creature(ref self: ContractState, player: ContractAddress, creature_id: u32) {
             let mut world = self.world_default();
-            let player = get_caller_address();
 
             let mut creature: CreatureModel = world.read_model((player, creature_id));
             assert(creature.name_hash != 0, 'Creature not found');
@@ -195,6 +191,7 @@ pub mod game_actions {
         /// Breed two creatures to create a fusion creature directly
         fn breed(
             ref self: ContractState,
+            player: ContractAddress,
             creature_a_id: u32,
             creature_b_id: u32,
             fusion_name: felt252,
@@ -202,7 +199,6 @@ pub mod game_actions {
             fusion_body_type: u8,
         ) {
             let mut world = self.world_default();
-            let player = get_caller_address();
 
             let mut creature_a: CreatureModel = world.read_model((player, creature_a_id));
             let mut creature_b: CreatureModel = world.read_model((player, creature_b_id));
@@ -254,9 +250,8 @@ pub mod game_actions {
         }
 
         /// Upgrade a building (building_id: 0=incubator, 1=training, 2=expeditions, 3=fusion, 4=herbalist, 5=mine)
-        fn upgrade_building(ref self: ContractState, building_id: u8) {
+        fn upgrade_building(ref self: ContractState, player: ContractAddress, building_id: u8) {
             let mut world = self.world_default();
-            let player = get_caller_address();
 
             let mut buildings: BuildingState = world.read_model(player);
             let current_level = get_building_level(ref buildings, building_id);

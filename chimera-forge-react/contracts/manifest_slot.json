@@ -33,8 +33,8 @@
   },
   "contracts": [
     {
-      "address": "0x5d51f9fefc677e7b71df3f35bf03ed85f45bb0612f16ed78fc301562f847b62",
-      "class_hash": "0x3bfa82c94a114d6615f0889aa49e768826897df4b6a61b6719e95e0924d3948",
+      "address": "0x1490a2b7ee0fb23d9f4139d9f09cce2b00b74f96a67671c25f20bfafbc401bb",
+      "class_hash": "0x2d9d1cfd0e3625a6bb5e1af1fd989907cb73804a012d48a821662171fb06398",
       "init_calldata": [],
       "tag": "cf-expedition_actions",
       "selector": "0x50fe14672f81cf7701c8218730640271c73b646883eac94e219981fd2153b42",
@@ -45,8 +45,8 @@
       ]
     },
     {
-      "address": "0x25dac7762fd1e14d05eacfe838a9bea0630f18bf3fc68021c17c9e83792ece3",
-      "class_hash": "0x10a046db3e62b139cca70ce0e63c48612e7fbfe27af2f4e519b956fd6c64e2a",
+      "address": "0x65b3cbfd1d287b1a94576000c03d93f387f9d03d8790e02e716c9332ceb0e7e",
+      "class_hash": "0x606b36f059174c0e15a77d30d7a566f6346eb57a5b89430c1f208d11c5ee814",
       "init_calldata": [],
       "tag": "cf-game_actions",
       "selector": "0x69c2762232fec0495394544ab4dc416861225efcfc02f69c0465155ed4f1c25",
@@ -968,6 +968,10 @@
           "name": "start_expedition",
           "inputs": [
             {
+              "name": "player",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
               "name": "route_id",
               "type": "core::felt252"
             },
@@ -987,6 +991,10 @@
           "type": "function",
           "name": "resolve_expedition",
           "inputs": [
+            {
+              "name": "player",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
             {
               "name": "expedition_id",
               "type": "core::integer::u32"
@@ -1021,7 +1029,12 @@
         {
           "type": "function",
           "name": "new_game",
-          "inputs": [],
+          "inputs": [
+            {
+              "name": "player",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ],
           "outputs": [],
           "state_mutability": "external"
         },
@@ -1029,6 +1042,10 @@
           "type": "function",
           "name": "hatch_egg",
           "inputs": [
+            {
+              "name": "player",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
             {
               "name": "egg_id",
               "type": "core::integer::u32"
@@ -1042,6 +1059,10 @@
           "name": "heal_creature",
           "inputs": [
             {
+              "name": "player",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
               "name": "creature_id",
               "type": "core::integer::u32"
             }
@@ -1054,6 +1075,10 @@
           "name": "boost_creature",
           "inputs": [
             {
+              "name": "player",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
               "name": "creature_id",
               "type": "core::integer::u32"
             }
@@ -1065,6 +1090,10 @@
           "type": "function",
           "name": "breed",
           "inputs": [
+            {
+              "name": "player",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
             {
               "name": "creature_a_id",
               "type": "core::integer::u32"
@@ -1093,6 +1122,10 @@
           "type": "function",
           "name": "upgrade_building",
           "inputs": [
+            {
+              "name": "player",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
             {
               "name": "building_id",
               "type": "core::integer::u8"

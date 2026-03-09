@@ -1,7 +1,8 @@
 import type { Creature } from '../../types';
 import * as Creatures from '../../lib/creatures';
-import { getElementIcon, getElementName } from '../../lib/data';
+import { getElementIcon } from '../../lib/data';
 import { useNavigate } from 'react-router-dom';
+import { useT } from '../../lib/i18n';
 
 interface CreatureCardProps {
     creature: Creature;
@@ -12,6 +13,7 @@ interface CreatureCardProps {
 
 export default function CreatureCard({ creature, onClick, selected, showAdvantage }: CreatureCardProps) {
     const navigate = useNavigate();
+    const t = useT();
     const stats = Creatures.getStats(creature);
     const sprite = Creatures.getSprite(creature);
     const xpProgress = Creatures.getXPProgress(creature);
@@ -30,7 +32,7 @@ export default function CreatureCard({ creature, onClick, selected, showAdvantag
             data-element={creature.element}
             onClick={handleClick}
         >
-            {creature.isOnExpedition && <span className="expedition-badge">RUTA</span>}
+            {creature.isOnExpedition && <span className="expedition-badge">{t.detail_on_expedition}</span>}
             <span className={`creature-card__tier tier-${creature.tier}`}>{creature.tier}</span>
             {creature.hasBred && <span className="bred-badge">💍</span>}
             <img className="creature-card__sprite" src={sprite} alt={creature.name}
@@ -39,7 +41,7 @@ export default function CreatureCard({ creature, onClick, selected, showAdvantag
             <div className="creature-card__name">{creature.name}</div>
             <div className="creature-card__level">Lv.{creature.level} · S{creature.stage}</div>
             <div className="creature-card__info">
-                {getElementIcon(creature.element)} {getElementName(creature.element)}
+                {getElementIcon(creature.element)} {t.element_name[creature.element] || creature.element}
             </div>
             <div className="xp-bar-container" style={{ width: '100%' }}>
                 <div className="xp-bar-bg">
@@ -51,7 +53,7 @@ export default function CreatureCard({ creature, onClick, selected, showAdvantag
                     HP: {creature.currentHP}/{stats.hp}
                 </div>
             )}
-            {showAdvantage && <div className="advantage-hint">⚔ Ventaja</div>}
+            {showAdvantage && <div className="advantage-hint">⚔ {t.team_advantage}</div>}
         </div>
     );
 }

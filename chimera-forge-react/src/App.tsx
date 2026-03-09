@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useGameStore } from './store/dojoGameStore';
 import { DojoProvider, useDojo } from './dojo/dojoProvider';
@@ -213,6 +213,19 @@ function parseToriiData(data: any): any {
   return state;
 }
 
+/**
+ * RequireGame — redirects to TitleScreen if user is not connected or has no game.
+ * Only redirects when phase is explicitly 'title' (no game started on-chain).
+ */
+function RequireGame({ children }: { children: React.ReactElement }) {
+  const { isConnected } = useDojo();
+  const phase = useGameStore(s => s.state.phase);
+  if (!isConnected || phase === 'title') {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+}
+
 function AppContent() {
   const initData = useGameStore(s => s.initData);
   const dataLoaded = useGameStore(s => s.dataLoaded);
@@ -244,17 +257,17 @@ function AppContent() {
       <div id="screen-container">
         <Routes>
           <Route path="/" element={<TitleScreen />} />
-          <Route path="/hatch" element={<EggHatchScreen />} />
-          <Route path="/hub" element={<HubScreen />} />
-          <Route path="/routes" element={<RoutesScreen />} />
-          <Route path="/select-team" element={<SelectTeamScreen />} />
-          <Route path="/expeditions" element={<ExpeditionActiveScreen />} />
-          <Route path="/expedition-result" element={<ExpeditionResultScreen />} />
-          <Route path="/breeding" element={<BreedingScreen />} />
-          <Route path="/collection" element={<CollectionScreen />} />
-          <Route path="/creature/:id" element={<CreatureDetailScreen />} />
-          <Route path="/eggs" element={<EggsInventoryScreen />} />
-          <Route path="/settings" element={<SettingsScreen />} />
+          <Route path="/hatch" element={<RequireGame><EggHatchScreen /></RequireGame>} />
+          <Route path="/hub" element={<RequireGame><HubScreen /></RequireGame>} />
+          <Route path="/routes" element={<RequireGame><RoutesScreen /></RequireGame>} />
+          <Route path="/select-team" element={<RequireGame><SelectTeamScreen /></RequireGame>} />
+          <Route path="/expeditions" element={<RequireGame><ExpeditionActiveScreen /></RequireGame>} />
+          <Route path="/expedition-result" element={<RequireGame><ExpeditionResultScreen /></RequireGame>} />
+          <Route path="/breeding" element={<RequireGame><BreedingScreen /></RequireGame>} />
+          <Route path="/collection" element={<RequireGame><CollectionScreen /></RequireGame>} />
+          <Route path="/creature/:id" element={<RequireGame><CreatureDetailScreen /></RequireGame>} />
+          <Route path="/eggs" element={<RequireGame><EggsInventoryScreen /></RequireGame>} />
+          <Route path="/settings" element={<RequireGame><SettingsScreen /></RequireGame>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>

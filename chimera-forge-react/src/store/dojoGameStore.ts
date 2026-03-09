@@ -66,6 +66,8 @@ interface GameStore {
     hatchEgg: (eggIndex: number, isFirst?: boolean) => Creature | null;
     healCreature: (creatureId: number) => boolean;
     boostCreature: (creatureId: number) => boolean;
+    restCreature: (creatureId: number) => boolean;
+    getRestCooldown: (creatureId: number) => number;
     startExpedition: (routeId: string, creatureIds: number[]) => boolean;
     resolveExpedition: (expeditionId: number) => Promise<boolean>;
     addCreature: (creature: Creature) => void;
@@ -170,11 +172,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // ---- Onchain mutations ----
 
     startNewGameOnchain: async () => {
-        const { execute } = get();
-        if (!execute) return false;
+        const { execute, address } = get();
+        if (!execute || !address) return false;
         try {
             set({ isPending: true });
-            await execute(callNewGame());
+            await execute(callNewGame(address));
             useToastStore.getState().addToast('¡Nueva partida iniciada!', 'success');
             return true;
         } catch (error: any) {
@@ -193,13 +195,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     },
 
     hatchEggOnchain: async (eggId) => {
-        const { execute, state } = get();
-        if (!execute) return null;
+        const { execute, state, address } = get();
+        if (!execute || !address) return null;
         const egg = state.eggs.find(e => e.id === eggId);
         if (!egg) return null;
         try {
             set({ isPending: true });
-            await execute(callHatchEgg(eggId));
+            await execute(callHatchEgg(address, eggId));
             // Create a local creature object for immediate UI feedback
             const creature = Creatures.createCreature(egg.name);
             useToastStore.getState().addToast(`¡${egg.name} eclosionó!`, 'success');
@@ -214,11 +216,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     },
 
     healCreatureOnchain: async (creatureId) => {
-        const { execute } = get();
-        if (!execute) return false;
+        const { execute, address } = get();
+        if (!execute || !address) return false;
         try {
             set({ isPending: true });
-            await execute(callHealCreature(creatureId));
+            await execute(callHealCreature(address, creatureId));
             return true;
         } catch (error: any) {
             console.error('heal_creature failed:', error);
@@ -230,11 +232,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     },
 
     boostCreatureOnchain: async (creatureId) => {
-        const { execute } = get();
-        if (!execute) return false;
+        const { execute, address } = get();
+        if (!execute || !address) return false;
         try {
             set({ isPending: true });
-            await execute(callBoostCreature(creatureId));
+            await execute(callBoostCreature(address, creatureId));
             return true;
         } catch (error: any) {
             console.error('boost_creature failed:', error);
@@ -246,8 +248,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     },
 
     breedOnchain: async (creatureAId, creatureBId) => {
-        const { execute, state } = get();
-        if (!execute) return false;
+        const { execute, state, address } = get();
+        if (!execute || !address) return false;
         const creatureA = state.creatures.find(c => c.id === creatureAId);
         const creatureB = state.creatures.find(c => c.id === creatureBId);
         if (!creatureA || !creatureB) return false;
@@ -262,6 +264,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         try {
             set({ isPending: true });
             await execute(callBreed(
+                address,
                 creatureAId,
                 creatureBId,
                 fusionTemplate.name,
@@ -280,12 +283,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     },
 
     upgradeBuildingOnchain: async (buildingId) => {
-        const { execute } = get();
-        if (!execute) return false;
+        const { execute, address } = get();
+        if (!execute || !address) return false;
         const buildingU8 = BUILDING_ID_MAP[buildingId] ?? 0;
         try {
             set({ isPending: true });
-            await execute(callUpgradeBuilding(buildingU8));
+            await execute(callUpgradeBuilding(address, buildingU8));
             return true;
         } catch (error: any) {
             console.error('upgrade_building failed:', error);
@@ -297,13 +300,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     },
 
     startExpeditionOnchain: async (routeId, creatureIds) => {
-        const { execute } = get();
-        if (!execute) return false;
+        const { execute, address } = get();
+        if (!execute || !address) return false;
         const route = RoutesLib.getRoute(routeId);
         if (!route) return false;
         try {
             set({ isPending: true });
-            await execute(callStartExpedition(routeId, creatureIds, route.duration));
+            await execute(callStartExpedition(address, routeId, creatureIds, route.duration));
             return true;
         } catch (error: any) {
             console.error('start_expedition failed:', error);
@@ -315,8 +318,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     },
 
     resolveExpeditionOnchain: async (expeditionId) => {
-        const { execute, state } = get();
-        if (!execute) return false;
+        const { execute, state, address } = get();
+        if (!execute || !address) return false;
 
         // Clear previous result immediately
         set({ lastExpeditionResult: null });
@@ -329,7 +332,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
         try {
             set({ isPending: true });
-            await execute(callResolveExpedition(expeditionId));
+            await execute(callResolveExpedition(address, expeditionId));
 
             // Wait a moment for Torii to index the new state, then force a poll
             await new Promise(r => setTimeout(r, 2000));
@@ -443,6 +446,39 @@ export const useGameStore = create<GameStore>((set, get) => ({
         if (state.resources.essence < cost) return false;
         get().boostCreatureOnchain(creatureId);
         return true;
+    },
+
+    // Free rest: heals to 50% HP, 4-hour cooldown per creature
+    restCreature: (creatureId: number) => {
+        const { state } = get();
+        const creature = state.creatures.find(c => c.id === creatureId);
+        if (!creature) return false;
+        const stats = Creatures.getStats(creature);
+        if (creature.currentHP >= stats.hp) return false; // already full
+        // Check cooldown
+        const cooldownKey = `rekkaimon_rest_${creatureId}`;
+        const lastRest = parseInt(localStorage.getItem(cooldownKey) || '0', 10);
+        const now = Date.now();
+        if (now - lastRest < 4 * 60 * 60 * 1000) return false; // 4 hour cooldown
+        // Heal to 50%
+        const healTo = Math.max(creature.currentHP, Math.ceil(stats.hp * 0.5));
+        localStorage.setItem(cooldownKey, now.toString());
+        set({
+            state: {
+                ...state,
+                creatures: state.creatures.map(c =>
+                    c.id === creatureId ? { ...c, currentHP: healTo } : c
+                ),
+            },
+        });
+        return true;
+    },
+
+    getRestCooldown: (creatureId: number) => {
+        const cooldownKey = `rekkaimon_rest_${creatureId}`;
+        const lastRest = parseInt(localStorage.getItem(cooldownKey) || '0', 10);
+        const remaining = Math.max(0, 4 * 60 * 60 * 1000 - (Date.now() - lastRest));
+        return remaining;
     },
 
     startExpedition: (routeId: string, creatureIds: number[]) => {

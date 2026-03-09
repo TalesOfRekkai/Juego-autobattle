@@ -88,7 +88,7 @@ export default function CollectionScreen() {
                                                         {name}
                                                     </div>
                                                     <span className={`detail-tag tag-${template.element}`} style={{ fontSize: '8px' }}>
-                                                        {Data.getElementIcon(template.element)} {Data.getElementName(template.element)}
+                                                        {Data.getElementIcon(template.element)} {t.element_name[template.element] || template.element}
                                                     </span>
                                                     <span className={`detail-tag tier-${template.tier}`} style={{ fontSize: '8px' }}>{template.tier}</span>
                                                 </div>

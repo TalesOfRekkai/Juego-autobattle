@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGameStore } from '../../store/dojoGameStore';
 import { useToastStore } from '../../store/toastStore';
@@ -17,8 +17,21 @@ export default function CreatureDetailScreen() {
     const getCreatureById = useGameStore(s => s.getCreatureById);
     const healCreature = useGameStore(s => s.healCreature);
     const boostCreature = useGameStore(s => s.boostCreature);
+    const restCreature = useGameStore(s => s.restCreature);
+    const getRestCooldown = useGameStore(s => s.getRestCooldown);
 
     const creature = getCreatureById(Number(id));
+    const [restCooldown, setRestCooldown] = useState(0);
+
+    // Update rest cooldown timer
+    useEffect(() => {
+        if (!creature) return;
+        const update = () => setRestCooldown(getRestCooldown(creature.id));
+        update();
+        const interval = setInterval(update, 1000);
+        return () => clearInterval(interval);
+    }, [creature, getRestCooldown]);
+
     useEffect(() => {
         if (!creature) {
             navigate('/hub');
@@ -30,6 +43,10 @@ export default function CreatureDetailScreen() {
     const stats = Creatures.getStats(creature);
     const xpProgress = Creatures.getXPProgress(creature);
     const nextLevelXP = Data.xpForLevel(creature.level + 1);
+    const isHurt = creature.currentHP < stats.hp;
+    const restCooldownHrs = Math.floor(restCooldown / 3600000);
+    const restCooldownMin = Math.floor((restCooldown % 3600000) / 60000);
+    const restCooldownSec = Math.floor((restCooldown % 60000) / 1000);
 
     const handleHeal = () => {
         const success = healCreature(creature.id);
@@ -41,6 +58,12 @@ export default function CreatureDetailScreen() {
         const success = boostCreature(creature.id);
         if (success) addToast(t.detail_trained, 'success');
         else addToast(t.detail_no_essence, 'warning');
+    };
+
+    const handleRest = () => {
+        const success = restCreature(creature.id);
+        if (success) addToast(t.detail_rested, 'success');
+        else addToast(t.detail_rest_cooldown, 'warning');
     };
 
     return (
@@ -122,8 +145,20 @@ export default function CreatureDetailScreen() {
                 </div>
 
                 <div style={{ display: 'flex', gap: 'var(--space-sm)', flexWrap: 'wrap' }}>
-                    {creature.currentHP < stats.hp && (
+                    {isHurt && (
                         <button className="btn btn-success" onClick={handleHeal}>{t.detail_heal_cost}</button>
+                    )}
+                    {isHurt && (
+                        <button
+                            className="btn btn-secondary"
+                            onClick={handleRest}
+                            disabled={restCooldown > 0}
+                            style={{ opacity: restCooldown > 0 ? 0.5 : 1 }}
+                        >
+                            {restCooldown > 0
+                                ? t.detail_resting(restCooldownHrs, restCooldownMin, restCooldownSec)
+                                : t.detail_rest}
+                        </button>
                     )}
                     <button className="btn btn-secondary" onClick={handleBoost}>{t.detail_train_cost}</button>
                 </div>

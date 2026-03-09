@@ -13,7 +13,7 @@ interface I18nStore {
 }
 
 export const useI18n = create<I18nStore>((set) => ({
-    lang: (localStorage.getItem('rekkaimon_lang') as Language) || 'es',
+    lang: (localStorage.getItem('rekkaimon_lang') as Language) || 'en',
     setLang: (lang) => {
         localStorage.setItem('rekkaimon_lang', lang);
         set({ lang });
@@ -141,6 +141,10 @@ const translations = {
         detail_no_essence: 'No tienes suficiente esencia',
         detail_heal_cost: '🌿 Curar (2 Hierbas)',
         detail_train_cost: '🔮 Entrenar (5 Esencia → +15 XP)',
+        detail_rest: '💤 Descansar (gratis)',
+        detail_resting: (h: number, m: number, s: number) => `💤 Descanso en ${h}h ${m.toString().padStart(2, '0')}m`,
+        detail_rested: '¡Rekaimon descansado! Recuperó 50% HP',
+        detail_rest_cooldown: 'Descanso en enfriamiento',
         detail_total_power: 'Poder total',
         detail_level: (n: number) => `Nivel ${n}`,
         detail_traits: 'RASGOS',
@@ -447,6 +451,10 @@ const translations = {
         detail_no_essence: 'Not enough essence',
         detail_heal_cost: '🌿 Heal (2 Herbs)',
         detail_train_cost: '🔮 Train (5 Essence → +15 XP)',
+        detail_rest: '💤 Rest (free)',
+        detail_resting: (h: number, m: number, s: number) => `💤 Rest in ${h}h ${m.toString().padStart(2, '0')}m`,
+        detail_rested: 'Rekaimon rested! Recovered 50% HP',
+        detail_rest_cooldown: 'Rest on cooldown',
         detail_total_power: 'Total power',
         detail_level: (n: number) => `Level ${n}`,
         detail_traits: 'TRAITS',

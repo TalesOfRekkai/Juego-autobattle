@@ -76,19 +76,23 @@ export default function SelectTeamScreen() {
                         const isSelected = selected.includes(c.id);
                         const hasAdvantage = route.element !== 'mixed' && Data.hasElementAdvantage(c.element, route.element);
                         const stats = Creatures.getStats(c);
+                        const isDead = c.currentHP <= 0;
                         return (
                             <div key={c.id}
-                                className={`creature-card ${isSelected ? 'selected' : ''}`}
+                                className={`creature-card ${isSelected ? 'selected' : ''} ${isDead ? 'creature-card--disabled' : ''}`}
                                 data-element={c.element}
-                                onClick={() => toggleMember(c.id)}
+                                onClick={() => !isDead && toggleMember(c.id)}
+                                style={isDead ? { opacity: 0.4, cursor: 'not-allowed' } : {}}
                             >
                                 <img className="creature-card__sprite" src={Creatures.getSprite(c)} alt={c.name} />
                                 <div className="creature-card__name">{c.name}</div>
                                 <div className="creature-card__level">Lv.{c.level}</div>
                                 {hasAdvantage && <div className="advantage-hint">⚔ {t.team_advantage}</div>}
-                                {c.currentHP < stats.hp && (
+                                {isDead ? (
+                                    <div style={{ fontSize: '9px', color: 'var(--accent-danger)', fontWeight: 700 }}>💀 0 HP</div>
+                                ) : c.currentHP < stats.hp ? (
                                     <div style={{ fontSize: '9px', color: 'var(--accent-danger)' }}>HP: {c.currentHP}/{stats.hp}</div>
-                                )}
+                                ) : null}
                             </div>
                         );
                     })}

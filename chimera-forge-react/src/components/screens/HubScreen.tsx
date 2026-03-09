@@ -208,8 +208,8 @@ export default function HubScreen() {
                                         </div>
                                         {!isUnlocked && (
                                             <div style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'flex', gap: 'var(--space-md)' }}>
-                                                {cost.essence && <span>✨ {cost.essence}</span>}
-                                                {cost.crystals && <span>💎 {cost.crystals}</span>}
+                                                {cost.essence && <span>🔮 {cost.essence}</span>}
+                                                {cost.crystals && <span>⚡ {cost.crystals}</span>}
                                                 {cost.herbs && <span>🌿 {cost.herbs}</span>}
                                             </div>
                                         )}

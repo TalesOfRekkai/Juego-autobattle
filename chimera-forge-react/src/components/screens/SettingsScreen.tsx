@@ -22,6 +22,7 @@ export default function SettingsScreen() {
         console.log('🔴 Logging out...');
         disconnect();
         useGameStore.setState({
+            onchainLoaded: false,
             state: {
                 ...useGameStore.getState().state,
                 phase: 'title',
