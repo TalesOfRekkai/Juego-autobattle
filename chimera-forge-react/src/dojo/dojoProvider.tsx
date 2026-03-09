@@ -1,22 +1,26 @@
 /* ============================================
-   DOJO PROVIDER — Cartridge Controller integration
+   DOJO PROVIDER — Dual-mode authentication
    
-   Uses ControllerProvider from @cartridge/controller directly.
-   Uses `any` for account type to avoid version conflicts between
-   @cartridge/controller's internal starknet and our starknet dep.
+   LOCAL DEV:  Uses Katana burner account (no Controller needed)
+   PRODUCTION: Uses Cartridge Controller (wallet auth)
    ============================================ */
 
 import React, { createContext, useContext, useMemo, useState, useCallback, useEffect } from 'react';
-import { RpcProvider, type Call } from 'starknet';
-import ControllerProvider from '@cartridge/controller';
+import { RpcProvider, Account, type Call } from 'starknet';
 import { dojoConfig } from './dojoConfig';
 import { setContractAddresses } from './contractCalls';
 
+// ---- Katana dev account (first prefunded account — NOT sensitive, only for local dev) ----
+const KATANA_DEV_ACCOUNT = {
+    address: '0x127fd5f1fe78a71f8bcd1fec63e3fe2f0486b6ecd5c86a0466c3a21fa5cfcec',
+    privateKey: '0xc5b2fcab997346f3ea1c00b002ecf6f382c5f9c9659a3894eb783c5320f912',
+};
+
+const USE_CONTROLLER = import.meta.env.VITE_USE_CONTROLLER === 'true';
+
 // ---- Types ----
-// Using `any` for account to avoid WalletAccount type conflicts between
-// @cartridge/controller's bundled starknet and our direct starknet dependency
 interface DojoContextType {
-    account: any;
+    account: Account | null;
     address: string | null;
     isConnected: boolean;
     isConnecting: boolean;
@@ -29,14 +33,9 @@ interface DojoContextType {
 
 const DojoContext = createContext<DojoContextType | null>(null);
 
-// ---- Controller Provider (iframe-based auth) ----
-const controller = new ControllerProvider({
-    rpcUrl: dojoConfig.rpcUrl,
-});
-
 // ---- React Provider Component ----
 export function DojoProvider({ children }: { children: React.ReactNode }) {
-    const [account, setAccount] = useState<any>(null);
+    const [account, setAccount] = useState<Account | null>(null);
     const [address, setAddress] = useState<string | null>(null);
     const [isConnecting, setIsConnecting] = useState(false);
     const [isPending, setIsPending] = useState(false);
@@ -50,40 +49,45 @@ export function DojoProvider({ children }: { children: React.ReactNode }) {
             .then(manifest => {
                 if (manifest?.contracts) {
                     setContractAddresses(manifest);
+                    console.log('✅ Contract addresses loaded from manifest');
                 }
             })
             .catch(() => {
-                console.warn('No manifest_dev.json found — deploy contracts first.');
+                console.warn('⚠️ No manifest_dev.json found — deploy contracts first.');
             });
-    }, []);
-
-    // Check for existing session on mount
-    useEffect(() => {
-        controller.probe().then(walletAccount => {
-            if (walletAccount) {
-                setAccount(walletAccount);
-                setAddress(walletAccount.address);
-            }
-        }).catch(() => { });
     }, []);
 
     const connect = useCallback(async () => {
         setIsConnecting(true);
         try {
-            const walletAccount = await controller.connect();
-            if (walletAccount) {
-                setAccount(walletAccount);
-                setAddress(walletAccount.address);
+            if (USE_CONTROLLER) {
+                const { default: ControllerProvider } = await import('@cartridge/controller');
+                const controller = new ControllerProvider({
+                    rpcUrl: dojoConfig.rpcUrl,
+                });
+                const walletAccount = await controller.connect();
+                if (walletAccount) {
+                    setAccount(walletAccount as any);
+                    setAddress(walletAccount.address);
+                }
+            } else {
+                const burner = new Account({
+                    provider,
+                    address: KATANA_DEV_ACCOUNT.address,
+                    signer: KATANA_DEV_ACCOUNT.privateKey,
+                });
+                setAccount(burner);
+                setAddress(KATANA_DEV_ACCOUNT.address);
+                console.log('🎮 Connected with Katana burner account');
             }
         } catch (error) {
             console.error('Connection failed:', error);
         } finally {
             setIsConnecting(false);
         }
-    }, []);
+    }, [provider]);
 
-    const disconnect = useCallback(async () => {
-        await controller.disconnect();
+    const disconnect = useCallback(() => {
         setAccount(null);
         setAddress(null);
     }, []);

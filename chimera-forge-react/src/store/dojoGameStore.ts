@@ -58,6 +58,22 @@ interface GameStore {
     upgradeBuildingOnchain: (buildingId: string) => Promise<boolean>;
     startExpeditionOnchain: (routeId: string, creatureIds: number[]) => Promise<boolean>;
     resolveExpeditionOnchain: (expeditionId: number) => Promise<boolean>;
+
+    // Backward-compatible aliases (screens call these old names)
+    upgradeBuilding: (buildingId: string) => boolean;
+    hatchEgg: (eggIndex: number, isFirst?: boolean) => Creature | null;
+    healCreature: (creatureId: number) => boolean;
+    boostCreature: (creatureId: number) => boolean;
+    startExpedition: (routeId: string, creatureIds: number[]) => boolean;
+    resolveExpedition: (expeditionId: number) => boolean;
+    addCreature: (creature: Creature) => void;
+    startNewGame: (slotIndex?: number) => string;
+    getAllSlots: () => any[];
+    save: () => void;
+    loadSlot: (index: number) => boolean;
+    deleteSlot: (index: number) => void;
+    activeSlot: number;
+    tickExpeditions: () => void;
 }
 
 function createDefaultState(): GameState {
@@ -308,4 +324,57 @@ export const useGameStore = create<GameStore>((set, get) => ({
             set({ isPending: false });
         }
     },
+
+    // ---- Backward-compatible aliases ----
+    // These fire-and-forget the onchain versions so old screen code keeps working.
+
+    upgradeBuilding: (buildingId: string) => {
+        get().upgradeBuildingOnchain(buildingId);
+        return true; // optimistic
+    },
+
+    hatchEgg: (eggIndex: number, _isFirst?: boolean) => {
+        const egg = get().state.eggs[eggIndex];
+        if (!egg) return null;
+        get().hatchEggOnchain(egg.id);
+        // Return optimistic creature for animation
+        return Creatures.createCreature(egg.name);
+    },
+
+    healCreature: (creatureId: number) => {
+        get().healCreatureOnchain(creatureId);
+        return true;
+    },
+
+    boostCreature: (creatureId: number) => {
+        get().boostCreatureOnchain(creatureId);
+        return true;
+    },
+
+    startExpedition: (routeId: string, creatureIds: number[]) => {
+        get().startExpeditionOnchain(routeId, creatureIds);
+        return true;
+    },
+
+    resolveExpedition: (expeditionId: number) => {
+        get().resolveExpeditionOnchain(expeditionId);
+        return true;
+    },
+
+    addCreature: (_creature: Creature) => {
+        // No-op: creatures are added onchain via breed
+    },
+
+    startNewGame: (_slotIndex?: number) => {
+        get().startNewGameOnchain();
+        return 'onchain'; // return dummy egg name
+    },
+
+    // Slot/settings stubs (no save slots onchain)
+    getAllSlots: () => [],
+    save: () => { },
+    loadSlot: (_index: number) => true,
+    deleteSlot: (_index: number) => { },
+    activeSlot: 0,
+    tickExpeditions: () => { },
 }));

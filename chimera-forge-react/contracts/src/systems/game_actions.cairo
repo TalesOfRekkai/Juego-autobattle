@@ -46,12 +46,12 @@ pub mod game_actions {
                 medals_earned: 0,
             });
 
-            // Create empty resource inventory
+            // Create starter resource inventory (enough to hatch first egg)
             world.write_model(@ResourceInventory {
                 player,
-                essence: 0,
-                herbs: 0,
-                egg_fragments: 0,
+                essence: 5,
+                herbs: 3,
+                egg_fragments: constants::FRAGMENTS_PER_HATCH, // Enough for first hatch
                 crystals: 0,
             });
 

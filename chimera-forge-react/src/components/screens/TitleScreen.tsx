@@ -9,7 +9,9 @@ export default function TitleScreen() {
     const isPending = useGameStore(s => s.isPending);
     const startNewGameOnchain = useGameStore(s => s.startNewGameOnchain);
 
-    const hasGameStarted = state.phase !== 'title' && (state.creatures.length > 0 || state.eggs.length > 0);
+    const hasEggs = state.eggs.length > 0;
+    const hasCreatures = state.creatures.length > 0;
+    const hasGameStarted = state.phase !== 'title' && (hasCreatures || hasEggs);
 
     const handleConnect = async () => {
         await connect();
@@ -18,14 +20,15 @@ export default function TitleScreen() {
     const handleNewGame = async () => {
         const success = await startNewGameOnchain();
         if (success) {
-            // Wait a moment for Torii to index, then navigate
             setTimeout(() => navigate('/hatch', { state: { first: true } }), 1500);
         }
     };
 
     const handleContinue = () => {
-        if (state.eggs.length > 0 && state.creatures.length === 0) {
-            navigate('/hatch');
+        if (hasEggs && !hasCreatures) {
+            // Pass first egg's name so EggHatchScreen doesn't redirect back
+            const firstEgg = state.eggs[0];
+            navigate('/hatch', { state: { eggName: firstEgg.name, first: false, eggIndex: 0 } });
         } else {
             navigate('/hub');
         }
@@ -43,7 +46,6 @@ export default function TitleScreen() {
 
             <div style={{ width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: 'var(--space-md)', marginTop: 'var(--space-xl)' }}>
                 {!isConnected ? (
-                    /* --- Not connected: show Connect Wallet button --- */
                     <div className="card" style={{ textAlign: 'center', padding: 'var(--space-xl)' }}>
                         <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: 'var(--space-md)' }}>
                             Conecta tu wallet para jugar onchain
@@ -61,7 +63,6 @@ export default function TitleScreen() {
                         </div>
                     </div>
                 ) : (
-                    /* --- Connected: show game options --- */
                     <>
                         <div className="card" style={{ textAlign: 'center', padding: 'var(--space-sm)' }}>
                             <div style={{ fontSize: '9px', color: 'var(--accent-secondary)', fontFamily: 'var(--font-pixel)' }}>
@@ -75,15 +76,15 @@ export default function TitleScreen() {
                         {hasGameStarted ? (
                             <button
                                 className="btn btn-primary"
-                                onClick={handleContinue}
-                                style={{ width: '100%', padding: 'var(--space-md)' }}
+                                onClick={() => handleContinue()}
+                                style={{ width: '100%', padding: 'var(--space-md)', cursor: 'pointer' }}
                             >
                                 ▶️ Continuar Partida
                             </button>
                         ) : (
                             <button
                                 className="btn btn-primary"
-                                onClick={handleNewGame}
+                                onClick={() => handleNewGame()}
                                 disabled={isPending}
                                 style={{ width: '100%', padding: 'var(--space-md)' }}
                             >
@@ -91,11 +92,9 @@ export default function TitleScreen() {
                             </button>
                         )}
 
-                        {hasGameStarted && (
-                            <div style={{ fontSize: '9px', color: 'var(--text-muted)', textAlign: 'center' }}>
-                                🐾 {state.creatures.length} criaturas · 🗺️ {state.totalExpeditions} expediciones
-                            </div>
-                        )}
+                        <div style={{ fontSize: '9px', color: 'var(--text-muted)', textAlign: 'center' }}>
+                            🐾 {state.creatures.length} criaturas · 🥚 {state.eggs.length} huevos · 🗺️ {state.totalExpeditions} expediciones
+                        </div>
                     </>
                 )}
             </div>
