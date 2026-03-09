@@ -33,6 +33,12 @@ dist-ssr
 contracts/target/
 contracts/manifests/
 contracts/manifest_dev.json
+contracts/manifest_slot.json
+contracts/manifest_sepolia.json
 public/manifest_dev.json
 *.katana.db
+
+# Dojo deployment configs with private keys
+contracts/dojo_sepolia.toml
+contracts/dojo_slot.toml
 

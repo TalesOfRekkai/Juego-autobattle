@@ -5,7 +5,7 @@
    PRODUCTION: Uses Cartridge Controller (wallet auth)
    ============================================ */
 
-import React, { createContext, useContext, useMemo, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import { RpcProvider, Account, type Call } from 'starknet';
 import { dojoConfig } from './dojoConfig';
 import { setContractAddresses } from './contractCalls';
@@ -57,18 +57,67 @@ export function DojoProvider({ children }: { children: React.ReactNode }) {
             });
     }, []);
 
+    // Keep Controller instance alive across renders so probe()/reconnect works
+    const controllerRef = useRef<any>(null);
+
     const connect = useCallback(async () => {
         setIsConnecting(true);
         try {
             if (USE_CONTROLLER) {
-                const { default: ControllerProvider } = await import('@cartridge/controller');
-                const controller = new ControllerProvider({
-                    rpcUrl: dojoConfig.rpcUrl,
-                });
+                console.log('🔌 Controller: Starting connection...');
+                console.log('🔌 Controller: RPC URL =', dojoConfig.rpcUrl);
+
+                const { default: Controller } = await import('@cartridge/controller');
+
+                // Session policies — pre-approved actions for seamless UX
+                const policies = {
+                    contracts: {
+                        '0x25dac7762fd1e14d05eacfe838a9bea0630f18bf3fc68021c17c9e83792ece3': {
+                            name: 'Game Actions',
+                            methods: [
+                                { name: 'New Game', entrypoint: 'new_game' },
+                                { name: 'Hatch Egg', entrypoint: 'hatch_egg' },
+                                { name: 'Heal Creature', entrypoint: 'heal_creature' },
+                                { name: 'Boost Creature', entrypoint: 'boost_creature' },
+                                { name: 'Breed', entrypoint: 'breed' },
+                                { name: 'Upgrade Building', entrypoint: 'upgrade_building' },
+                            ],
+                        },
+                        '0x5d51f9fefc677e7b71df3f35bf03ed85f45bb0612f16ed78fc301562f847b62': {
+                            name: 'Expedition Actions',
+                            methods: [
+                                { name: 'Start Expedition', entrypoint: 'start_expedition' },
+                                { name: 'Resolve Expedition', entrypoint: 'resolve_expedition' },
+                            ],
+                        },
+                    },
+                };
+
+                // Reuse existing Controller instance or create a new one
+                if (!controllerRef.current) {
+                    controllerRef.current = new Controller({
+                        policies,
+                        // Register the Slot Katana chain so the Controller knows the RPC
+                        chains: [{ rpcUrl: dojoConfig.rpcUrl }],
+                        // Slot project name — used by the Controller for profile/paymaster
+                        slot: 'rekkaimon-forge',
+                        namespace: 'cf',
+                    });
+                }
+
+                const controller = controllerRef.current;
+
+                console.log('🔌 Controller: Calling connect()...');
                 const walletAccount = await controller.connect();
+                console.log('🔌 Controller: connect() returned', walletAccount?.address);
+
                 if (walletAccount) {
+                    // Use the Controller account DIRECTLY for execution.
+                    // ControllerAccount.execute() delegates to the keychain iframe
+                    // which handles session keys, account deploy, and paymaster internally.
                     setAccount(walletAccount as any);
                     setAddress(walletAccount.address);
+                    console.log('🔌 Controller: Authenticated + executing as', walletAccount.address);
                 }
             } else {
                 const burner = new Account({
@@ -109,31 +158,48 @@ export function DojoProvider({ children }: { children: React.ReactNode }) {
         setIsPending(true);
         try {
             const callArray = Array.isArray(calls) ? calls : [calls];
-            // On Katana --dev.no-fee, provide explicit resource bounds to skip
-            // fee estimation. estimateFee simulates against the LAST block's
-            // timestamp, but time-dependent asserts (like expedition.duration)
-            // need the NEW block's timestamp.
-            const details = USE_CONTROLLER
-                ? undefined
-                : {
-                    resourceBounds: {
-                        l2_gas: { max_amount: 10000n, max_price_per_unit: 1n },
-                        l1_gas: { max_amount: 10000n, max_price_per_unit: 100000000000n },
-                        l1_data_gas: { max_amount: 0n, max_price_per_unit: 0n },
-                    },
-                } as any;
-            const result = await account.execute(callArray, details);
-            const receipt = await provider.waitForTransaction(result.transaction_hash);
 
-            // Check if transaction was reverted (Katana accepts but reverts on assert failure)
-            const receiptAny = receipt as any;
-            if (receiptAny.execution_status === 'REVERTED' || receiptAny.revert_reason) {
-                const reason = receiptAny.revert_reason || 'Transaction reverted';
-                // Extract human-readable error from felt string like 'Not enough essence'
-                const match = reason.match(/'([^']+)'/);
-                throw new Error(match ? match[1] : reason);
+            console.log('🎮 Execute:', callArray.length, 'calls');
+            console.log('🎮 Execute: Calls:', JSON.stringify(callArray, (_, v) => typeof v === 'bigint' ? v.toString() : v));
+
+            let result;
+            try {
+                if (USE_CONTROLLER) {
+                    // Controller handles gas estimation, paymaster, and signing internally
+                    result = await account.execute(callArray);
+                } else {
+                    // Burner on local Katana needs explicit resource bounds (no-fee mode)
+                    const details = {
+                        resourceBounds: {
+                            l2_gas: { max_amount: 100000n, max_price_per_unit: 100n },
+                            l1_gas: { max_amount: 100000n, max_price_per_unit: 100000000000n },
+                            l1_data_gas: { max_amount: 0n, max_price_per_unit: 0n },
+                        },
+                    } as any;
+                    result = await account.execute(callArray, details);
+                }
+                console.log('🎮 Execute: tx hash =', result.transaction_hash);
+            } catch (execError: any) {
+                console.error('🎮 Execute: account.execute() FAILED:', execError?.message || execError);
+                throw execError;
             }
 
+            // Controller accounts handle receipts internally; for burner we check manually
+            if (!USE_CONTROLLER) {
+                const receipt = await provider.waitForTransaction(result.transaction_hash);
+                console.log('🎮 Execute: receipt =', JSON.stringify(receipt, (_, v) => typeof v === 'bigint' ? v.toString() : v).slice(0, 500));
+
+                // Check if transaction was reverted (Katana accepts but reverts on assert failure)
+                const receiptAny = receipt as any;
+                if (receiptAny.execution_status === 'REVERTED' || receiptAny.revert_reason) {
+                    const reason = receiptAny.revert_reason || 'Transaction reverted';
+                    const match = reason.match(/'([^']+)'/);
+                    console.error('🎮 Execute: REVERTED:', reason);
+                    throw new Error(match ? match[1] : reason);
+                }
+            }
+
+            console.log('🎮 Execute: ✅ SUCCESS');
             return result.transaction_hash;
         } finally {
             setIsPending(false);

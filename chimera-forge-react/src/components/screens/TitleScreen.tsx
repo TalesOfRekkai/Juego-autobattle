@@ -21,11 +21,17 @@ export default function TitleScreen() {
     };
 
     const handleNewGame = async () => {
+        console.log('🎯 handleNewGame: calling startNewGameOnchain...');
         const result = await startNewGameOnchain();
+        console.log('🎯 handleNewGame: result =', result);
         if (result === 'existing') {
+            console.log('🎯 handleNewGame: existing game, navigating to /hub');
             navigate('/hub');
         } else if (result) {
-            setTimeout(() => navigate('/hatch', { state: { first: true } }), 1500);
+            console.log('🎯 handleNewGame: new game, navigating to /hatch');
+            navigate('/hatch', { state: { first: true } });
+        } else {
+            console.log('🎯 handleNewGame: FAILED, not navigating');
         }
     };
 
