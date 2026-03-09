@@ -10,10 +10,10 @@ import { RpcProvider, Account, type Call, shortString } from 'starknet';
 import { dojoConfig } from './dojoConfig';
 import { setContractAddresses } from './contractCalls';
 
-// ---- Katana dev account (first prefunded account — NOT sensitive, only for local dev) ----
+// ---- Katana dev account (prefunded account #1 — NOT sensitive, only for Slot/dev) ----
 const KATANA_DEV_ACCOUNT = {
-    address: '0x127fd5f1fe78a71f8bcd1fec63e3fe2f0486b6ecd5c86a0466c3a21fa5cfcec',
-    privateKey: '0xc5b2fcab997346f3ea1c00b002ecf6f382c5f9c9659a3894eb783c5320f912',
+    address: '0x13d9ee239f33fea4f8785b9e3870ade909e20a9599ae7cd62c1c292b73af1b7',
+    privateKey: '0x1c9053c053edf324aec366a34c6901b1095b07af69495bef18d4f8b374c8907',
 };
 
 const USE_CONTROLLER = import.meta.env.VITE_USE_CONTROLLER === 'true';

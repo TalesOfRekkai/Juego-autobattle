@@ -3,7 +3,6 @@
    ============================================ */
 
 import { type Account, type Call, CallData } from 'starknet';
-import { dojoConfig } from './dojoConfig';
 
 // Contract addresses — filled after deployment via manifest
 // These will be set dynamically from the manifest

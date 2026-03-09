@@ -7,7 +7,7 @@
    ============================================ */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import type { Creature, Egg, ResourceInventory, Expedition, GameState } from '../types';
+import type { Creature, Egg, Expedition, GameState } from '../types';
 
 // felt252 short string → JS string
 function fromFelt252(felt: string | bigint): string {

@@ -44,3 +44,5 @@ public/manifest_dev.json
 contracts/dojo_sepolia.toml
 contracts/dojo_slot.toml
 
+
+.vercel
