@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useGameStore } from '../../store/gameStore';
+import { useGameStore } from '../../store/dojoGameStore';
 import { useToastStore } from '../../store/toastStore';
 import * as BreedingLib from '../../lib/breeding';
 import * as Creatures from '../../lib/creatures';

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useGameStore } from '../../store/gameStore';
+import { useGameStore } from '../../store/dojoGameStore';
 import { useToastStore } from '../../store/toastStore';
 import * as RoutesLib from '../../lib/routes';
 import * as Data from '../../lib/data';

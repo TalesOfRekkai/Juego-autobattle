@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGameStore } from '../../store/gameStore';
+import { useGameStore } from '../../store/dojoGameStore';
 import { useToastStore } from '../../store/toastStore';
 import * as Data from '../../lib/data';
 import * as Resources from '../../lib/resources';

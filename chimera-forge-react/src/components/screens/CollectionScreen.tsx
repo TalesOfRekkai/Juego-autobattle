@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useGameStore } from '../../store/gameStore';
+import { useGameStore } from '../../store/dojoGameStore';
 import * as Data from '../../lib/data';
 import * as Missions from '../../lib/missions';
 import TopBar from '../layout/TopBar';

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGameStore } from '../../store/gameStore';
+import { useGameStore } from '../../store/dojoGameStore';
 import * as RoutesLib from '../../lib/routes';
 import { MAP_DEFS } from '../../lib/routes';
 import * as Data from '../../lib/data';
@@ -17,21 +17,21 @@ function formatTime(ms: number) {
 export default function RoutesScreen() {
     const navigate = useNavigate();
     const state = useGameStore(s => s.state);
-    const getExpeditionTimeLeft = useGameStore(s => s.getExpeditionTimeLeft);
     const resolveExpedition = useGameStore(s => s.resolveExpedition);
     const routes = RoutesLib.getAllRoutes();
 
     const [selectedMapId, setSelectedMapId] = useState<string | null>(null);
 
     const expeditions = state.expeditions;
-    const completed = expeditions.filter(e => e.resolved);
+    // Expeditions ready to claim (timer expired)
+    const ready = expeditions.filter(e => !e.resolved && (e.startTime + e.duration) <= Date.now());
 
     const selectedMap = MAP_DEFS.find(m => m.id === selectedMapId);
     const mapRoutes = selectedMapId ? routes.filter(r => r.mapId === selectedMapId) : [];
 
     const handleResolve = (expId: number) => {
-        const results = resolveExpedition(expId);
-        if (results) navigate('/expedition-result', { state: { results } });
+        resolveExpedition(expId);
+        navigate('/expeditions');
     };
 
     // Map gallery view — horizontal row of small thumbnail cards
@@ -43,13 +43,13 @@ export default function RoutesScreen() {
                     <div className="section-header">🗺️ Mapas del Mundo</div>
 
                     {/* Expedition notifications */}
-                    {completed.length > 0 && (
+                    {ready.length > 0 && (
                         <div className="card" style={{ background: 'linear-gradient(135deg, rgba(115,218,202,0.1), rgba(115,218,202,0.02))', borderColor: 'var(--accent-success)', marginBottom: 'var(--space-md)', cursor: 'pointer' }}
                             onClick={() => navigate('/expeditions')}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
                                 <span className="pulse-dot"></span>
                                 <span style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', color: 'var(--accent-success)' }}>
-                                    {completed.length} expedición{completed.length > 1 ? 'es' : ''} completada{completed.length > 1 ? 's' : ''} — ¡Recoge!
+                                    {ready.length} expedición{ready.length > 1 ? 'es' : ''} completada{ready.length > 1 ? 's' : ''} — ¡Recoge!
                                 </span>
                             </div>
                         </div>
@@ -158,7 +158,10 @@ export default function RoutesScreen() {
                                     <div className="map-exp-item__info">
                                         <div className="map-exp-item__name">{route.name}</div>
                                         <div className="map-exp-item__status">
-                                            ⏳ {formatTime(getExpeditionTimeLeft(exp))}
+                                            {(() => {
+                                                const tl = Math.max(0, (exp.startTime + exp.duration) - Date.now());
+                                                return tl <= 0 ? '✓ ¡Lista!' : `⏳ ${formatTime(tl)}`;
+                                            })()}
                                         </div>
                                     </div>
                                 </div>

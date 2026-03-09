@@ -1,4 +1,4 @@
-import { useGameStore } from '../../store/gameStore';
+import { useGameStore } from '../../store/dojoGameStore';
 
 export default function TopBar() {
     const resources = useGameStore(s => s.state.resources);

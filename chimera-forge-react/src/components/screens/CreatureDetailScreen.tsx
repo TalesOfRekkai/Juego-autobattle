@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGameStore } from '../../store/gameStore';
+import { useGameStore } from '../../store/dojoGameStore';
 import { useToastStore } from '../../store/toastStore';
 import * as Creatures from '../../lib/creatures';
 import * as Data from '../../lib/data';
