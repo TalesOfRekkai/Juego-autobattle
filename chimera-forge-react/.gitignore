@@ -31,5 +31,7 @@ dist-ssr
 # Dojo build artifacts
 contracts/target/
 contracts/manifests/
+contracts/manifest_dev.json
+public/manifest_dev.json
 *.katana.db
 
