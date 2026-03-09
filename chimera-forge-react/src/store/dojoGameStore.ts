@@ -12,7 +12,7 @@ import * as Data from '../lib/data';
 import * as Creatures from '../lib/creatures';
 import * as Resources from '../lib/resources';
 import * as RoutesLib from '../lib/routes';
-import { createDefaultBuildings } from '../lib/buildings';
+import { createDefaultBuildings, BUILDING_DEFS } from '../lib/buildings';
 import { useToastStore } from './toastStore';
 import {
     callNewGame, callHatchEgg, callHealCreature,
@@ -209,7 +209,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         try {
             set({ isPending: true });
             await execute(callHealCreature(creatureId));
-            useToastStore.getState().addToast('Criatura curada', 'success');
             return true;
         } catch (error: any) {
             console.error('heal_creature failed:', error);
@@ -226,7 +225,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         try {
             set({ isPending: true });
             await execute(callBoostCreature(creatureId));
-            useToastStore.getState().addToast('¡Entrenamiento completado!', 'success');
             return true;
         } catch (error: any) {
             console.error('boost_creature failed:', error);
@@ -278,7 +276,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         try {
             set({ isPending: true });
             await execute(callUpgradeBuilding(buildingU8));
-            useToastStore.getState().addToast('Edificio mejorado', 'success');
             return true;
         } catch (error: any) {
             console.error('upgrade_building failed:', error);
@@ -297,7 +294,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         try {
             set({ isPending: true });
             await execute(callStartExpedition(routeId, creatureIds, route.duration));
-            useToastStore.getState().addToast('¡Expedición iniciada!', 'success');
             return true;
         } catch (error: any) {
             console.error('start_expedition failed:', error);
@@ -326,27 +322,48 @@ export const useGameStore = create<GameStore>((set, get) => ({
     },
 
     // ---- Backward-compatible aliases ----
-    // These fire-and-forget the onchain versions so old screen code keeps working.
+    // Check resources client-side first, then fire onchain call.
 
     upgradeBuilding: (buildingId: string) => {
+        const { state } = get();
+        // Look up building def and current level to check costs
+        const def = BUILDING_DEFS.find(b => b.id === buildingId);
+        const currentLevel = (state.buildings as any)?.[buildingId] || 0;
+        if (!def || currentLevel >= def.levels.length) return false; // max level
+        const cost = def.levels[currentLevel].cost;
+        if ((cost.essence || 0) > state.resources.essence) return false;
+        if ((cost.crystals || 0) > state.resources.crystals) return false;
+        if ((cost.herbs || 0) > state.resources.herbs) return false;
         get().upgradeBuildingOnchain(buildingId);
-        return true; // optimistic
+        return true;
     },
 
     hatchEgg: (eggIndex: number, _isFirst?: boolean) => {
-        const egg = get().state.eggs[eggIndex];
+        const { state } = get();
+        const egg = state.eggs[eggIndex];
         if (!egg) return null;
+        // Check fragments (cost is 10 at incubator level 0)
+        const incubatorLevel = state.buildings?.incubator || 0;
+        const cost = incubatorLevel >= 3 ? 0 : Math.max(0, 10 - incubatorLevel);
+        if (state.resources.eggFragments < cost) return null;
         get().hatchEggOnchain(egg.id);
-        // Return optimistic creature for animation
         return Creatures.createCreature(egg.name);
     },
 
     healCreature: (creatureId: number) => {
+        const { state } = get();
+        const herbalistLevel = state.buildings?.herbalist || 0;
+        const cost = herbalistLevel >= 1 ? 1 : 2;
+        if (state.resources.herbs < cost) return false;
         get().healCreatureOnchain(creatureId);
         return true;
     },
 
     boostCreature: (creatureId: number) => {
+        const { state } = get();
+        const trainingLevel = state.buildings?.training || 0;
+        const cost = trainingLevel >= 3 ? 3 : 5;
+        if (state.resources.essence < cost) return false;
         get().boostCreatureOnchain(creatureId);
         return true;
     },
