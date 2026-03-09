@@ -27,6 +27,8 @@ dist-ssr
 .env
 .env.local
 .env.slot
+.env.katana
+.env.sepolia
 .env.*.local
 
 # Dojo build artifacts

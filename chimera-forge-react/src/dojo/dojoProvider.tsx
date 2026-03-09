@@ -6,7 +6,7 @@
    ============================================ */
 
 import React, { createContext, useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
-import { RpcProvider, Account, type Call } from 'starknet';
+import { RpcProvider, Account, type Call, shortString } from 'starknet';
 import { dojoConfig } from './dojoConfig';
 import { setContractAddresses } from './contractCalls';
 
@@ -95,10 +95,16 @@ export function DojoProvider({ children }: { children: React.ReactNode }) {
 
                 // Reuse existing Controller instance or create a new one
                 if (!controllerRef.current) {
+                    // Compute Slot Katana chain ID — matches how the Controller
+                    // resolves api.cartridge.gg/x/rekkaimon-forge/katana internally
+                    const slotChainId = shortString.encodeShortString('WP_REKKAIMON_FORGE');
+
                     controllerRef.current = new Controller({
                         policies,
                         // Register the Slot Katana chain so the Controller knows the RPC
                         chains: [{ rpcUrl: dojoConfig.rpcUrl }],
+                        // CRITICAL: without this, Controller defaults to SN_MAIN (Mainnet)
+                        defaultChainId: slotChainId,
                         // Slot project name — used by the Controller for profile/paymaster
                         slot: 'rekkaimon-forge',
                         namespace: 'cf',
@@ -112,12 +118,19 @@ export function DojoProvider({ children }: { children: React.ReactNode }) {
                 console.log('🔌 Controller: connect() returned', walletAccount?.address);
 
                 if (walletAccount) {
-                    // Use the Controller account DIRECTLY for execution.
-                    // ControllerAccount.execute() delegates to the keychain iframe
-                    // which handles session keys, account deploy, and paymaster internally.
-                    setAccount(walletAccount as any);
-                    setAddress(walletAccount.address);
-                    console.log('🔌 Controller: Authenticated + executing as', walletAccount.address);
+                    // HYBRID: Controller account isn't deployed on Slot Katana,
+                    // so we use a Katana burner for execution while keeping
+                    // the Controller for authentication UI.
+                    // The burner address is the game identity (get_caller_address).
+                    const burner = new Account({
+                        provider,
+                        address: KATANA_DEV_ACCOUNT.address,
+                        signer: KATANA_DEV_ACCOUNT.privateKey,
+                    });
+                    setAccount(burner);
+                    setAddress(KATANA_DEV_ACCOUNT.address);
+                    console.log('🔌 Controller: Authenticated as', walletAccount.address);
+                    console.log('🔌 Controller: Executing via burner', KATANA_DEV_ACCOUNT.address);
                 }
             } else {
                 const burner = new Account({
@@ -162,41 +175,34 @@ export function DojoProvider({ children }: { children: React.ReactNode }) {
             console.log('🎮 Execute:', callArray.length, 'calls');
             console.log('🎮 Execute: Calls:', JSON.stringify(callArray, (_, v) => typeof v === 'bigint' ? v.toString() : v));
 
+            // Explicit resource bounds for Katana (no-fee mode)
+            const details = {
+                resourceBounds: {
+                    l2_gas: { max_amount: 100000n, max_price_per_unit: 100n },
+                    l1_gas: { max_amount: 100000n, max_price_per_unit: 100000000000n },
+                    l1_data_gas: { max_amount: 0n, max_price_per_unit: 0n },
+                },
+            } as any;
+
             let result;
             try {
-                if (USE_CONTROLLER) {
-                    // Controller handles gas estimation, paymaster, and signing internally
-                    result = await account.execute(callArray);
-                } else {
-                    // Burner on local Katana needs explicit resource bounds (no-fee mode)
-                    const details = {
-                        resourceBounds: {
-                            l2_gas: { max_amount: 100000n, max_price_per_unit: 100n },
-                            l1_gas: { max_amount: 100000n, max_price_per_unit: 100000000000n },
-                            l1_data_gas: { max_amount: 0n, max_price_per_unit: 0n },
-                        },
-                    } as any;
-                    result = await account.execute(callArray, details);
-                }
+                result = await account.execute(callArray, details);
                 console.log('🎮 Execute: tx hash =', result.transaction_hash);
             } catch (execError: any) {
                 console.error('🎮 Execute: account.execute() FAILED:', execError?.message || execError);
                 throw execError;
             }
 
-            // Controller accounts handle receipts internally; for burner we check manually
-            if (!USE_CONTROLLER) {
-                const receipt = await provider.waitForTransaction(result.transaction_hash);
-                console.log('🎮 Execute: receipt =', JSON.stringify(receipt, (_, v) => typeof v === 'bigint' ? v.toString() : v).slice(0, 500));
+            const receipt = await provider.waitForTransaction(result.transaction_hash);
+            console.log('🎮 Execute: receipt =', JSON.stringify(receipt, (_, v) => typeof v === 'bigint' ? v.toString() : v).slice(0, 500));
 
-                // Check if transaction was reverted (Katana accepts but reverts on assert failure)
-                const receiptAny = receipt as any;
-                if (receiptAny.execution_status === 'REVERTED' || receiptAny.revert_reason) {
-                    const reason = receiptAny.revert_reason || 'Transaction reverted';
-                    const match = reason.match(/'([^']+)'/);
-                    console.error('🎮 Execute: REVERTED:', reason);
-                    throw new Error(match ? match[1] : reason);
-                }
+            // Check if transaction was reverted (Katana accepts but reverts on assert failure)
+            const receiptAny = receipt as any;
+            if (receiptAny.execution_status === 'REVERTED' || receiptAny.revert_reason) {
+                const reason = receiptAny.revert_reason || 'Transaction reverted';
+                const match = reason.match(/'([^']+)'/);
+                console.error('🎮 Execute: REVERTED:', reason);
+                throw new Error(match ? match[1] : reason);
             }
 
             console.log('🎮 Execute: ✅ SUCCESS');
