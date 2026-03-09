@@ -50,6 +50,17 @@ function DojoSync() {
     useGameStore.getState().setExecute(execute);
   }, [execute]);
 
+  // Timeout fallback: if Torii doesn't respond in 5s, let the app load anyway
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (!useGameStore.getState().onchainLoaded) {
+        console.warn('Torii timeout — loading app with default state');
+        useGameStore.setState({ onchainLoaded: true });
+      }
+    }, 5000);
+    return () => clearTimeout(timeout);
+  }, []);
+
   // Torii polling — uses getState().setState to avoid triggering re-renders
   const pollTorii = useCallback(async () => {
     if (!address) return;
@@ -90,7 +101,7 @@ function DojoSync() {
       const parsed = parseToriiData(data);
       useGameStore.getState().setState(parsed);
     } catch {
-      // Torii unavailable — non-fatal
+      // Torii unavailable — non-fatal, timeout fallback will handle it
     }
   }, [address]);
 
@@ -193,18 +204,21 @@ function parseToriiData(data: any): any {
 function AppContent() {
   const initData = useGameStore(s => s.initData);
   const dataLoaded = useGameStore(s => s.dataLoaded);
+  const onchainLoaded = useGameStore(s => s.onchainLoaded);
 
   useEffect(() => {
     initData();
   }, [initData]);
 
-  if (!dataLoaded) {
+  if (!dataLoaded || !onchainLoaded) {
     return (
       <div id="app">
         <div id="screen-container">
           <div className="screen" style={{ justifyContent: 'center', alignItems: 'center' }}>
             <div className="title-logo">CHIMERA<br />FORGE</div>
-            <div style={{ color: 'var(--text-secondary)', marginTop: 'var(--space-md)' }}>Cargando...</div>
+            <div style={{ color: 'var(--text-secondary)', marginTop: 'var(--space-md)' }}>
+              {!dataLoaded ? 'Cargando datos...' : 'Conectando con blockchain...'}
+            </div>
           </div>
         </div>
       </div>

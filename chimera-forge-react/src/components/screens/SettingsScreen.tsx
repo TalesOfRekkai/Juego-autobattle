@@ -1,51 +1,32 @@
-import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '../../store/dojoGameStore';
+import { useDojo } from '../../dojo/dojoProvider';
 import { useToastStore } from '../../store/toastStore';
 import TopBar from '../layout/TopBar';
 import NavBar from '../layout/NavBar';
 
+const USE_CONTROLLER = import.meta.env.VITE_USE_CONTROLLER === 'true';
+
 export default function SettingsScreen() {
     const navigate = useNavigate();
     const addToast = useToastStore(s => s.addToast);
-    const getAllSlots = useGameStore(s => s.getAllSlots);
-    const activeSlot = useGameStore(s => s.activeSlot);
-    const save = useGameStore(s => s.save);
-    const loadSlot = useGameStore(s => s.loadSlot);
-    const deleteSlot = useGameStore(s => s.deleteSlot);
-    const startNewGame = useGameStore(s => s.startNewGame);
+    const { address, isConnected, disconnect, connect } = useDojo();
+    const state = useGameStore(s => s.state);
 
-    const slots = useMemo(() => getAllSlots(), [getAllSlots]);
+    const shortAddress = address
+        ? `${address.slice(0, 6)}...${address.slice(-4)}`
+        : 'No conectado';
 
-    const handleSwitch = (slotIndex: number) => {
-        if (confirm(`¿Cambiar a Partida ${slotIndex + 1}? Se guardará tu partida actual.`)) {
-            save();
-            const success = loadSlot(slotIndex);
-            if (success) {
-                addToast(`Partida ${slotIndex + 1} cargada`, 'success');
-                navigate('/hub');
-            } else {
-                addToast('Error al cargar', 'error');
-            }
+    const handleDisconnect = () => {
+        if (confirm('¿Cerrar sesión? Tus datos están guardados en la blockchain.')) {
+            disconnect();
+            addToast('Sesión cerrada', 'success');
+            navigate('/');
         }
     };
 
-    const handleDelete = (slotIndex: number) => {
-        if (slotIndex === activeSlot) {
-            if (confirm('¿Borrar la partida ACTIVA? Volverás a la pantalla de título.')) {
-                deleteSlot(slotIndex);
-                navigate('/');
-            }
-        } else {
-            if (confirm(`¿Borrar Partida ${slotIndex + 1}?`)) {
-                deleteSlot(slotIndex);
-            }
-        }
-    };
-
-    const handleNewGame = (slotIndex: number) => {
-        const eggName = startNewGame(slotIndex);
-        navigate('/hatch', { state: { eggName, first: true } });
+    const handleConnect = () => {
+        connect();
     };
 
     return (
@@ -54,53 +35,121 @@ export default function SettingsScreen() {
             <div className="screen">
                 <div className="section-header">⚙️ Ajustes</div>
 
+                {/* Account Section */}
                 <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', marginBottom: 'var(--space-sm)', color: 'var(--text-secondary)' }}>
-                    PARTIDAS GUARDADAS
+                    CUENTA
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)', marginBottom: 'var(--space-lg)' }}>
-                    {slots.map(slot => {
-                        const isCurrent = slot.index === activeSlot;
-                        if (slot.empty) {
-                            return (
-                                <div key={slot.index} className="card" style={{ cursor: 'pointer', textAlign: 'center', padding: 'var(--space-md)' }}
-                                    onClick={() => handleNewGame(slot.index)}>
-                                    <div style={{ fontSize: '18px', opacity: 0.3 }}>+</div>
-                                    <div style={{ fontSize: '9px', color: 'var(--text-muted)' }}>Nuevo en Slot {slot.index + 1}</div>
+                <div className="card" style={{ marginBottom: 'var(--space-lg)' }}>
+                    {/* Connection type badge */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-md)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
+                            <span style={{ fontSize: '24px' }}>
+                                {USE_CONTROLLER ? '🎮' : '🔧'}
+                            </span>
+                            <div>
+                                <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '10px', color: 'var(--text-primary)' }}>
+                                    {USE_CONTROLLER ? 'Cartridge Controller' : 'Katana (Dev)'}
                                 </div>
-                            );
-                        }
-                        const date = new Date(slot.lastSaved || 0);
-                        const dateStr = date.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-                        return (
-                            <div key={slot.index} className="card"
-                                style={isCurrent ? { borderColor: 'var(--accent-glow)', boxShadow: '0 0 12px rgba(157,124,216,0.2)' } : { cursor: 'pointer' }}
-                                onClick={() => !isCurrent && handleSwitch(slot.index)}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-md)' }}>
-                                    <div style={{ flex: 1 }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
-                                            <span style={{ fontFamily: 'var(--font-pixel)', fontSize: '10px' }}>{slot.name}</span>
-                                            {isCurrent && <span style={{ fontSize: '8px', color: 'var(--accent-success)', fontWeight: 700 }}>● ACTIVA</span>}
-                                        </div>
-                                        <div style={{ fontSize: '10px', color: 'var(--text-secondary)', display: 'flex', gap: 'var(--space-md)', marginTop: '4px' }}>
-                                            <span>🐾 {slot.creatures}</span>
-                                            <span>⭐ Lv.{slot.maxLevel}</span>
-                                            <span>🗺️ {slot.totalExpeditions}</span>
-                                        </div>
-                                        <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '2px' }}>{dateStr}</div>
-                                    </div>
-                                    <button className="btn btn-danger" style={{ fontSize: '7px', padding: '4px 8px' }}
-                                        onClick={e => { e.stopPropagation(); handleDelete(slot.index); }}>
-                                        🗑️
-                                    </button>
+                                <div style={{ fontSize: '9px', color: 'var(--text-muted)' }}>
+                                    {USE_CONTROLLER ? 'Wallet conectado' : 'Cuenta local de desarrollo'}
                                 </div>
                             </div>
-                        );
-                    })}
+                        </div>
+                        <span style={{
+                            fontSize: '8px',
+                            fontWeight: 700,
+                            padding: '2px 8px',
+                            borderRadius: 'var(--radius-sm)',
+                            background: isConnected
+                                ? 'rgba(158,206,106,0.15)'
+                                : 'rgba(247,118,142,0.15)',
+                            color: isConnected
+                                ? 'var(--accent-success)'
+                                : 'var(--accent-danger)',
+                        }}>
+                            {isConnected ? '● Conectado' : '○ Desconectado'}
+                        </span>
+                    </div>
+
+                    {/* Address */}
+                    <div style={{
+                        background: 'var(--bg-elevated)',
+                        borderRadius: 'var(--radius-sm)',
+                        padding: 'var(--space-sm) var(--space-md)',
+                        marginBottom: 'var(--space-md)',
+                    }}>
+                        <div style={{ fontSize: '8px', color: 'var(--text-muted)', marginBottom: '2px' }}>DIRECCIÓN</div>
+                        <div style={{
+                            fontFamily: 'monospace',
+                            fontSize: '11px',
+                            color: 'var(--text-primary)',
+                            wordBreak: 'break-all',
+                        }}>
+                            {address || 'No disponible'}
+                        </div>
+                    </div>
+
+                    {/* Game stats */}
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr 1fr',
+                        gap: 'var(--space-sm)',
+                        marginBottom: 'var(--space-md)',
+                    }}>
+                        <div style={{ textAlign: 'center', background: 'var(--bg-elevated)', borderRadius: 'var(--radius-sm)', padding: 'var(--space-sm)' }}>
+                            <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)' }}>{state.creatures.length}</div>
+                            <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>Criaturas</div>
+                        </div>
+                        <div style={{ textAlign: 'center', background: 'var(--bg-elevated)', borderRadius: 'var(--radius-sm)', padding: 'var(--space-sm)' }}>
+                            <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)' }}>{state.completedExpeditions || 0}</div>
+                            <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>Expediciones</div>
+                        </div>
+                        <div style={{ textAlign: 'center', background: 'var(--bg-elevated)', borderRadius: 'var(--radius-sm)', padding: 'var(--space-sm)' }}>
+                            <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)' }}>{state.eggs.length}</div>
+                            <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>Huevos</div>
+                        </div>
+                    </div>
+
+                    {/* Action buttons */}
+                    {isConnected ? (
+                        <button className="btn btn-danger btn-block" onClick={handleDisconnect}
+                            style={{ fontSize: '10px', padding: '8px' }}>
+                            🚪 Cerrar Sesión
+                        </button>
+                    ) : (
+                        <button className="btn btn-primary btn-block" onClick={handleConnect}
+                            style={{ fontSize: '10px', padding: '8px' }}>
+                            🔗 Conectar {USE_CONTROLLER ? 'Cartridge' : 'Cuenta'}
+                        </button>
+                    )}
                 </div>
 
-                <button className="btn btn-secondary btn-block" onClick={() => navigate('/')}>
-                    🏠 Volver a Pantalla de Título
+                {/* Network Info */}
+                <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', marginBottom: 'var(--space-sm)', color: 'var(--text-secondary)' }}>
+                    RED
+                </div>
+
+                <div className="card" style={{ marginBottom: 'var(--space-lg)' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-sm)' }}>
+                        <div>
+                            <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>MODO</div>
+                            <div style={{ fontSize: '10px', color: 'var(--text-primary)' }}>
+                                {USE_CONTROLLER ? 'Producción' : 'Desarrollo'}
+                            </div>
+                        </div>
+                        <div>
+                            <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>RED</div>
+                            <div style={{ fontSize: '10px', color: 'var(--text-primary)' }}>
+                                {USE_CONTROLLER ? 'Starknet' : 'Katana Local'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button className="btn btn-secondary btn-block" onClick={() => navigate('/hub')}
+                    style={{ fontSize: '10px', padding: '8px' }}>
+                    ← Volver al Hub
                 </button>
             </div>
             <NavBar />

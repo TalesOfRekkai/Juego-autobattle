@@ -7,7 +7,7 @@
    ============================================ */
 
 import { create } from 'zustand';
-import type { Creature, Expedition, GameState } from '../types';
+import type { Creature, Expedition, ExpeditionResult, GameState } from '../types';
 import * as Data from '../lib/data';
 import * as Creatures from '../lib/creatures';
 import * as Resources from '../lib/resources';
@@ -38,6 +38,8 @@ interface GameStore {
     state: GameState;
     setState: (state: GameState) => void;
     dataLoaded: boolean;
+    onchainLoaded: boolean;
+    lastExpeditionResult: ExpeditionResult | null;
 
     // Init
     initData: () => Promise<void>;
@@ -65,7 +67,7 @@ interface GameStore {
     healCreature: (creatureId: number) => boolean;
     boostCreature: (creatureId: number) => boolean;
     startExpedition: (routeId: string, creatureIds: number[]) => boolean;
-    resolveExpedition: (expeditionId: number) => boolean;
+    resolveExpedition: (expeditionId: number) => Promise<boolean>;
     addCreature: (creature: Creature) => void;
     startNewGame: (slotIndex?: number) => string;
     getAllSlots: () => any[];
@@ -133,8 +135,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // State
     state: createDefaultState(),
     dataLoaded: false,
+    onchainLoaded: false,
+    lastExpeditionResult: null,
 
-    setState: (state) => set({ state }),
+    setState: (state) => set({ state, onchainLoaded: true }),
 
     initData: async () => {
         await Data.loadCreatureData();
@@ -305,11 +309,78 @@ export const useGameStore = create<GameStore>((set, get) => ({
     },
 
     resolveExpeditionOnchain: async (expeditionId) => {
-        const { execute } = get();
+        const { execute, state } = get();
         if (!execute) return false;
+
+        // Clear previous result immediately
+        set({ lastExpeditionResult: null });
+
+        // Snapshot BEFORE resolve
+        const oldResources = { ...state.resources };
+        const oldCreatures = state.creatures.map(c => ({ ...c }));
+        const oldEggCount = state.eggs.length;
+        const expedition = state.expeditions.find(e => e.id === expeditionId);
+
         try {
             set({ isPending: true });
             await execute(callResolveExpedition(expeditionId));
+
+            // Wait a moment for Torii to index the new state, then force a poll
+            await new Promise(r => setTimeout(r, 2000));
+
+            // Read the new state from Torii (it should have been updated by DojoSync)
+            const newState = get().state;
+            const newResources = newState.resources;
+            const newCreatures = newState.creatures;
+
+            // Compute resource deltas
+            const resourceDelta = {
+                essence: Math.max(0, newResources.essence - oldResources.essence),
+                herbs: Math.max(0, newResources.herbs - oldResources.herbs),
+                eggFragments: Math.max(0, newResources.eggFragments - oldResources.eggFragments),
+                crystals: Math.max(0, newResources.crystals - oldResources.crystals),
+            };
+
+            // Identify expedition creatures
+            const expCreatureIds = expedition?.creatureIds || [];
+            const survived: typeof oldCreatures = [];
+            const fainted: typeof oldCreatures = [];
+            const evolutions: { name: string; newStage: number }[] = [];
+            let xpGain = 0;
+
+            for (const cid of expCreatureIds) {
+                const oldC = oldCreatures.find(c => c.id === cid);
+                const newC = newCreatures.find(c => c.id === cid);
+                if (!newC) continue;
+
+                if (newC.currentHP > 0) {
+                    survived.push(newC);
+                    if (oldC) xpGain = Math.max(xpGain, newC.xp - oldC.xp);
+                    if (oldC && newC.stage > oldC.stage) {
+                        evolutions.push({ name: newC.name, newStage: newC.stage });
+                    }
+                } else {
+                    fainted.push(newC);
+                }
+            }
+
+            // Check for new eggs
+            const foundEgg = newState.eggs.length > oldEggCount
+                ? newState.eggs[newState.eggs.length - 1]?.name || null
+                : null;
+
+            // Store result for the results screen
+            set({
+                lastExpeditionResult: {
+                    survived,
+                    fainted,
+                    resources: resourceDelta,
+                    xpPerCreature: xpGain,
+                    foundEgg,
+                    evolutions,
+                },
+            });
+
             useToastStore.getState().addToast('¡Expedición completada!', 'success');
             return true;
         } catch (error: any) {
@@ -373,9 +444,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         return true;
     },
 
-    resolveExpedition: (expeditionId: number) => {
-        get().resolveExpeditionOnchain(expeditionId);
-        return true;
+    resolveExpedition: async (expeditionId: number) => {
+        return await get().resolveExpeditionOnchain(expeditionId);
     },
 
     addCreature: (_creature: Creature) => {

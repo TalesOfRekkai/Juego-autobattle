@@ -15,8 +15,8 @@ export interface MapDef {
 }
 
 export const MAP_DEFS: MapDef[] = [
-    { id: 'map1', name: 'Pradera Inicial', image: '/Assets def/MAPANEW1.png', description: 'Tierras tranquilas para exploradores novatos.', difficulty: '★☆☆☆' },
-    { id: 'map2', name: 'Tierras Volcánicas', image: '/Assets def/MAPANEW2.png', description: 'Volcanes y cumbres peligrosas.', difficulty: '★★★☆' },
+    { id: 'map1', name: 'Pradera Inicial', image: '/Assets def/MAPANEW2.png', description: 'Tierras tranquilas para exploradores novatos.', difficulty: '★☆☆☆' },
+    { id: 'map2', name: 'Tierras Volcánicas', image: '/Assets def/MAPANEW1.png', description: 'Volcanes y cumbres peligrosas.', difficulty: '★★★☆' },
     { id: 'map3', name: 'Dominios Oscuros', image: '/Assets def/MAPANEW3.png', description: 'Solo los más fuertes se atreven a entrar.', difficulty: '★★★★' },
 ];
 

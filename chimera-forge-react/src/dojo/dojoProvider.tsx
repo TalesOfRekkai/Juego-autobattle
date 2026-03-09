@@ -87,6 +87,13 @@ export function DojoProvider({ children }: { children: React.ReactNode }) {
         }
     }, [provider]);
 
+    // Auto-connect burner account on mount (dev only)
+    useEffect(() => {
+        if (!USE_CONTROLLER && !account) {
+            connect();
+        }
+    }, [connect, account]);
+
     const disconnect = useCallback(() => {
         setAccount(null);
         setAddress(null);

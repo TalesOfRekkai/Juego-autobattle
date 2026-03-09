@@ -25,7 +25,6 @@ export default function ExpeditionActiveScreen() {
     const navigate = useNavigate();
     const expeditions = useGameStore(s => s.state.expeditions);
     const creatures = useGameStore(s => s.state.creatures);
-    const resolveExpedition = useGameStore(s => s.resolveExpedition);
     const [, setTick] = useState(0);
 
     useEffect(() => {
@@ -41,9 +40,8 @@ export default function ExpeditionActiveScreen() {
     const getCreatureById = (id: number) => creatures.find(c => c.id === id);
 
     const handleResolve = (expId: number) => {
-        resolveExpedition(expId);
-        // Navigate to hub after resolving — rewards will be updated by Torii
-        setTimeout(() => navigate('/hub'), 2000);
+        // Navigate IMMEDIATELY — the result screen will handle the resolve + animation
+        navigate('/expedition-result', { state: { expeditionId: expId } });
     };
 
     return (
