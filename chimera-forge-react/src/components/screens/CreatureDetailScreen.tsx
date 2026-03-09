@@ -4,6 +4,7 @@ import { useGameStore } from '../../store/dojoGameStore';
 import { useToastStore } from '../../store/toastStore';
 import * as Creatures from '../../lib/creatures';
 import * as Data from '../../lib/data';
+import { useT } from '../../lib/i18n';
 import TopBar from '../layout/TopBar';
 import NavBar from '../layout/NavBar';
 import StatBars from '../shared/StatBars';
@@ -12,6 +13,7 @@ export default function CreatureDetailScreen() {
     const navigate = useNavigate();
     const { id } = useParams();
     const addToast = useToastStore(s => s.addToast);
+    const t = useT();
     const getCreatureById = useGameStore(s => s.getCreatureById);
     const healCreature = useGameStore(s => s.healCreature);
     const boostCreature = useGameStore(s => s.boostCreature);
@@ -31,21 +33,21 @@ export default function CreatureDetailScreen() {
 
     const handleHeal = () => {
         const success = healCreature(creature.id);
-        if (success) addToast('¡Rekaimon curado!', 'success');
-        else addToast('No tienes suficientes hierbas', 'warning');
+        if (success) addToast(t.detail_healed, 'success');
+        else addToast(t.detail_no_herbs, 'warning');
     };
 
     const handleBoost = () => {
         const success = boostCreature(creature.id);
-        if (success) addToast('+15 XP de entrenamiento', 'success');
-        else addToast('No tienes suficiente esencia', 'warning');
+        if (success) addToast(t.detail_trained, 'success');
+        else addToast(t.detail_no_essence, 'warning');
     };
 
     return (
         <>
             <TopBar />
             <div className="screen">
-                <button className="back-btn" onClick={() => navigate('/hub')}>← Volver</button>
+                <button className="back-btn" onClick={() => navigate('/hub')}>{t.common_back}</button>
 
                 <div className="detail-header">
                     <img className="detail-sprite" src={Creatures.getSprite(creature)} alt={creature.name} />
@@ -53,12 +55,12 @@ export default function CreatureDetailScreen() {
                         <div className="detail-name">{creature.name}</div>
                         <div className="detail-meta">
                             <span className={`detail-tag tag-${creature.element}`}>
-                                {Data.getElementIcon(creature.element)} {Data.getElementName(creature.element)}
+                                {Data.getElementIcon(creature.element)} {t.element_name[creature.element] || Data.getElementName(creature.element)}
                             </span>
                             <span className={`detail-tag tier-${creature.tier}`}>{creature.tier}</span>
                         </div>
                         <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
-                            Nivel {creature.level} · Stage {creature.stage}/3
+                            {t.detail_level(creature.level)} · Stage {creature.stage}/3
                         </div>
                         <div className="xp-bar-container">
                             <div className="xp-bar-label">XP: {creature.xp} / {nextLevelXP}</div>
@@ -66,8 +68,8 @@ export default function CreatureDetailScreen() {
                         </div>
                         <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '4px' }}>
                             HP: {creature.currentHP} / {stats.hp}
-                            {creature.hasBred && ' · 💍 Ya crió'}
-                            {creature.isOnExpedition && ' · 🗺️ En expedición'}
+                            {creature.hasBred && ` · 💍 ${t.detail_bred}`}
+                            {creature.isOnExpedition && ` · ${t.detail_on_expedition}`}
                         </div>
                     </div>
                 </div>
@@ -76,16 +78,16 @@ export default function CreatureDetailScreen() {
                     <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', marginBottom: 'var(--space-sm)' }}>STATS</div>
                     <StatBars creature={creature} />
                     <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: 'var(--space-sm)' }}>
-                        Poder total: {Creatures.getPower(creature)}
+                        {t.detail_total_power}: {Creatures.getPower(creature)}
                     </div>
                 </div>
 
                 <div className="card" style={{ marginBottom: 'var(--space-md)' }}>
-                    <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', marginBottom: 'var(--space-sm)' }}>RASGOS</div>
+                    <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', marginBottom: 'var(--space-sm)' }}>{t.detail_traits}</div>
                     <div style={{ display: 'flex', gap: 'var(--space-sm)', flexWrap: 'wrap' }}>
-                        {creature.traits.map(t => (
-                            <span key={t} style={{ fontSize: '10px', background: 'var(--bg-elevated)', padding: '2px 8px', borderRadius: 'var(--radius-sm)', color: 'var(--text-secondary)' }}>
-                                {t.replace('_', ' ')}
+                        {creature.traits.map(tr => (
+                            <span key={tr} style={{ fontSize: '10px', background: 'var(--bg-elevated)', padding: '2px 8px', borderRadius: 'var(--radius-sm)', color: 'var(--text-secondary)' }}>
+                                {tr.replace('_', ' ')}
                             </span>
                         ))}
                     </div>
@@ -93,14 +95,14 @@ export default function CreatureDetailScreen() {
 
                 {creature.parentA && (
                     <div className="card" style={{ marginBottom: 'var(--space-md)' }}>
-                        <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', marginBottom: 'var(--space-sm)' }}>PADRES</div>
+                        <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', marginBottom: 'var(--space-sm)' }}>{t.detail_parents}</div>
                         <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
                             {creature.parentA} × {creature.parentB}
                         </div>
                     </div>
                 )}
 
-                <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', marginBottom: 'var(--space-sm)' }}>EVOLUCIÓN</div>
+                <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', marginBottom: 'var(--space-sm)' }}>{t.detail_evolution}</div>
                 <div style={{ display: 'flex', gap: 'var(--space-md)', marginBottom: 'var(--space-lg)', overflowX: 'auto', paddingBottom: 'var(--space-sm)' }}>
                     {[1, 2, 3].map((s, i) => {
                         const isCurrentStage = creature.stage >= s;
@@ -121,9 +123,9 @@ export default function CreatureDetailScreen() {
 
                 <div style={{ display: 'flex', gap: 'var(--space-sm)', flexWrap: 'wrap' }}>
                     {creature.currentHP < stats.hp && (
-                        <button className="btn btn-success" onClick={handleHeal}>🌿 Curar (2 Hierbas)</button>
+                        <button className="btn btn-success" onClick={handleHeal}>{t.detail_heal_cost}</button>
                     )}
-                    <button className="btn btn-secondary" onClick={handleBoost}>🔮 Entrenar (5 Esencia → +15 XP)</button>
+                    <button className="btn btn-secondary" onClick={handleBoost}>{t.detail_train_cost}</button>
                 </div>
             </div>
             <NavBar />

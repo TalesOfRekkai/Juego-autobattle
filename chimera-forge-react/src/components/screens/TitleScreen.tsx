@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '../../store/dojoGameStore';
 import { useDojo } from '../../dojo/dojoProvider';
+import { useT } from '../../lib/i18n';
 
 export default function TitleScreen() {
     const navigate = useNavigate();
+    const t = useT();
     const { isConnected, isConnecting, connect, address } = useDojo();
     const state = useGameStore(s => s.state);
     const isPending = useGameStore(s => s.isPending);
@@ -14,7 +16,6 @@ export default function TitleScreen() {
     const hasGameStarted = state.phase !== 'title' && (hasCreatures || hasEggs);
 
     const handleConnect = async () => {
-        // Reset onchainLoaded so loading screen shows while Torii syncs the real data
         useGameStore.setState({ onchainLoaded: false });
         await connect();
     };
@@ -22,17 +23,14 @@ export default function TitleScreen() {
     const handleNewGame = async () => {
         const result = await startNewGameOnchain();
         if (result === 'existing') {
-            // Game already exists — go straight to hub
             navigate('/hub');
         } else if (result) {
-            // New game created — wait for Torii to index, then go to hatch
             setTimeout(() => navigate('/hatch', { state: { first: true } }), 1500);
         }
     };
 
     const handleContinue = () => {
         if (hasEggs && !hasCreatures) {
-            // Pass first egg's name so EggHatchScreen doesn't redirect back
             const firstEgg = state.eggs[0];
             navigate('/hatch', { state: { eggName: firstEgg.name, first: false, eggIndex: 0 } });
         } else {
@@ -43,18 +41,17 @@ export default function TitleScreen() {
     return (
         <div className="screen title-screen" style={{ justifyContent: 'flex-start', paddingTop: '60px' }}>
             <div className="title-logo">
-                CHIMERA<br />FORGE
-                <span>REKAIMON</span>
+                REKKAIMON<br />FORGE
             </div>
             <div className="title-subtitle">
-                Colecciona, cría y evoluciona criaturas elementales. Envíalas a expediciones para ganar recursos y descubrir nuevos huevos.
+                {t.title_subtitle}
             </div>
 
             <div style={{ width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: 'var(--space-md)', marginTop: 'var(--space-xl)' }}>
                 {!isConnected ? (
                     <div className="card" style={{ textAlign: 'center', padding: 'var(--space-xl)' }}>
                         <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: 'var(--space-md)' }}>
-                            Conecta tu wallet para jugar onchain
+                            {t.title_connect_hint}
                         </div>
                         <button
                             className="btn btn-primary"
@@ -62,17 +59,17 @@ export default function TitleScreen() {
                             disabled={isConnecting}
                             style={{ width: '100%', padding: 'var(--space-md)' }}
                         >
-                            {isConnecting ? '⏳ Conectando...' : '🔗 Conectar Wallet'}
+                            {isConnecting ? t.title_connecting : t.title_connect_btn}
                         </button>
                         <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: 'var(--space-sm)' }}>
-                            Powered by Cartridge Controller
+                            {t.title_powered_by}
                         </div>
                     </div>
                 ) : (
                     <>
                         <div className="card" style={{ textAlign: 'center', padding: 'var(--space-sm)' }}>
                             <div style={{ fontSize: '9px', color: 'var(--accent-secondary)', fontFamily: 'var(--font-pixel)' }}>
-                                ✅ Wallet Conectada
+                                {t.title_wallet_connected}
                             </div>
                             <div style={{ fontSize: '8px', color: 'var(--text-muted)', marginTop: '2px', wordBreak: 'break-all' }}>
                                 {address?.slice(0, 10)}...{address?.slice(-8)}
@@ -85,7 +82,7 @@ export default function TitleScreen() {
                                 onClick={() => handleContinue()}
                                 style={{ width: '100%', padding: 'var(--space-md)', cursor: 'pointer' }}
                             >
-                                ▶️ Continuar Partida
+                                {t.title_continue}
                             </button>
                         ) : (
                             <button
@@ -94,12 +91,12 @@ export default function TitleScreen() {
                                 disabled={isPending}
                                 style={{ width: '100%', padding: 'var(--space-md)' }}
                             >
-                                {isPending ? '⏳ Creando partida...' : '🎮 Nueva Partida'}
+                                {isPending ? t.title_creating : t.title_new_game}
                             </button>
                         )}
 
                         <div style={{ fontSize: '9px', color: 'var(--text-muted)', textAlign: 'center' }}>
-                            🐾 {state.creatures.length} criaturas · 🥚 {state.eggs.length} huevos · 🗺️ {state.totalExpeditions} expediciones
+                            {t.title_stats(state.creatures.length, state.eggs.length, state.totalExpeditions)}
                         </div>
                     </>
                 )}
@@ -107,7 +104,7 @@ export default function TitleScreen() {
 
             <div style={{ marginTop: 'auto', paddingBottom: 'var(--space-lg)', textAlign: 'center' }}>
                 <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>
-                    ⛓️ Onchain · Starknet · Dojo Engine
+                    {t.title_onchain}
                 </div>
             </div>
         </div>

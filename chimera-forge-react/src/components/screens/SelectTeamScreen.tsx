@@ -5,6 +5,7 @@ import { useToastStore } from '../../store/toastStore';
 import * as RoutesLib from '../../lib/routes';
 import * as Data from '../../lib/data';
 import * as Creatures from '../../lib/creatures';
+import { useT } from '../../lib/i18n';
 import TopBar from '../layout/TopBar';
 import NavBar from '../layout/NavBar';
 
@@ -18,6 +19,7 @@ function formatTime(ms: number) {
 export default function SelectTeamScreen() {
     const navigate = useNavigate();
     const location = useLocation();
+    const t = useT();
     const { routeId } = (location.state as { routeId?: string }) || {};
     const addToast = useToastStore(s => s.addToast);
     const creatures = useGameStore(s => s.state.creatures);
@@ -35,10 +37,12 @@ export default function SelectTeamScreen() {
 
     if (!route) return null;
 
+    const routeName = t.route_name[route.id] || route.name;
+
     const toggleMember = (creatureId: number) => {
         setSelected(prev => {
             if (prev.includes(creatureId)) return prev.filter(id => id !== creatureId);
-            if (prev.length >= 3) { addToast('Máximo 3 criaturas por expedición', 'warning'); return prev; }
+            if (prev.length >= 3) { addToast(t.team_max_creatures, 'warning'); return prev; }
             return [...prev, creatureId];
         });
     };
@@ -47,10 +51,10 @@ export default function SelectTeamScreen() {
         if (selected.length === 0) return;
         const success = startExpedition(route.id, [...selected]);
         if (success) {
-            addToast('¡Expedición iniciada!', 'success');
+            addToast(t.team_started, 'success');
             navigate('/routes');
         } else {
-            addToast('Error al iniciar expedición', 'error');
+            addToast(t.team_error, 'error');
         }
     };
 
@@ -58,12 +62,12 @@ export default function SelectTeamScreen() {
         <>
             <TopBar />
             <div className="screen">
-                <button className="back-btn" onClick={() => navigate('/routes')}>← Volver</button>
-                <div className="section-header">{route.icon} {route.name}</div>
+                <button className="back-btn" onClick={() => navigate('/routes')}>{t.common_back}</button>
+                <div className="section-header">{route.icon} {routeName}</div>
                 <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: 'var(--space-md)' }}>
-                    Selecciona tu equipo para esta expedición (max 3).
+                    {t.team_select_desc}
                     {route.element !== 'mixed' && (
-                        <span className="advantage-hint"> Ventaja: {Data.ELEMENTS[route.element]?.name}</span>
+                        <span className="advantage-hint"> {t.team_advantage}: {t.element_name[route.element] || Data.ELEMENTS[route.element]?.name}</span>
                     )}
                 </div>
 
@@ -81,7 +85,7 @@ export default function SelectTeamScreen() {
                                 <img className="creature-card__sprite" src={Creatures.getSprite(c)} alt={c.name} />
                                 <div className="creature-card__name">{c.name}</div>
                                 <div className="creature-card__level">Lv.{c.level}</div>
-                                {hasAdvantage && <div className="advantage-hint">⚔ Ventaja</div>}
+                                {hasAdvantage && <div className="advantage-hint">⚔ {t.team_advantage}</div>}
                                 {c.currentHP < stats.hp && (
                                     <div style={{ fontSize: '9px', color: 'var(--accent-danger)' }}>HP: {c.currentHP}/{stats.hp}</div>
                                 )}
@@ -91,15 +95,15 @@ export default function SelectTeamScreen() {
                 </div>
 
                 {available.length === 0 && (
-                    <div className="empty-state"><span className="icon">😴</span>No tienes Rekaimon disponibles</div>
+                    <div className="empty-state"><span className="icon">😴</span>{t.team_no_available}</div>
                 )}
 
                 <div style={{ marginTop: 'var(--space-lg)', textAlign: 'center' }}>
                     <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>
-                        Equipo: {selected.length}/3 · Duración: {formatTime(route.duration * 1000)}
+                        {t.team_count(selected.length)} · {t.team_duration}: {formatTime(route.duration * 1000)}
                     </div>
                     <button className="btn btn-success btn-lg btn-block" disabled={selected.length === 0} onClick={launch}>
-                        🚀 Enviar Expedición
+                        {t.team_send}
                     </button>
                 </div>
             </div>

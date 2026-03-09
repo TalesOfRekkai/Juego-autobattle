@@ -4,6 +4,7 @@ import { useGameStore } from '../../store/dojoGameStore';
 import * as RoutesLib from '../../lib/routes';
 import * as Data from '../../lib/data';
 import * as Creatures from '../../lib/creatures';
+import { useT } from '../../lib/i18n';
 import TopBar from '../layout/TopBar';
 import NavBar from '../layout/NavBar';
 
@@ -15,7 +16,6 @@ function formatTime(ms: number) {
     return `${m}:${sec.toString().padStart(2, '0')}`;
 }
 
-/** Calculate time left for an expedition */
 function getTimeLeft(exp: { startTime: number; duration: number }): number {
     const endTime = exp.startTime + exp.duration;
     return Math.max(0, endTime - Date.now());
@@ -23,24 +23,22 @@ function getTimeLeft(exp: { startTime: number; duration: number }): number {
 
 export default function ExpeditionActiveScreen() {
     const navigate = useNavigate();
+    const t = useT();
     const expeditions = useGameStore(s => s.state.expeditions);
     const creatures = useGameStore(s => s.state.creatures);
     const [, setTick] = useState(0);
 
     useEffect(() => {
         const interval = window.setInterval(() => {
-            setTick(t => t + 1);
+            setTick(tk => tk + 1);
         }, 1000);
         return () => clearInterval(interval);
     }, []);
 
-    // All unresolved expeditions (active or ready to claim)
     const unresolved = expeditions.filter(e => !e.resolved);
-
     const getCreatureById = (id: number) => creatures.find(c => c.id === id);
 
     const handleResolve = (expId: number) => {
-        // Navigate IMMEDIATELY — the result screen will handle the resolve + animation
         navigate('/expedition-result', { state: { expeditionId: expId } });
     };
 
@@ -48,8 +46,8 @@ export default function ExpeditionActiveScreen() {
         <>
             <TopBar />
             <div className="screen">
-                <button className="back-btn" onClick={() => navigate('/hub')}>← Volver</button>
-                <div className="section-header">Expediciones</div>
+                <button className="back-btn" onClick={() => navigate('/hub')}>{t.common_back}</button>
+                <div className="section-header">{t.exp_title}</div>
 
                 {unresolved.map(exp => {
                     const route = RoutesLib.getRoute(exp.routeId);
@@ -57,6 +55,10 @@ export default function ExpeditionActiveScreen() {
                     const isReady = timeLeft <= 0;
                     const progress = exp.duration > 0 ? 1 - timeLeft / exp.duration : 1;
                     const team = exp.creatureIds.map(id => getCreatureById(id)).filter(Boolean);
+                    const routeName = t.route_name[exp.routeId] || route?.name || exp.routeId;
+                    const elemName = route?.element && route.element !== 'mixed'
+                        ? `${Data.getElementIcon(route.element)} ${t.element_name[route.element] || Data.ELEMENTS[route.element]?.name}`
+                        : `🌀 ${t.routes_mixed}`;
 
                     return (
                         <div key={exp.id} className="expedition-panel"
@@ -65,12 +67,10 @@ export default function ExpeditionActiveScreen() {
                                 <span style={{ fontSize: '24px' }}>{route?.icon || '🗺️'}</span>
                                 <div>
                                     <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '10px' }}>
-                                        {route?.name || exp.routeId}
+                                        {routeName}
                                     </div>
                                     <div style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>
-                                        {route?.element && route.element !== 'mixed'
-                                            ? `${Data.getElementIcon(route.element)} ${Data.ELEMENTS[route.element]?.name}`
-                                            : '🌀 Mixto'}
+                                        {elemName}
                                     </div>
                                 </div>
                             </div>
@@ -78,13 +78,13 @@ export default function ExpeditionActiveScreen() {
                             {isReady ? (
                                 <>
                                     <div className="advantage-hint" style={{ textAlign: 'center', marginBottom: 'var(--space-sm)' }}>
-                                        ✓ ¡Expedición completada!
+                                        {t.exp_completed_status}
                                     </div>
                                     <button
                                         className="btn btn-success btn-block"
                                         onClick={() => handleResolve(exp.id)}
                                     >
-                                        🎁 Recoger Recompensas
+                                        {t.exp_claim}
                                     </button>
                                 </>
                             ) : (
@@ -111,8 +111,8 @@ export default function ExpeditionActiveScreen() {
                 {unresolved.length === 0 && (
                     <div className="empty-state">
                         <span className="icon">🗺️</span>
-                        <p>No hay expediciones activas. ¡Envía a tus Rekaimon a explorar!</p>
-                        <button className="btn btn-primary mt-md" onClick={() => navigate('/routes')}>Ver Rutas</button>
+                        <p>{t.exp_no_active_desc}</p>
+                        <button className="btn btn-primary mt-md" onClick={() => navigate('/routes')}>{t.exp_see_routes}</button>
                     </div>
                 )}
             </div>

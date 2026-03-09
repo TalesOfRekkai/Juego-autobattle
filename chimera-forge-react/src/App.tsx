@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useGameStore } from './store/dojoGameStore';
 import { DojoProvider, useDojo } from './dojo/dojoProvider';
 import { dojoConfig } from './dojo/dojoConfig';
+import { useI18n } from './lib/i18n';
+import { useAudioStore } from './store/audioStore';
 import ToastContainer from './components/layout/ToastContainer';
 import TitleScreen from './components/screens/TitleScreen';
 import EggHatchScreen from './components/screens/EggHatchScreen';
@@ -225,9 +227,11 @@ function AppContent() {
       <div id="app">
         <div id="screen-container">
           <div className="screen" style={{ justifyContent: 'center', alignItems: 'center' }}>
-            <div className="title-logo">CHIMERA<br />FORGE</div>
+            <div className="title-logo">REKKAIMON<br />FORGE</div>
             <div style={{ color: 'var(--text-secondary)', marginTop: 'var(--space-md)' }}>
-              {!dataLoaded ? 'Cargando datos...' : 'Conectando con blockchain...'}
+              {!dataLoaded
+                ? (useI18n.getState().lang === 'en' ? 'Loading data...' : 'Cargando datos...')
+                : (useI18n.getState().lang === 'en' ? 'Connecting to blockchain...' : 'Conectando con blockchain...')}
             </div>
           </div>
         </div>
@@ -260,6 +264,20 @@ function AppContent() {
 }
 
 export default function App() {
+  useEffect(() => {
+    const initAudio = () => {
+      useAudioStore.getState().initOnInteraction();
+      window.removeEventListener('click', initAudio);
+      window.removeEventListener('touchstart', initAudio);
+    };
+    window.addEventListener('click', initAudio, { once: true });
+    window.addEventListener('touchstart', initAudio, { once: true });
+    return () => {
+      window.removeEventListener('click', initAudio);
+      window.removeEventListener('touchstart', initAudio);
+    };
+  }, []);
+
   return (
     <DojoProvider>
       <BrowserRouter>

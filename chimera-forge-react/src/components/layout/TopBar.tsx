@@ -6,7 +6,7 @@ export default function TopBar() {
 
     return (
         <div className="top-bar">
-            <div className="top-bar__title">CHIMERA FORGE</div>
+            <div className="top-bar__title">REKKAIMON FORGE</div>
             <div className="top-bar__resources">
                 <div className="resource-badge"><span className="icon">🔮</span>{r.essence || 0}</div>
                 <div className="resource-badge"><span className="icon">🌿</span>{r.herbs || 0}</div>

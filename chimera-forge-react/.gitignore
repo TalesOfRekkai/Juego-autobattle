@@ -26,6 +26,7 @@ dist-ssr
 # Environment variables (contains world addresses, RPCs)
 .env
 .env.local
+.env.slot
 .env.*.local
 
 # Dojo build artifacts

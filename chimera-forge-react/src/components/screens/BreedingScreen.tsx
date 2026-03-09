@@ -5,6 +5,7 @@ import * as Creatures from '../../lib/creatures';
 import * as Data from '../../lib/data';
 import { getEffectiveBreedMinLevel } from '../../lib/buildings';
 import type { Creature } from '../../types';
+import { useT } from '../../lib/i18n';
 import Modal from '../layout/Modal';
 import TopBar from '../layout/TopBar';
 import NavBar from '../layout/NavBar';
@@ -15,6 +16,7 @@ export default function BreedingScreen() {
     const breedOnchain = useGameStore(s => s.breedOnchain);
     const isPending = useGameStore(s => s.isPending);
     const minBreedLevel = getEffectiveBreedMinLevel(buildings);
+    const t = useT();
 
     const [breedA, setBreedA] = useState<Creature | null>(null);
     const [breedB, setBreedB] = useState<Creature | null>(null);
@@ -38,7 +40,6 @@ export default function BreedingScreen() {
         if (!breedA || !breedB || !preview) return;
         const success = await breedOnchain(breedA.id, breedB.id);
         if (success) {
-            // Show fusion result using the preview data
             setFusionResult({
                 id: 0, name: preview.name, element: preview.element,
                 bodyType: 'quadruped', traits: [], type: 'fusion',
@@ -62,9 +63,9 @@ export default function BreedingScreen() {
         <>
             <TopBar />
             <div className="screen">
-                <div className="section-header">🧬 Sala de Cría</div>
+                <div className="section-header">{t.breed_room}</div>
                 <p style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: 'var(--space-md)' }}>
-                    Selecciona dos Rekaimon para fusionar. Cada criatura solo puede criar <strong>una vez</strong>. Nivel mínimo: {minBreedLevel}.
+                    {t.breed_desc(minBreedLevel)}
                 </p>
 
                 <div className="breeding-slots">
@@ -78,7 +79,7 @@ export default function BreedingScreen() {
                         ) : (
                             <>
                                 <span style={{ fontSize: '36px', opacity: 0.3 }}>?</span>
-                                <span style={{ fontSize: '8px', color: 'var(--text-muted)', marginTop: 'var(--space-sm)' }}>Padre A</span>
+                                <span style={{ fontSize: '8px', color: 'var(--text-muted)', marginTop: 'var(--space-sm)' }}>{t.breed_parent_a}</span>
                             </>
                         )}
                     </div>
@@ -93,7 +94,7 @@ export default function BreedingScreen() {
                         ) : (
                             <>
                                 <span style={{ fontSize: '36px', opacity: 0.3 }}>?</span>
-                                <span style={{ fontSize: '8px', color: 'var(--text-muted)', marginTop: 'var(--space-sm)' }}>Padre B</span>
+                                <span style={{ fontSize: '8px', color: 'var(--text-muted)', marginTop: 'var(--space-sm)' }}>{t.breed_parent_b}</span>
                             </>
                         )}
                     </div>
@@ -101,11 +102,11 @@ export default function BreedingScreen() {
 
                 {breedA && breedB && preview && (
                     <div style={{ textAlign: 'center', margin: 'var(--space-md) 0' }}>
-                        <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', color: 'var(--accent-secondary)', marginBottom: 'var(--space-sm)' }}>RESULTADO</div>
+                        <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', color: 'var(--accent-secondary)', marginBottom: 'var(--space-sm)' }}>{t.breed_result_label}</div>
                         <img src={preview.sprite} style={{ width: '80px', height: '80px', imageRendering: 'pixelated', filter: 'drop-shadow(0 2px 10px rgba(157,124,216,0.4))' }} />
                         <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '10px', marginTop: 'var(--space-sm)' }}>{preview.name}</div>
                         <div style={{ display: 'flex', gap: 'var(--space-sm)', justifyContent: 'center', marginTop: 'var(--space-xs)' }}>
-                            <span className={`detail-tag tag-${preview.element}`}>{Data.getElementIcon(preview.element)} {Data.getElementName(preview.element)}</span>
+                            <span className={`detail-tag tag-${preview.element}`}>{Data.getElementIcon(preview.element)} {t.element_name[preview.element] || Data.getElementName(preview.element)}</span>
                             <span className={`detail-tag tier-${preview.tier}`}>{preview.tier}</span>
                         </div>
                     </div>
@@ -113,14 +114,14 @@ export default function BreedingScreen() {
 
                 {breedA && breedB && !preview && (
                     <div style={{ textAlign: 'center', margin: 'var(--space-md) 0', fontSize: '11px', color: 'var(--accent-danger)' }}>
-                        Estos Rekaimon no son compatibles
+                        {t.breed_incompatible}
                     </div>
                 )}
 
                 {check?.ok && (
                     <div style={{ textAlign: 'center' }}>
                         <button className="btn btn-gold btn-lg btn-block mt-md" onClick={doBreed} disabled={isPending}>
-                            {isPending ? '⏳ Fusionando...' : '🧬 ¡Fusionar!'}
+                            {isPending ? t.breed_fusing : t.breed_fuse_btn}
                         </button>
                     </div>
                 )}
@@ -131,7 +132,7 @@ export default function BreedingScreen() {
 
             <Modal isOpen={selectingSlot !== null} onClose={() => setSelectingSlot(null)}>
                 <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '10px', marginBottom: 'var(--space-md)' }}>
-                    Seleccionar Padre {selectingSlot?.toUpperCase()}
+                    {selectingSlot === 'a' ? t.breed_parent_a : t.breed_parent_b}
                 </div>
                 <div className="creature-grid">
                     {breedable.map(c => (
@@ -144,7 +145,7 @@ export default function BreedingScreen() {
                 </div>
                 {nonBreedable.length > 0 && (
                     <>
-                        <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: 'var(--space-md)' }}>No disponibles:</div>
+                        <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: 'var(--space-md)' }}>{t.breed_not_available}</div>
                         <div className="creature-grid" style={{ opacity: 0.4, marginTop: 'var(--space-sm)' }}>
                             {nonBreedable.map(c => (
                                 <div key={c.id} className="creature-card" data-element={c.element}>
@@ -152,7 +153,7 @@ export default function BreedingScreen() {
                                     <div className="creature-card__name">{c.name}</div>
                                     <div className="creature-card__level">Lv.{c.level}</div>
                                     <div style={{ fontSize: '8px', color: 'var(--accent-danger)' }}>
-                                        {c.hasBred ? 'Ya crió' : c.level < minBreedLevel ? `Necesita Lv${minBreedLevel}` : 'No disponible'}
+                                        {c.hasBred ? t.breed_already_bred : c.level < minBreedLevel ? t.breed_needs_level(minBreedLevel) : t.breed_unavailable}
                                     </div>
                                 </div>
                             ))}
@@ -165,16 +166,16 @@ export default function BreedingScreen() {
                 {fusionResult && (
                     <div style={{ textAlign: 'center' }}>
                         <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '12px', color: 'var(--accent-secondary)', marginBottom: 'var(--space-md)' }}>
-                            🧬 ¡Fusión Exitosa!
+                            {t.breed_success}
                         </div>
                         <img src={Creatures.getSprite(fusionResult)} className="hatch-reveal"
                             style={{ width: '100px', height: '100px', imageRendering: 'pixelated', filter: 'drop-shadow(0 4px 15px rgba(157,124,216,0.5))' }} />
                         <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '14px', marginTop: 'var(--space-md)' }}>{fusionResult.name}</div>
                         <div style={{ display: 'flex', gap: 'var(--space-sm)', justifyContent: 'center', marginTop: 'var(--space-sm)' }}>
-                            <span className={`detail-tag tag-${fusionResult.element}`}>{Data.getElementIcon(fusionResult.element)} {Data.getElementName(fusionResult.element)}</span>
+                            <span className={`detail-tag tag-${fusionResult.element}`}>{Data.getElementIcon(fusionResult.element)} {t.element_name[fusionResult.element] || Data.getElementName(fusionResult.element)}</span>
                             <span className={`detail-tag tier-${fusionResult.tier}`}>{fusionResult.tier}</span>
                         </div>
-                        <button className="btn btn-primary mt-lg" onClick={() => { setFusionResult(null); setBreedA(null); setBreedB(null); }}>Continuar</button>
+                        <button className="btn btn-primary mt-lg" onClick={() => { setFusionResult(null); setBreedA(null); setBreedB(null); }}>{t.breed_continue}</button>
                     </div>
                 )}
             </Modal>

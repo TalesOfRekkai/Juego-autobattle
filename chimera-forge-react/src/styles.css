@@ -1,6 +1,6 @@
 /* ============================================
-   CHIMERA FORGE — Design System
-   Dark pixel art theme
+   REKKAIMON FORGE — Design System
+   Dark pixel art + modern glass theme
    ============================================ */
 
 /* --- CSS Reset & Variables --- */
@@ -66,7 +66,7 @@
 
     /* Fonts */
     --font-pixel: 'Press Start 2P', monospace;
-    --font-ui: 'Inter', sans-serif;
+    --font-ui: 'Outfit', 'Inter', sans-serif;
 
     /* Transitions */
     --transition-fast: 150ms ease;
@@ -85,6 +85,14 @@ body {
     font-family: var(--font-ui);
     font-size: 14px;
     line-height: 1.5;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
 }
 
 #app {
@@ -95,8 +103,9 @@ body {
     align-items: center;
     justify-content: center;
     background:
-        radial-gradient(ellipse at 20% 50%, rgba(123, 94, 167, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 50%, rgba(78, 78, 160, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 50%, rgba(123, 94, 167, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(78, 78, 160, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(115, 218, 202, 0.04) 0%, transparent 50%),
         var(--bg-deepest);
 }
 
@@ -108,12 +117,18 @@ body {
     flex-direction: column;
     position: relative;
     overflow: hidden;
+    background:
+        radial-gradient(ellipse at 20% 30%, rgba(123, 94, 167, 0.07) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 60%, rgba(78, 78, 160, 0.05) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 90%, rgba(115, 218, 202, 0.03) 0%, transparent 50%),
+        linear-gradient(180deg, rgba(26, 26, 46, 0.4) 0%, rgba(10, 10, 18, 0) 100%);
 }
 
 /* --- Scrollable content --- */
 .screen {
     width: 100%;
-    height: 100%;
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     animation: screenFadeIn 0.4s ease;
@@ -154,16 +169,20 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: var(--space-sm) var(--space-md);
-    background: var(--bg-dark);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(18, 18, 30, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(157, 124, 216, 0.1);
     flex-shrink: 0;
 }
 
 .top-bar__title {
     font-family: var(--font-pixel);
     font-size: 10px;
-    color: var(--accent-glow);
-    letter-spacing: 1px;
+    background: linear-gradient(135deg, var(--accent-glow), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 2px;
 }
 
 .top-bar__resources {
@@ -175,12 +194,13 @@ body {
     display: flex;
     align-items: center;
     gap: var(--space-xs);
-    font-size: 11px;
-    font-weight: 700;
+    font-size: 12px;
+    font-weight: 600;
     color: var(--text-primary);
-    background: var(--bg-card);
-    padding: 3px 8px;
-    border-radius: var(--radius-sm);
+    background: rgba(26, 26, 46, 0.6);
+    padding: 4px 10px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .resource-badge .icon {
@@ -190,19 +210,20 @@ body {
 /* --- Section Headers --- */
 .section-header {
     font-family: var(--font-pixel);
-    font-size: 12px;
+    font-size: 11px;
     color: var(--accent-glow);
     margin: var(--space-lg) 0 var(--space-md);
     display: flex;
     align-items: center;
     gap: var(--space-sm);
+    letter-spacing: 0.5px;
 }
 
 .section-header::after {
     content: '';
     flex: 1;
     height: 1px;
-    background: linear-gradient(90deg, var(--accent-primary), transparent);
+    background: linear-gradient(90deg, rgba(157, 124, 216, 0.4), transparent);
 }
 
 /* --- Buttons --- */
@@ -274,6 +295,30 @@ body {
     box-shadow: none !important;
 }
 
+/* --- Back Button --- */
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    letter-spacing: 0.3px;
+}
+
+.back-btn:hover {
+    color: var(--accent-glow);
+    border-color: rgba(157, 124, 216, 0.3);
+    background: rgba(157, 124, 216, 0.05);
+}
+
 .btn-lg {
     padding: var(--space-md) var(--space-xl);
     font-size: 12px;
@@ -285,16 +330,17 @@ body {
 
 /* --- Cards --- */
 .card {
-    background: var(--bg-card);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(26, 26, 46, 0.6));
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: var(--radius-lg);
     padding: var(--space-md);
     transition: all var(--transition-fast);
+    backdrop-filter: blur(4px);
 }
 
 .card:hover {
-    border-color: rgba(255, 255, 255, 0.1);
-    background: var(--bg-card-hover);
+    border-color: rgba(157, 124, 216, 0.2);
+    background: linear-gradient(135deg, rgba(34, 34, 64, 0.9), rgba(34, 34, 64, 0.6));
 }
 
 .card--glow {
@@ -351,12 +397,12 @@ body {
 }
 
 .creature-card:hover {
-    transform: scale(1.03);
-    border-color: rgba(115, 218, 202, 0.9);
+    transform: scale(1.04);
+    border-color: rgba(157, 124, 216, 0.6);
     box-shadow:
-        0 0 0 1px rgba(115, 218, 202, 0.75),
-        0 0 16px rgba(115, 218, 202, 0.45),
-        0 10px 24px rgba(0, 0, 0, 0.35);
+        0 0 0 1px rgba(157, 124, 216, 0.3),
+        0 0 20px rgba(157, 124, 216, 0.2),
+        0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .creature-card .creature-card__preview {
@@ -886,9 +932,10 @@ body {
 .nav-bar {
     display: flex;
     justify-content: space-around;
-    padding: var(--space-sm);
-    background: var(--bg-dark);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: var(--space-sm) var(--space-sm) calc(var(--space-sm) + env(safe-area-inset-bottom, 0px));
+    background: rgba(18, 18, 30, 0.9);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(157, 124, 216, 0.1);
     flex-shrink: 0;
     position: fixed;
     bottom: 0;
@@ -922,6 +969,20 @@ body {
     font-size: 18px;
 }
 
+.nav-icon {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    filter: grayscale(0.3) brightness(0.7);
+    transition: filter var(--transition-fast);
+}
+
+.nav-btn:hover .nav-icon,
+.nav-btn.active .nav-icon {
+    filter: grayscale(0) brightness(1) drop-shadow(0 0 4px var(--accent-glow));
+}
+
 /* --- Title Screen --- */
 .title-screen {
     display: flex;
@@ -935,23 +996,23 @@ body {
 
 .title-logo {
     font-family: var(--font-pixel);
-    font-size: 22px;
-    color: var(--accent-glow);
-    text-shadow: 0 0 30px rgba(157, 124, 216, 0.5);
+    font-size: 28px;
+    background: linear-gradient(180deg, #c9b3f5 0%, var(--accent-glow) 40%, var(--accent-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
     line-height: 1.8;
-}
-
-.title-logo span {
-    display: block;
-    font-size: 10px;
-    color: var(--text-secondary);
     letter-spacing: 3px;
+    filter: drop-shadow(0 0 40px rgba(157, 124, 216, 0.3));
 }
 
 .title-subtitle {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--text-secondary);
     max-width: 600px;
+    font-weight: 300;
+    line-height: 1.7;
 }
 
 /* --- Detail View --- */

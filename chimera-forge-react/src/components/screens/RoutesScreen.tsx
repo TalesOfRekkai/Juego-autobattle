@@ -4,6 +4,7 @@ import { useGameStore } from '../../store/dojoGameStore';
 import * as RoutesLib from '../../lib/routes';
 import { MAP_DEFS } from '../../lib/routes';
 import * as Data from '../../lib/data';
+import { useT } from '../../lib/i18n';
 import TopBar from '../layout/TopBar';
 import NavBar from '../layout/NavBar';
 
@@ -16,6 +17,7 @@ function formatTime(ms: number) {
 
 export default function RoutesScreen() {
     const navigate = useNavigate();
+    const t = useT();
     const state = useGameStore(s => s.state);
     const resolveExpedition = useGameStore(s => s.resolveExpedition);
     const routes = RoutesLib.getAllRoutes();
@@ -23,7 +25,6 @@ export default function RoutesScreen() {
     const [selectedMapId, setSelectedMapId] = useState<string | null>(null);
 
     const expeditions = state.expeditions;
-    // Expeditions ready to claim (timer expired)
     const ready = expeditions.filter(e => !e.resolved && (e.startTime + e.duration) <= Date.now());
 
     const selectedMap = MAP_DEFS.find(m => m.id === selectedMapId);
@@ -34,28 +35,26 @@ export default function RoutesScreen() {
         navigate('/expeditions');
     };
 
-    // Map gallery view — horizontal row of small thumbnail cards
+    // Map gallery view
     if (!selectedMap) {
         return (
             <>
                 <TopBar />
                 <div className="screen">
-                    <div className="section-header">🗺️ Mapas del Mundo</div>
+                    <div className="section-header">{t.routes_world_maps}</div>
 
-                    {/* Expedition notifications */}
                     {ready.length > 0 && (
                         <div className="card" style={{ background: 'linear-gradient(135deg, rgba(115,218,202,0.1), rgba(115,218,202,0.02))', borderColor: 'var(--accent-success)', marginBottom: 'var(--space-md)', cursor: 'pointer' }}
                             onClick={() => navigate('/expeditions')}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
                                 <span className="pulse-dot"></span>
                                 <span style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', color: 'var(--accent-success)' }}>
-                                    {ready.length} expedición{ready.length > 1 ? 'es' : ''} completada{ready.length > 1 ? 's' : ''} — ¡Recoge!
+                                    {t.routes_ready(ready.length)}
                                 </span>
                             </div>
                         </div>
                     )}
 
-                    {/* Map thumbnails as horizontal cards */}
                     <div className="map-gallery">
                         {MAP_DEFS.map(map => {
                             const mapRouteCount = routes.filter(r => r.mapId === map.id).length;
@@ -63,12 +62,12 @@ export default function RoutesScreen() {
                             return (
                                 <button key={map.id} className="map-thumb-card"
                                     onClick={() => setSelectedMapId(map.id)}>
-                                    <img src={map.image} alt={map.name} className="map-thumb-img" />
+                                    <img src={map.image} alt={t.map_name[map.id] || map.name} className="map-thumb-img" />
                                     <div className="map-thumb-overlay">
-                                        <div className="map-thumb-name">{map.name}</div>
+                                        <div className="map-thumb-name">{t.map_name[map.id] || map.name}</div>
                                         <div className="map-thumb-stars">{map.difficulty}</div>
                                         <div className="map-thumb-meta">
-                                            📍 {mapRouteCount} rutas
+                                            {t.routes_count(mapRouteCount)}
                                             {activeOnMap > 0 && <span style={{ color: 'var(--accent-success)' }}> · ⏳ {activeOnMap}</span>}
                                         </div>
                                     </div>
@@ -82,27 +81,26 @@ export default function RoutesScreen() {
         );
     }
 
-    // Map detail view — large centered map with pins
+    // Map detail view
     return (
         <>
             <TopBar />
             <div className="screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 'var(--space-md)', marginBottom: 'var(--space-md)' }}>
-                    <button className="back-btn" onClick={() => setSelectedMapId(null)}>← Volver</button>
+                    <button className="back-btn" onClick={() => setSelectedMapId(null)}>{t.common_back}</button>
                     <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '11px', color: 'var(--accent-glow)' }}>
-                        {selectedMap.name}
+                        {t.map_name[selectedMap.id] || selectedMap.name}
                     </div>
                 </div>
 
-                {/* Large map with route pins */}
                 <div className="map-detail-container">
                     <div className="map-detail-wrapper">
-                        <img className="map-detail-image" src={selectedMap.image} alt={selectedMap.name} />
+                        <img className="map-detail-image" src={selectedMap.image} alt={t.map_name[selectedMap.id] || selectedMap.name} />
                         {mapRoutes.map(route => {
                             const canAccess = RoutesLib.canAccessRoute(route, state.creatures);
                             const pos = route.mapPos;
                             const req = route.requirement;
-                            const elemName = route.element !== 'mixed' ? (Data.ELEMENTS[route.element]?.name || route.element) : 'Mixto';
+                            const elemName = t.element_name[route.element] || route.element;
                             const tooltipClass = pos.x > 60 ? 'map-tooltip--left' : '';
                             const routeModifierLabel = RoutesLib.getRouteModifierLabel(route.id);
                             return (
@@ -114,7 +112,7 @@ export default function RoutesScreen() {
                                 >
                                     <div className="map-pin__icon">{route.icon}</div>
                                     <div className={`map-tooltip ${tooltipClass}`}>
-                                        <div className="map-tooltip__name">{route.name}</div>
+                                        <div className="map-tooltip__name">{t.route_name[route.id] || route.name}</div>
                                         <div className="map-tooltip__stars">{route.stars}</div>
                                         <div className="map-tooltip__meta">
                                             <span>{Data.getElementIcon(route.element)} {elemName}</span>
@@ -123,10 +121,10 @@ export default function RoutesScreen() {
                                         {routeModifierLabel && (
                                             <div className="map-tooltip__modifier">{routeModifierLabel}</div>
                                         )}
-                                        <div className="map-tooltip__desc">{route.description}</div>
+                                        <div className="map-tooltip__desc">{t.route_desc[route.id] || route.description}</div>
                                         {req && (
                                             <div className={`map-tooltip__req ${canAccess ? 'ok' : 'locked'}`}>
-                                                {canAccess ? '✓' : '🔒'} Req: {req.minCreatures}× Lv{req.minLevel}+
+                                                {canAccess ? '✓' : '🔒'} {t.routes_req}: {req.minCreatures}× Lv{req.minLevel}+
                                             </div>
                                         )}
                                     </div>
@@ -141,13 +139,14 @@ export default function RoutesScreen() {
                     <div style={{ width: '100%', maxWidth: '800px', marginTop: 'var(--space-md)' }}>
                         {expeditions.filter(e => routes.find(r => r.id === e.routeId)?.mapId === selectedMapId).map(exp => {
                             const route = RoutesLib.getRoute(exp.routeId)!;
+                            const routeName = t.route_name[route.id] || route.name;
                             if (exp.resolved) {
                                 return (
                                     <div key={exp.id} className="map-exp-item map-exp-item--completed" onClick={() => handleResolve(exp.id)}>
                                         <span className="map-exp-item__icon">{route.icon}</span>
                                         <div className="map-exp-item__info">
-                                            <div className="map-exp-item__name">{route.name}</div>
-                                            <div className="map-exp-item__status">✓ ¡Completada! Toca para recoger</div>
+                                            <div className="map-exp-item__name">{routeName}</div>
+                                            <div className="map-exp-item__status">{t.routes_completed_tap}</div>
                                         </div>
                                     </div>
                                 );
@@ -156,11 +155,11 @@ export default function RoutesScreen() {
                                 <div key={exp.id} className="map-exp-item" onClick={() => navigate('/expeditions')}>
                                     <span className="map-exp-item__icon">{route.icon}</span>
                                     <div className="map-exp-item__info">
-                                        <div className="map-exp-item__name">{route.name}</div>
+                                        <div className="map-exp-item__name">{routeName}</div>
                                         <div className="map-exp-item__status">
                                             {(() => {
                                                 const tl = Math.max(0, (exp.startTime + exp.duration) - Date.now());
-                                                return tl <= 0 ? '✓ ¡Lista!' : `⏳ ${formatTime(tl)}`;
+                                                return tl <= 0 ? t.routes_ready_short : `⏳ ${formatTime(tl)}`;
                                             })()}
                                         </div>
                                     </div>

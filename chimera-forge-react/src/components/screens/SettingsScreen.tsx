@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '../../store/dojoGameStore';
 import { useDojo } from '../../dojo/dojoProvider';
 import { useToastStore } from '../../store/toastStore';
+import { useT, useI18n, type Language } from '../../lib/i18n';
+import { useAudioStore } from '../../store/audioStore';
 import TopBar from '../layout/TopBar';
 import NavBar from '../layout/NavBar';
 
@@ -10,17 +12,15 @@ const USE_CONTROLLER = import.meta.env.VITE_USE_CONTROLLER === 'true';
 export default function SettingsScreen() {
     const navigate = useNavigate();
     const addToast = useToastStore(s => s.addToast);
+    const t = useT();
+    const { lang, setLang } = useI18n();
     const { address, isConnected, disconnect, connect } = useDojo();
     const state = useGameStore(s => s.state);
-
-    const shortAddress = address
-        ? `${address.slice(0, 6)}...${address.slice(-4)}`
-        : 'No conectado';
+    const { volume, muted, setVolume, toggleMute } = useAudioStore();
 
     const handleDisconnect = () => {
         console.log('🔴 Logging out...');
         disconnect();
-        // Reset store state — data is safe on-chain, will reload on reconnect
         useGameStore.setState({
             state: {
                 ...useGameStore.getState().state,
@@ -31,7 +31,7 @@ export default function SettingsScreen() {
                 resources: { essence: 0, herbs: 0, eggFragments: 0, crystals: 0 },
             },
         });
-        addToast('Sesión cerrada', 'success');
+        addToast(t.settings_logout, 'success');
         navigate('/');
     };
 
@@ -43,15 +43,96 @@ export default function SettingsScreen() {
         <>
             <TopBar />
             <div className="screen">
-                <div className="section-header">⚙️ Ajustes</div>
+                <div className="section-header">{t.settings_title}</div>
 
-                {/* Account Section */}
+                {/* Language Section */}
                 <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', marginBottom: 'var(--space-sm)', color: 'var(--text-secondary)' }}>
-                    CUENTA
+                    {t.settings_language}
                 </div>
 
                 <div className="card" style={{ marginBottom: 'var(--space-lg)' }}>
-                    {/* Connection type badge */}
+                    <div style={{ display: 'flex', gap: 'var(--space-sm)' }}>
+                        {(['es', 'en'] as Language[]).map(l => (
+                            <button
+                                key={l}
+                                onClick={() => setLang(l)}
+                                style={{
+                                    flex: 1,
+                                    padding: 'var(--space-sm) var(--space-md)',
+                                    background: lang === l
+                                        ? 'linear-gradient(135deg, var(--accent-primary), #6341a0)'
+                                        : 'var(--bg-elevated)',
+                                    border: lang === l
+                                        ? '1px solid var(--accent-glow)'
+                                        : '1px solid rgba(255,255,255,0.06)',
+                                    borderRadius: 'var(--radius-md)',
+                                    color: lang === l ? 'white' : 'var(--text-secondary)',
+                                    fontFamily: 'var(--font-ui)',
+                                    fontSize: '13px',
+                                    fontWeight: lang === l ? 600 : 400,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease',
+                                }}
+                            >
+                                {l === 'es' ? '🇪🇸 Español' : '🇬🇧 English'}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Audio Section */}
+                <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', marginBottom: 'var(--space-sm)', color: 'var(--text-secondary)' }}>
+                    🎵 {t.settings_audio}
+                </div>
+
+                <div className="card" style={{ marginBottom: 'var(--space-lg)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-md)' }}>
+                        <button
+                            onClick={toggleMute}
+                            style={{
+                                background: 'none',
+                                border: 'none',
+                                fontSize: '20px',
+                                cursor: 'pointer',
+                                padding: '4px',
+                                filter: muted ? 'grayscale(1) opacity(0.5)' : 'none',
+                                transition: 'all 0.2s ease',
+                            }}
+                            title={muted ? 'Unmute' : 'Mute'}
+                        >
+                            {muted ? '🔇' : volume > 0.5 ? '🔊' : volume > 0 ? '🔉' : '🔈'}
+                        </button>
+                        <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={Math.round(volume * 100)}
+                            onChange={e => setVolume(Number(e.target.value) / 100)}
+                            style={{
+                                flex: 1,
+                                height: '6px',
+                                accentColor: 'var(--accent-primary)',
+                                cursor: 'pointer',
+                            }}
+                        />
+                        <span style={{
+                            fontFamily: 'var(--font-ui)',
+                            fontSize: '12px',
+                            color: 'var(--text-secondary)',
+                            minWidth: '36px',
+                            textAlign: 'right',
+                        }}>
+                            {Math.round(volume * 100)}%
+                        </span>
+                    </div>
+                </div>
+
+                {/* Account Section */}
+                <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', marginBottom: 'var(--space-sm)', color: 'var(--text-secondary)' }}>
+                    {t.settings_account}
+                </div>
+
+                <div className="card" style={{ marginBottom: 'var(--space-lg)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-md)' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
                             <span style={{ fontSize: '24px' }}>
@@ -59,10 +140,10 @@ export default function SettingsScreen() {
                             </span>
                             <div>
                                 <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '10px', color: 'var(--text-primary)' }}>
-                                    {USE_CONTROLLER ? 'Cartridge Controller' : 'Katana (Dev)'}
+                                    {USE_CONTROLLER ? t.settings_cartridge : t.settings_katana_dev}
                                 </div>
                                 <div style={{ fontSize: '9px', color: 'var(--text-muted)' }}>
-                                    {USE_CONTROLLER ? 'Wallet conectado' : 'Cuenta local de desarrollo'}
+                                    {USE_CONTROLLER ? t.settings_production : t.settings_local_account}
                                 </div>
                             </div>
                         </div>
@@ -78,7 +159,7 @@ export default function SettingsScreen() {
                                 ? 'var(--accent-success)'
                                 : 'var(--accent-danger)',
                         }}>
-                            {isConnected ? '● Conectado' : '○ Desconectado'}
+                            {isConnected ? t.settings_connected : t.settings_disconnected}
                         </span>
                     </div>
 
@@ -89,14 +170,14 @@ export default function SettingsScreen() {
                         padding: 'var(--space-sm) var(--space-md)',
                         marginBottom: 'var(--space-md)',
                     }}>
-                        <div style={{ fontSize: '8px', color: 'var(--text-muted)', marginBottom: '2px' }}>DIRECCIÓN</div>
+                        <div style={{ fontSize: '8px', color: 'var(--text-muted)', marginBottom: '2px' }}>{t.settings_address}</div>
                         <div style={{
                             fontFamily: 'monospace',
                             fontSize: '11px',
                             color: 'var(--text-primary)',
                             wordBreak: 'break-all',
                         }}>
-                            {address || 'No disponible'}
+                            {address || '—'}
                         </div>
                     </div>
 
@@ -109,15 +190,15 @@ export default function SettingsScreen() {
                     }}>
                         <div style={{ textAlign: 'center', background: 'var(--bg-elevated)', borderRadius: 'var(--radius-sm)', padding: 'var(--space-sm)' }}>
                             <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)' }}>{state.creatures.length}</div>
-                            <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>Criaturas</div>
+                            <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>{t.settings_creatures}</div>
                         </div>
                         <div style={{ textAlign: 'center', background: 'var(--bg-elevated)', borderRadius: 'var(--radius-sm)', padding: 'var(--space-sm)' }}>
                             <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)' }}>{state.completedExpeditions || 0}</div>
-                            <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>Expediciones</div>
+                            <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>{t.settings_expeditions}</div>
                         </div>
                         <div style={{ textAlign: 'center', background: 'var(--bg-elevated)', borderRadius: 'var(--radius-sm)', padding: 'var(--space-sm)' }}>
                             <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)' }}>{state.eggs.length}</div>
-                            <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>Huevos</div>
+                            <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>{t.settings_eggs_label}</div>
                         </div>
                     </div>
 
@@ -125,33 +206,33 @@ export default function SettingsScreen() {
                     {isConnected ? (
                         <button className="btn btn-danger btn-block" onClick={handleDisconnect}
                             style={{ fontSize: '10px', padding: '8px' }}>
-                            🚪 Cerrar Sesión
+                            {t.settings_logout}
                         </button>
                     ) : (
                         <button className="btn btn-primary btn-block" onClick={handleConnect}
                             style={{ fontSize: '10px', padding: '8px' }}>
-                            🔗 Conectar {USE_CONTROLLER ? 'Cartridge' : 'Cuenta'}
+                            {t.settings_connect}
                         </button>
                     )}
                 </div>
 
                 {/* Network Info */}
                 <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', marginBottom: 'var(--space-sm)', color: 'var(--text-secondary)' }}>
-                    RED
+                    {t.settings_network}
                 </div>
 
                 <div className="card" style={{ marginBottom: 'var(--space-lg)' }}>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-sm)' }}>
                         <div>
-                            <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>MODO</div>
+                            <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>{t.settings_env}</div>
                             <div style={{ fontSize: '10px', color: 'var(--text-primary)' }}>
-                                {USE_CONTROLLER ? 'Producción' : 'Desarrollo'}
+                                {USE_CONTROLLER ? t.settings_production_env : t.settings_development}
                             </div>
                         </div>
                         <div>
-                            <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>RED</div>
+                            <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>{t.settings_node}</div>
                             <div style={{ fontSize: '10px', color: 'var(--text-primary)' }}>
-                                {USE_CONTROLLER ? 'Starknet' : 'Katana Local'}
+                                {USE_CONTROLLER ? 'Starknet' : t.settings_local}
                             </div>
                         </div>
                     </div>
@@ -159,7 +240,7 @@ export default function SettingsScreen() {
 
                 <button className="btn btn-secondary btn-block" onClick={() => navigate('/hub')}
                     style={{ fontSize: '10px', padding: '8px' }}>
-                    ← Volver al Hub
+                    {t.settings_back}
                 </button>
             </div>
             <NavBar />

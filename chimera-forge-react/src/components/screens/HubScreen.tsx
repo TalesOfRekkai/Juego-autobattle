@@ -8,6 +8,7 @@ import { BUILDING_DEFS, getEffectiveHatchFragmentCost, type BuildingsState } fro
 import TopBar from '../layout/TopBar';
 import NavBar from '../layout/NavBar';
 import CreatureCard from '../shared/CreatureCard';
+import { useT } from '../../lib/i18n';
 
 // Map building IDs to their image file prefixes
 const BUILDING_IMAGE_PREFIX: Record<string, string> = {
@@ -28,6 +29,7 @@ function getBuildingImage(buildingId: string, level: number): string {
 export default function HubScreen() {
     const navigate = useNavigate();
     const addToast = useToastStore(s => s.addToast);
+    const t = useT();
     const state = useGameStore(s => s.state);
     const upgradeBuilding = useGameStore(s => s.upgradeBuilding);
     const expeditions = state.expeditions;
@@ -45,7 +47,7 @@ export default function HubScreen() {
         if (!egg) return;
         const fragmentCost = getEffectiveHatchFragmentCost(buildings);
         if (fragmentCost > 0 && !Resources.canAfford(state.resources, { eggFragments: fragmentCost })) {
-            addToast(`Necesitas ${fragmentCost} 🥚 fragmentos para eclosionar`, 'warning');
+            addToast(t.hub_need_fragments(fragmentCost), 'warning');
             return;
         }
         navigate('/hatch', { state: { eggName: egg.name, first: false, eggIndex: index } });
@@ -54,9 +56,9 @@ export default function HubScreen() {
     const handleUpgrade = (buildingId: string) => {
         const success = upgradeBuilding(buildingId);
         if (success) {
-            addToast('¡Edificio mejorado!', 'success');
+            addToast(t.hub_building_upgraded, 'success');
         } else {
-            addToast('No tienes suficientes recursos', 'warning');
+            addToast(t.hub_not_enough_resources, 'warning');
         }
     };
 
@@ -73,7 +75,7 @@ export default function HubScreen() {
                         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
                             <span className="pulse-dot"></span>
                             <span style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', color: 'var(--accent-success)' }}>
-                                {completed.length} expedición{completed.length > 1 ? 'es' : ''} completada{completed.length > 1 ? 's' : ''} — ¡Recoge tus recompensas!
+                                {t.hub_expedition_done(completed.length)}
                             </span>
                         </div>
                     </div>
@@ -84,18 +86,18 @@ export default function HubScreen() {
                         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
                             <span style={{ fontSize: '18px' }}>⏳</span>
                             <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
-                                {active.length} expedición{active.length > 1 ? 'es' : ''} en curso
+                                {t.hub_expedition_active(active.length)}
                             </span>
                         </div>
                     </div>
                 )}
 
-                <div className="section-header">Tus Rekaimon ({creatures.length})</div>
+                <div className="section-header">{t.hub_creatures_title(creatures.length)}</div>
 
                 {creatures.length === 0 ? (
                     <div className="empty-state">
                         <span className="icon">🥚</span>
-                        <p>Aún no tienes Rekaimon. ¡Eclosiona un huevo!</p>
+                        <p>{t.hub_no_creatures}</p>
                     </div>
                 ) : (
                     <div className="creature-grid">
@@ -105,12 +107,12 @@ export default function HubScreen() {
 
                 {eggs.length > 0 && (
                     <>
-                        <div className="section-header">Huevos ({eggs.length})</div>
+                        <div className="section-header">{t.hub_eggs_title(eggs.length)}</div>
                         <div className="creature-grid">
                             {eggs.map((egg, i) => (
                                 <div key={egg.id} className="egg-card" onClick={() => tryHatchEgg(i)}>
                                     <img className="egg-card__sprite" src={Data.getEggSpritePath(egg.name)} alt="Huevo" />
-                                    <div className="egg-card__name">Huevo de {egg.name}</div>
+                                    <div className="egg-card__name">{t.hub_egg_name(egg.name)}</div>
                                 </div>
                             ))}
                         </div>
@@ -118,7 +120,7 @@ export default function HubScreen() {
                 )}
 
                 {/* === BUILDINGS SECTION === */}
-                <div className="section-header">🏗️ Edificios</div>
+                <div className="section-header">{t.hub_buildings}</div>
                 <div className="building-grid">
                     {BUILDING_DEFS.map(def => {
                         const level = buildings[def.id as keyof BuildingsState] ?? 0;
@@ -139,12 +141,12 @@ export default function HubScreen() {
                                         transition: 'filter 0.3s ease',
                                     }}
                                 />
-                                <div className="building-card__name">{def.name}</div>
+                                <div className="building-card__name">{t.building_name[def.id] || def.name}</div>
                                 <div className="building-card__level">
                                     {isMaxLevel ? (
-                                        <span style={{ color: 'var(--accent-secondary)' }}>MAX</span>
+                                        <span style={{ color: 'var(--accent-secondary)' }}>{t.common_max}</span>
                                     ) : isLocked ? (
-                                        <span style={{ color: 'var(--text-muted)', fontSize: '7px' }}>🔒 Sin construir</span>
+                                        <span style={{ color: 'var(--text-muted)', fontSize: '7px' }}>{t.hub_not_built}</span>
                                     ) : (
                                         <>
                                             {[1, 2, 3].map(i => (
@@ -177,10 +179,10 @@ export default function HubScreen() {
                                 }}
                             />
                             <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '14px', color: 'var(--text-bright)', marginBottom: 'var(--space-xs)' }}>
-                                {selectedDef.name}
+                                {t.building_name[selectedDef.id] || selectedDef.name}
                             </div>
                             <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
-                                {selectedDef.description}
+                                {t.building_desc[selectedDef.id] || selectedDef.description}
                             </div>
                         </div>
 
@@ -198,11 +200,11 @@ export default function HubScreen() {
                                     }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)', marginBottom: 'var(--space-xs)' }}>
                                             <span style={{ fontFamily: 'var(--font-pixel)', fontSize: '9px', color: isUnlocked ? 'var(--accent-success)' : 'var(--text-primary)' }}>
-                                                {isUnlocked ? '✓' : ''} Nivel {lvlNum}
+                                                {isUnlocked ? '✓' : ''} {t.hub_level(lvlNum)}
                                             </span>
                                         </div>
                                         <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: 'var(--space-xs)' }}>
-                                            {lvl.description}
+                                            {t.building_level[`${selectedDef.id}_${lvlNum}`] || lvl.description}
                                         </div>
                                         {!isUnlocked && (
                                             <div style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'flex', gap: 'var(--space-md)' }}>
@@ -219,17 +221,17 @@ export default function HubScreen() {
                         {/* Upgrade button */}
                         {selectedLevel < 3 ? (
                             <button className="btn btn-primary btn-block btn-lg" onClick={() => handleUpgrade(selectedDef.id)}>
-                                {selectedLevel === 0 ? '🔨 Construir' : `🔨 Mejorar a Nivel ${selectedLevel + 1}`}
+                                {selectedLevel === 0 ? t.hub_build : t.hub_upgrade(selectedLevel + 1)}
                             </button>
                         ) : (
                             <div style={{ textAlign: 'center', fontFamily: 'var(--font-pixel)', fontSize: '10px', color: 'var(--accent-secondary)' }}>
-                                ⭐ Nivel máximo alcanzado
+                                {t.hub_max_level}
                             </div>
                         )}
 
                         <button className="btn btn-secondary btn-block" style={{ marginTop: 'var(--space-sm)' }}
                             onClick={() => setSelectedBuilding(null)}>
-                            Cerrar
+                            {t.hub_close}
                         </button>
                     </div>
                 </div>
