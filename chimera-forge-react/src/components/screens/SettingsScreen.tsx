@@ -18,23 +18,21 @@ export default function SettingsScreen() {
         : 'No conectado';
 
     const handleDisconnect = () => {
-        if (confirm('¿Cerrar sesión? Tus datos están guardados en la blockchain.')) {
-            disconnect();
-            // Reset store state — data is safe on-chain, will reload on reconnect
-            useGameStore.setState({
-                onchainLoaded: false,
-                state: {
-                    ...useGameStore.getState().state,
-                    phase: 'title',
-                    creatures: [],
-                    eggs: [],
-                    expeditions: [],
-                    resources: { essence: 0, herbs: 0, eggFragments: 0, crystals: 0 },
-                },
-            });
-            addToast('Sesión cerrada', 'success');
-            navigate('/');
-        }
+        console.log('🔴 Logging out...');
+        disconnect();
+        // Reset store state — data is safe on-chain, will reload on reconnect
+        useGameStore.setState({
+            state: {
+                ...useGameStore.getState().state,
+                phase: 'title',
+                creatures: [],
+                eggs: [],
+                expeditions: [],
+                resources: { essence: 0, herbs: 0, eggFragments: 0, crystals: 0 },
+            },
+        });
+        addToast('Sesión cerrada', 'success');
+        navigate('/');
     };
 
     const handleConnect = () => {

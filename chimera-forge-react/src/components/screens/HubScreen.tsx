@@ -9,6 +9,22 @@ import TopBar from '../layout/TopBar';
 import NavBar from '../layout/NavBar';
 import CreatureCard from '../shared/CreatureCard';
 
+// Map building IDs to their image file prefixes
+const BUILDING_IMAGE_PREFIX: Record<string, string> = {
+    incubator: 'Incubadora',
+    training: 'CampoEntrenamiento',
+    expeditions: 'TorreEntrenamiento',
+    fusion: 'Fusion',
+    herbalist: 'Hervolario',
+    mine: 'Cristalario',
+};
+
+function getBuildingImage(buildingId: string, level: number): string {
+    const prefix = BUILDING_IMAGE_PREFIX[buildingId] || 'Incubadora';
+    const imgLevel = Math.max(1, Math.min(level, 3)); // clamp to 1-3
+    return `/Assets def/${prefix}${imgLevel}.png`;
+}
+
 export default function HubScreen() {
     const navigate = useNavigate();
     const addToast = useToastStore(s => s.addToast);
@@ -111,13 +127,24 @@ export default function HubScreen() {
                         return (
                             <button key={def.id} className={`building-card ${isLocked ? 'building-card--locked' : ''} ${isMaxLevel ? 'building-card--max' : ''}`}
                                 onClick={() => setSelectedBuilding(def.id)}>
-                                <div className="building-card__icon">{isLocked ? '🔒' : def.icon}</div>
+                                <img
+                                    src={getBuildingImage(def.id, isLocked ? 1 : level)}
+                                    alt={def.name}
+                                    style={{
+                                        width: '140px',
+                                        height: '140px',
+                                        imageRendering: 'pixelated',
+                                        objectFit: 'contain',
+                                        filter: isLocked ? 'brightness(0.3) grayscale(0.8)' : 'none',
+                                        transition: 'filter 0.3s ease',
+                                    }}
+                                />
                                 <div className="building-card__name">{def.name}</div>
                                 <div className="building-card__level">
                                     {isMaxLevel ? (
                                         <span style={{ color: 'var(--accent-secondary)' }}>MAX</span>
                                     ) : isLocked ? (
-                                        <span style={{ color: 'var(--text-muted)', fontSize: '7px' }}>Sin construir</span>
+                                        <span style={{ color: 'var(--text-muted)', fontSize: '7px' }}>🔒 Sin construir</span>
                                     ) : (
                                         <>
                                             {[1, 2, 3].map(i => (
@@ -137,7 +164,18 @@ export default function HubScreen() {
                 <div className="modal-overlay" onClick={() => setSelectedBuilding(null)}>
                     <div className="modal-content" onClick={e => e.stopPropagation()}>
                         <div style={{ textAlign: 'center', marginBottom: 'var(--space-lg)' }}>
-                            <div style={{ fontSize: '48px', marginBottom: 'var(--space-sm)' }}>{selectedDef.icon}</div>
+                            <img
+                                src={getBuildingImage(selectedDef.id, selectedLevel === 0 ? 1 : selectedLevel)}
+                                alt={selectedDef.name}
+                                style={{
+                                    width: '200px',
+                                    height: '200px',
+                                    imageRendering: 'pixelated',
+                                    objectFit: 'contain',
+                                    filter: selectedLevel === 0 ? 'brightness(0.4) grayscale(0.6)' : 'drop-shadow(0 4px 12px rgba(157,124,216,0.4))',
+                                    marginBottom: 'var(--space-sm)',
+                                }}
+                            />
                             <div style={{ fontFamily: 'var(--font-pixel)', fontSize: '14px', color: 'var(--text-bright)', marginBottom: 'var(--space-xs)' }}>
                                 {selectedDef.name}
                             </div>

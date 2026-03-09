@@ -14,12 +14,18 @@ export default function TitleScreen() {
     const hasGameStarted = state.phase !== 'title' && (hasCreatures || hasEggs);
 
     const handleConnect = async () => {
+        // Reset onchainLoaded so loading screen shows while Torii syncs the real data
+        useGameStore.setState({ onchainLoaded: false });
         await connect();
     };
 
     const handleNewGame = async () => {
-        const success = await startNewGameOnchain();
-        if (success) {
+        const result = await startNewGameOnchain();
+        if (result === 'existing') {
+            // Game already exists — go straight to hub
+            navigate('/hub');
+        } else if (result) {
+            // New game created — wait for Torii to index, then go to hatch
             setTimeout(() => navigate('/hatch', { state: { first: true } }), 1500);
         }
     };

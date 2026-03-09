@@ -52,7 +52,7 @@ interface GameStore {
     getExpeditionTimeLeft: (expedition: Expedition) => number;
 
     // Onchain mutations (async, call contracts)
-    startNewGameOnchain: () => Promise<boolean>;
+    startNewGameOnchain: () => Promise<boolean | 'existing'>;
     hatchEggOnchain: (eggId: number) => Promise<Creature | null>;
     healCreatureOnchain: (creatureId: number) => Promise<boolean>;
     boostCreatureOnchain: (creatureId: number) => Promise<boolean>;
@@ -178,6 +178,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
             useToastStore.getState().addToast('¡Nueva partida iniciada!', 'success');
             return true;
         } catch (error: any) {
+            const msg = error?.message || '';
+            // If game already exists, treat as success — player just needs to continue
+            if (msg.includes('already started') || msg.includes('Game already')) {
+                useToastStore.getState().addToast('¡Partida existente encontrada!', 'success');
+                return 'existing';
+            }
             console.error('new_game failed:', error);
             useToastStore.getState().addToast('Error al iniciar partida', 'error');
             return false;

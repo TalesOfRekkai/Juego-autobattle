@@ -51,7 +51,10 @@ function DojoSync() {
   }, [execute]);
 
   // Timeout fallback: if Torii doesn't respond in 5s, let the app load anyway
+  // Re-runs whenever onchainLoaded is reset to false (e.g. after reconnect)
+  const onchainLoaded = useGameStore(s => s.onchainLoaded);
   useEffect(() => {
+    if (onchainLoaded) return; // already loaded, no timeout needed
     const timeout = setTimeout(() => {
       if (!useGameStore.getState().onchainLoaded) {
         console.warn('Torii timeout — loading app with default state');
@@ -59,7 +62,7 @@ function DojoSync() {
       }
     }, 5000);
     return () => clearTimeout(timeout);
-  }, []);
+  }, [onchainLoaded]);
 
   // Torii polling — uses getState().setState to avoid triggering re-renders
   const pollTorii = useCallback(async () => {
@@ -112,6 +115,8 @@ function DojoSync() {
 
   useEffect(() => {
     if (!address) return;
+    // Clear hash so reconnect always gets fresh data
+    lastHashRef.current = '';
     pollTorii();
     const id = setInterval(pollTorii, 3000);
     return () => clearInterval(id);
