@@ -45,8 +45,8 @@
       ]
     },
     {
-      "address": "0x26c275be792bba4d0a1e2be8efafefe1e73fb962714ed2a131454c7aa970396",
-      "class_hash": "0xe3aa6b86791fdaf11d77debc4466da9ef36b7446931a895b0e7f56bd816fb6",
+      "address": "0x25dac7762fd1e14d05eacfe838a9bea0630f18bf3fc68021c17c9e83792ece3",
+      "class_hash": "0x10a046db3e62b139cca70ce0e63c48612e7fbfe27af2f4e519b956fd6c64e2a",
       "init_calldata": [],
       "tag": "cf-game_actions",
       "selector": "0x69c2762232fec0495394544ab4dc416861225efcfc02f69c0465155ed4f1c25",
